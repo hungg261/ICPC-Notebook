@@ -1,0 +1,148 @@
+\documentclass[9pt, a4paper, notitlepage, landscape]{extreport}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.25in, top=0.25in, bottom=0.25in, includehead]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+\newcommand{\myuniversity}{VNU-HCM High School for the Gifted}
+\newcommand{\myteamname}{HSG-sicula}
+
+\definecolor{icpcblue}{HTML}{1A365D}
+\definecolor{icpcgold}{HTML}{D69E2E}
+\definecolor{icpcgray}{HTML}{718096}
+
+\lstset{
+    backgroundcolor=\color{gray!3},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    extendedchars=true,
+    frame=single,
+    keepspaces=true,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    language=C++,
+    numbers=none,
+    rulecolor=\color{gray!30},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+\titleformat{\section}{\color{icpcblue}\bfseries\sffamily\normalsize\raggedright}{\thesection}{0.5em}{}
+\titleformat{\subsection}{\color{icpcgold}\bfseries\sffamily\small\raggedright}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\titlespacing*{\subsection}{0pt}{6pt}{3pt}
+
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\cfttoctitlefont}{\color{icpcblue}\bfseries\sffamily\normalsize}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{6pt}
+
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{1pt}
+
+\renewcommand{\cftsecfont}{\bfseries\sffamily\scriptsize}
+\renewcommand{\cftsubsecfont}{\sffamily\tiny}
+\renewcommand{\cftsecpagefont}{\bfseries\sffamily\scriptsize}
+\renewcommand{\cftsubsecpagefont}{\sffamily\tiny}
+
+\setlength{\cftsecnumwidth}{1.5em}    
+\setlength{\cftsubsecnumwidth}{2.2em} 
+\setlength{\cftsubsecindent}{1.5em}   
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+
+\raggedbottom
+
+\begin{document}
+\thispagestyle{empty}
+\centering
+\begin{tikzpicture}[remember picture,overlay]
+    \draw[line width=2.5pt,color=icpcblue] 
+        ([shift={(0.4in,-0.4in)}]current page.north west) 
+        rectangle 
+        ([shift={(-0.4in,0.4in)}]current page.south east);
+    \draw[line width=1pt,color=icpcgold] 
+        ([shift={(0.46in,-0.46in)}]current page.north west) 
+        rectangle 
+        ([shift={(-0.46in,0.46in)}]current page.south east);
+\end{tikzpicture}
+
+\vspace*{1.2cm}
+
+{\Large\scshape\color{icpcgray} International Collegiate Programming Contest}\\[0.4cm]
+{\Large\bfseries\color{icpcblue} ACM-ICPC REFERENCE MANUAL}\\[1cm]
+
+\begin{tikzpicture}
+        \draw[fill=icpcblue,draw=none] (0,0) rectangle (6,0.15);
+        \draw[fill=icpcgold,draw=none] (6.4,0) rectangle (13,0.15);
+        \draw[fill=icpcgray,draw=none] (13.4,0) rectangle (16,0.15);
+\end{tikzpicture}
+
+\vspace*{1.2cm}
+
+{\Huge\bfseries\fontsize{38pt}{46pt}\selectfont\color{icpcblue} Team Notebook}\\[2.2cm]
+
+\begin{minipage}{0.8\textwidth}
+    \centering
+    \Large\color{icpcgray} Team:\\[0.3cm]
+    {\Huge\bfseries\fontsize{28pt}{34pt}\selectfont\color{icpcblue} \myteamname}\\[0.6cm]
+    \begin{tikzpicture}
+        \draw[color=icpcgold, line width=1.5pt] (0,0) -- (8,0);
+    \end{tikzpicture}
+\end{minipage}
+
+\vfill
+
+{\Large\scshape\color{icpcblue} \today}
+
+\vspace*{0.6cm}
+\pagebreak
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\color{icpcblue}\bfseries\sffamily\small \myuniversity{} -- Team: \myteamname}
+\rhead{\color{icpcblue}\bfseries\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{icpcblue}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{8pt}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \lhead{\color{icpcblue}\bfseries\sffamily\small \myuniversity{} -- Team: \myteamname}
+    \rhead{\color{icpcblue}\bfseries\sffamily\small Page \thepage}
+    \renewcommand{\headrulewidth}{0.5pt}
+    \renewcommand{\headrule}{\hbox to\headwidth{\color{icpcblue}\leaders\hrule height \headrulewidth\hfill}}
+}
+
+\setlength{\columnsep}{15pt}
+\setlength{\columnseprule}{0.4pt}
+\def\columnseprulecolor{\color{gray!30}}
+
+\begin{multicols*}{3}
+\raggedright
+
+\tableofcontents
+\label{toc_end}
+\hfill \newline
+
+\input{contents.tex}
+
+\end{multicols*}
+\end{document}
