@@ -1,0 +1,46 @@
+% Bitwise Hacks
+
+High-performance bitwise manipulation patterns and $O(1)$ hardware accelerated applications.
+
+\begin{lstlisting}
+// 1. Core Bit Operations with CP Applications
+x | (1LL << i)              // Set i-th bit to 1 (State transition in Bitmask DP)
+x & ~(1LL << i)             // Set i-th bit to 0
+x ^ (1LL << i)              // Toggle i-th bit
+(x >> i) & 1LL              // Check if i-th bit is 1 (Verify subset inclusion)
+bool is_pow2 = x && !(x & (x-1)); // Check if x is power of 2 (Safe for x=0)
+long long lsb = x & -x;     // Isolate lowest set bit (Update/Query in Fenwick Tree)
+long long clear_lsb = x & (x-1); // Clear lowest set bit
+
+// 2. Subelement Masks Enumeration
+for (int sub = mask; sub > 0; sub = (sub - 1) & mask) {} // Iterate all submasks of a state
+void k_combinations(int n, int k) { // Gosper's Hack: Iterate states with exactly k elements
+    int mask = (1LL << k) - 1;
+    while (mask < (1LL << n)) {
+        int c = mask & -mask, r = mask + c;
+        mask = (((mask ^ r) >> 2) / c) | r;
+    }
+}
+
+// 3. Essential GCC Built-ins & __lg for CP
+__builtin_popcountll(x)     // Count set bits -> Size of subset in Bitmask DP
+__builtin_ctzll(x)          // Count trailing zeros -> Quick index of lowest set bit (x > 0)
+__builtin_clzll(x)          // Count leading zeros -> MSB position analysis (x > 0)
+__builtin_parityll(x)       // True if x has an odd number of 1-bits (Parity check)
+__lg(x)                     // Fast Floor(log2(x)) -> Essential for O(1) RMQ / Sparse Table query
+
+// Next Power of 2 (Array padding / Segment Tree size allocation)
+long long next_power_of_2(long long x) {
+    if (x <= 1) return 1;
+    return 1LL << (64 - __builtin_clzll(x - 1));
+}
+
+// Safe 64-bit Modular Multiplication (Prevents __int128 overhead)
+long long safe_mod_mul(unsigned long long a, unsigned long long b, unsigned long long m) {
+    long long res;
+    if (__builtin_mul_overflow(a, b, &res)) {
+        return (long long)(((unsigned __int128)a * b) % m);
+    }
+    return res % m;
+}
+\end{lstlisting}

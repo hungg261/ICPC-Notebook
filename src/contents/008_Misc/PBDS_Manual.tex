@@ -1,0 +1,37 @@
+% Policy-Based Data Structures (PBDS)
+
+An extension structure in GCC that provides a high-performance Ordered Set, supporting index-based lookups (\lstinline|find_by_order|) and order queries (\lstinline|order_of_key|) in $O(\log N)$.
+
+\begin{lstlisting}
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+
+// Definition for Ordered Set
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+// Definition for Ordered Multiset (allows duplicate keys)
+template <typename T>
+using ordered_multiset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+\end{lstlisting}
+
+Basic operations and functions usage pattern:
+\begin{lstlisting}
+ordered_set<int> st;
+
+// 1. Insert elements normally
+st.insert(1); st.insert(4); st.insert(8);
+
+// 2. find_by_order(k): Returns an iterator to the k-th smallest element (0-indexed)
+auto it = st.find_by_order(1); // Points to '4'
+int val = *it;
+
+// 3. order_of_key(x): Returns the number of elements strictly smaller than x
+int cnt = st.order_of_key(5); // Returns 2 (elements 1 and 4 are smaller)
+
+// 4. Erase element in ordered_multiset (MUST use iterator to avoid removing all duplicates)
+ordered_multiset<int> mst;
+mst.insert(4); mst.insert(4);
+mst.erase(mst.find_by_order(mst.order_of_key(4))); // Safely erases only one '4'
+\end{lstlisting}

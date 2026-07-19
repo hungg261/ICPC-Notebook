@@ -1,0 +1,47 @@
+% Incenter \& Circumcenter of a Triangle
+
+Computes the incenter (intersection of angle bisectors) and circumcenter (intersection of perpendicular bisectors) of a triangle defined by three 2D points.
+
+\begin{lstlisting}
+struct Point {
+    double x, y;
+    Point(double x = 0, double y = 0) : x(x), y(y) {}
+    Point operator+(const Point& o) const { return {x + o.x, y + o.y}; }
+    Point operator-(const Point& o) const { return {x - o.x, y - o.y}; }
+    Point operator*(double c) const { return {x * c, y * c}; }
+    Point operator/(double c) const { return {x / c, y / c}; }
+};
+
+double dist(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
+
+// 1. Computes the Incenter of Triangle ABC
+Point get_incenter(Point A, Point B, Point C) {
+    double a = dist(B, C);
+    double b = dist(A, C);
+    double c = dist(A, B);
+    double perimeter = a + b + c;
+    assert(perimeter > 1e-9);
+    
+    return (A * a + B * b + C * c) / perimeter;
+}
+
+// 2. Computes the Circumcenter of Triangle ABC
+Point get_circumcenter(Point A, Point B, Point C) {
+    double d = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
+    assert(abs(d) > 1e-9); // Ensure points are not collinear
+    
+    double ux = ((A.x * A.x + A.y * A.y) * (B.y - C.y) + 
+                 (B.x * B.x + B.y * B.y) * (C.y - A.y) + 
+                 (C.x * C.x + C.y * C.y) * (A.y - B.y)) / d;
+                 
+    double uy = ((A.x * A.x + A.y * A.y) * (C.x - B.x) + 
+                 (B.x * B.x + B.y * B.y) * (A.x - C.x) + 
+                 (C.x * C.x + C.y * C.y) * (B.x - A.x)) / d;
+                 
+    return {ux, uy};
+}
+\end{lstlisting}
+
+Call \lstinline|get_incenter(A, B, C)| or \lstinline|get_circumcenter(A, B, C)| by passing three \lstinline|Point| structs. Ensure that the three coordinates do not lie on a straight line to prevent division by zero errors.

@@ -1,0 +1,113 @@
+% FFT \& NTT (Fast Fourier Transform \& Number Theoretic Transform)
+
+Polynomial multiplication in $O(N \log N)$. Use \lstinline|FFT| for high-precision floating-point coefficients and \lstinline|NTT| for exact integer multiplication under a large prime modulus (typically \lstinline|998244353|).
+
+\begin{lstlisting}
+const double PI = acos(-1);
+struct Complex {
+    double r, i;
+    Complex(double r = 0, double i = 0) : r(r), i(i) {}
+    Complex operator+(const Complex& o) const { return {r + o.r, i + o.i}; }
+    Complex operator-(const Complex& o) const { return {r - o.r, i - o.i}; }
+    Complex operator*(const Complex& o) const { return {r * o.r - i * o.i, r * o.i + i * o.r}; }
+};
+
+void fft(vector<Complex>& a, bool invert) {
+    int n = a.size();
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) swap(a[i], a[j]);
+    }
+    for (int len = 2; len <= n; len <<= 1) {
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        Complex wlen(cos(ang), sin(ang));
+        for (int i = 0; i < n; i += len) {
+            Complex w(1);
+            for (int j = 0; j < len / 2; j++) {
+                Complex u = a[i + j], v = a[i + j + len / 2] * w;
+                a[i + j] = u + v;
+                a[i + j + len / 2] = u - v;
+                w = w * wlen;
+            }
+        }
+    }
+    if (invert) {
+        for (auto& x : a) x.r /= n;
+    }
+}
+
+vector<long long> multiply_fft(const vector<int>& a, const vector<int>& b) {
+    vector<Complex> fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    int n = 1; while (n < a.size() + b.size()) n <<= 1;
+    fa.resize(n); fb.resize(n);
+    fft(fa, false); fft(fb, false);
+    for (int i = 0; i < n; i++) fa[i] = fa[i] * fb[i];
+    fft(fa, true);
+    vector<long long> res(n);
+    for (int i = 0; i < n; i++) res[i] = round(fa[i].r);
+    return res;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+const int MOD = 998244353;
+const int G = 3; // Primitive root for 998244353
+
+long long power(long long base, long long p) {
+    long long res = 1; base %= MOD;
+    while (p > 0) {
+        if (p & 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        p >>= 1;
+    }
+    return res;
+}
+
+void ntt(vector<long long>& a, bool invert) {
+    int n = a.size();
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) swap(a[i], a[j]);
+    }
+    for (int len = 2; len <= n; len <<= 1) {
+        long long wlen = power(G, (MOD - 1) / len);
+        if (invert) wlen = power(wlen, MOD - 2);
+        for (int i = 0; i < n; i += len) {
+            long long w = 1;
+            for (int j = 0; j < len / 2; j++) {
+                long long u = a[i + j], v = (a[i + j + len / 2] * w) % MOD;
+                a[i + j] = (u + v < MOD ? u + v : u + v - MOD);
+                a[i + j + len / 2] = (u - v >= 0 ? u - v : u - v + MOD);
+                w = (w * wlen) % MOD;
+            }
+        }
+    }
+    if (invert) {
+        long long n_inv = power(n, MOD - 2);
+        for (auto& x : a) x = (x * n_inv) % MOD;
+    }
+}
+
+vector<long long> multiply_ntt(const vector<long long>& a, const vector<long long>& b) {
+    vector<long long> fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    int n = 1; while (n < a.size() + b.size()) n <<= 1;
+    fa.resize(n, 0); fb.resize(n, 0);
+    ntt(fa, false); ntt(fb, false);
+    for (int i = 0; i < n; i++) fa[i] = (fa[i] * fb[i]) % MOD;
+    ntt(fa, true);
+    return fa;
+}
+\end{lstlisting}
+
+To multiply two polynomials $A(x)$ and $B(x)$, pass their coefficients to \lstinline|multiply_fft| or \lstinline|multiply_ntt|. For example:
+\begin{lstlisting}
+// Multiply (1 + 2x) * (2 + 3x) -> 2 + 7x + 6x^2
+vector<int> a = {1, 2};
+vector<int> b = {2, 3};
+vector<long long> c = multiply_fft(a, b);
+// c contains: {2, 7, 6, 0, ...}
+\end{lstlisting}

@@ -1,0 +1,24 @@
+% Segment Tree 2N (Iterative)
+
+Point update and range query in $O(\log N)$ using a non-recursive $2N$ memory array. This implementation uses 0-indexed positioning for elements $0 \le i < n$, but operates efficiently on the internal array. \lstinline|update| modifies a specific element, and \lstinline|query| computes the aggregate sum over the range $[l, r]$.
+\begin{lstlisting}
+struct SegTree {
+    int n; vector<int> tree;
+    SegTree(int n) : n(n), tree(2 * n, 0) {}
+    void update(int i, int value) {
+        for (tree[i += n] = value; i > 1; i >>= 1) {
+            tree[i >> 1] = tree[i] + tree[i ^ 1];
+        }
+    }
+    int query(int l, int r) {
+        int res = 0;
+        for (l += n, r += n + 1; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) res += tree[l++];
+            if (r & 1) res += tree[--r];
+        }
+        return res;
+    }
+};
+\end{lstlisting}
+
+To adapt this structure for a 1-indexed array where elements range from $1 \le i \le n$, change the initialization size to \lstinline|tree(2 * (n + 1), 0)|. When calling functions, simply pass the indices directly as \lstinline|update(i, val)| and \lstinline|query(l, r)| without manual shifts, as the internal bitwise operations automatically maintain the structural layout.

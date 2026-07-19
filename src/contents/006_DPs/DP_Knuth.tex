@@ -1,0 +1,41 @@
+% Knuth Optimization
+
+Reduces DP transitions from $O(N^3)$ to $O(N^2)$ for equations of the form $dp[i][j] = \min_{i < k < j} \{ dp[i][k] + dp[k][j] \} + cost(i, j)$. It requires the cost function to satisfy the quadrangle inequality and monotonicity, which guarantees that the optimal transition point satisfies $opt[i][j-1] \le opt[i][j] \le opt[i+1][j]$.
+
+\begin{lstlisting}
+int n;
+vector<vector<long long>> dp;
+vector<vector<int>> opt;
+
+long long cost(int i, int j) {
+    long long value = 0;
+    return value;
+}
+
+void solve_dp() {
+    dp.assign(n + 1, vector<long long>(n + 1, 0));
+    opt.assign(n + 1, vector<int>(n + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+        opt[i][i] = i;
+    }
+
+    for (int len = 2; len <= n; len++) {
+        for (int i = 1; i + len - 1 <= n; i++) {
+            int j = i + len - 1;
+            dp[i][j] = 1e18;
+
+            int opt_l = opt[i][j - 1];
+            int opt_r = opt[i + 1][j];
+
+            for (int k = opt_l; k <= min(j - 1, opt_r); k++) {
+                long long current_cost = dp[i][k] + dp[k + 1][j] + cost(i, j);
+                if (current_cost < dp[i][j]) {
+                    dp[i][j] = current_cost;
+                    opt[i][j] = k;
+                }
+            }
+        }
+    }
+}
+\end{lstlisting}

@@ -1,0 +1,19 @@
+% Hill Climbing (Heuristics)
+
+A local search meta-heuristic that continuously moves in the direction of increasing/decreasing value (ascending the hill) to find an optimal state. Unlike Simulated Annealing, it is purely greedy and can get trapped in local optima.
+
+Core Methodology:
+\begin{enumerate}
+    \item \textbf{Generate Initial State:} Construct a valid random configuration and calculate its objective cost function score.
+    \item \textbf{Evaluate Neighbors:} Generate small mutations or modifications to the active parameters (e.g., swapping two elements).
+    \item \textbf{Greedy Step:} Compare the mutated score with the original. If the mutant state improves the objective criteria, instantly accept it as the new baseline. Otherwise, discard it immediately.
+    \item \textbf{Termination:} Repeat until no neighboring modifications yield any further improvements (local peak reached), or the allocated execution time limit expires.
+\end{enumerate}
+
+Strategies to Escape Local Optima (Random Restart):
+Because pure Hill Climbing stops at the very first local peak it encounters, combine it with a \textbf{Random Restart} strategy inside competitive programming constraints:
+\begin{itemize}
+    \item Enclose the entire hill climbing block within an external loop or time-guard window (\lstinline|while (clock() < 0.95 * CLOCKS_PER_SEC)|).
+    \item Whenever a state becomes completely stagnant (no mutations improve the score anymore), save its peak metrics to a global maximum tracker.
+    \item Fully randomize the current state configuration back to zero and launch a brand new hill climbing ascent from that arbitrary coordinate.
+\end{itemize}

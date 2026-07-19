@@ -1,0 +1,17 @@
+% Fast Binary GCD (Stein's Algorithm)
+
+An ultra-fast GCD computation running in $O(\log(\max(A, B)))$.
+
+\begin{lstlisting}
+long long fast_gcd(long long a, long long b) {
+    if (!a || !b) return a ^ b;
+    int shift = __builtin_ctzll(a | b);
+    a >>= __builtin_ctzll(a);
+    while (b) {
+        b >>= __builtin_ctzll(b);
+        if (a > b) swap(a, b);
+        b -= a;
+    }
+    return a << shift;
+}
+\end{lstlisting}

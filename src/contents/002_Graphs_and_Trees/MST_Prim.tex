@@ -1,0 +1,46 @@
+% Prim's Algorithm
+
+Finds the Minimum Spanning Tree (MST) of a graph from a starting vertex in $O(E \log V)$ using a priority queue. It is optimal for dense graphs and grows a single tree component.
+
+\begin{lstlisting}
+const long long INF = 1e18;
+struct Edge { int to, weight, id; };
+
+long long prim(int source, int n, const vector<vector<Edge>>& adj, vector<int>& mst_edges) {
+    long long total_weight = 0;
+    vector<bool> visited(n + 1, false);
+    vector<long long> min_edge(n + 1, INF);
+    vector<int> parent_edge(n + 1, -1);
+    
+    // priority_queue stores {weight, vertex}
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
+    
+    min_edge[source] = 0;
+    pq.push({0, source});
+    int visited_count = 0;
+
+    while (!pq.empty()) {
+        auto [w, u] = pq.top(); pq.pop();
+        if (visited[u]) continue;
+        
+        visited[u] = true;
+        total_weight += w;
+        visited_count++;
+        
+        if (parent_edge[u] != -1) {
+            mst_edges.push_back(parent_edge[u]);
+        }
+
+        for (const auto& edge : adj[u]) {
+            if (!visited[edge.to] && edge.weight < min_edge[edge.to]) {
+                min_edge[edge.to] = edge.weight;
+                parent_edge[edge.to] = edge.id;
+                pq.push({min_edge[edge.to], edge.to});
+            }
+        }
+    }
+    return (visited_count == n) ? total_weight : -1;
+}
+\end{lstlisting}
+
+To find the MST, build your adjacency list passing an incremental edge ID into \lstinline|Edge.id|. Call \lstinline|prim(1, n, adj, mst_edges)| to compute the minimum total weight and populate the vector with selected edge IDs.

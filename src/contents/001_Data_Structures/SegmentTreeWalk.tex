@@ -1,0 +1,17 @@
+% Walk on Segment Tree
+
+Finds the first position in an array that satisfies a given condition (e.g., finding the first index $i$ such that $A[i] \ge X$) in $O(\log N)$ by descending the segment tree nodes directly.
+
+\begin{lstlisting}
+// Returns the first index i in [ql, qr] where tree[node] >= x. Returns -1 if none exists.
+int walk(int node, int l, int r, int ql, int qr, int x) {
+    if (l > qr || r < ql || tree[node] < x) return -1;
+    if (l == r) return l;
+    
+    int mid = (l + r) >> 1;
+    int res = walk(node << 1, l, mid, ql, qr, x);
+    if (res != -1) return res;
+    
+    return walk(node << 1 | 1, mid + 1, r, ql, qr, x);
+}
+\end{lstlisting}

@@ -1,0 +1,53 @@
+% Closest Pair of Points
+
+Finds the closest pair of points in a 2D plane under Euclidean distance in $O(N \log N)$ time using a randomized / divide and conquer scanning approach.
+
+\begin{lstlisting}
+struct Point {
+    long long x, y, id;
+    bool operator<(const Point& o) const {
+        return x < o.x;
+    }
+};
+
+bool compare_y(const Point& a, const Point& b) {
+    return a.y < b.y;
+}
+
+double dist(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
+
+pair<Point, Point> closest_pair(vector<Point>& pts) {
+    int n = pts.size();
+    sort(pts.begin(), pts.end());
+    
+    double min_d = 1e18;
+    pair<Point, Point> best_pair;
+    set<Point, decltype(&compare_y)> active_set(&compare_y);
+    
+    int left = 0;
+    for (int i = 0; i < n; i++) {
+        while (pts[i].x - pts[left].x >= min_d) {
+            active_set.erase(pts[left]);
+            left++;
+        }
+        
+        Point lower_bound_pt = {-1e18, (long long)(pts[i].y - min_d), -1};
+        auto it = active_set.lower_bound(lower_bound_pt);
+        
+        while (it != active_set.end() && it->y - pts[i].y < min_d) {
+            double d = dist(pts[i], *it);
+            if (d < min_d) {
+                min_d = d;
+                best_pair = {pts[i], *it};
+            }
+            it++;
+        }
+        active_set.insert(pts[i]);
+    }
+    return best_pair;
+}
+\end{lstlisting}
+
+Pass a \lstinline|vector<Point>| containing unique tracking IDs to \lstinline|closest_pair(pts)|. The function processes a sweep-line algorithm over the $X$-coordinate vector coordinates, filtering target subsets inside the \lstinline|std::set| framework.

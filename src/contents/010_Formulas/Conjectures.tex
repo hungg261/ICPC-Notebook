@@ -1,0 +1,42 @@
+% Advanced Graph Conjectures \& Theorems
+
+A reference sheet of deep, specialized graph theory properties and bounds (e.g., Caccetta-Häggkvist, Chvátal's Toughness, and Seymour's Neighborhoods) used for mathematical abstractions or finding hard structural edge cases.
+
+The Caccetta-Häggkvist Conjecture (Girth \& Degree Limits):
+Relates the minimum out-degree $\delta^+$ of a directed graph (digraph) to the length of its shortest directed cycle (girth $g$).
+\begin{itemize}
+    \item \textbf{Statement:} Any $n$-vertex directed graph with minimum out-degree $\delta^+ \ge r$ must contain a directed cycle of length at most $\lceil n/r \rceil$.
+    \item \textbf{The Core $n/3$ Case:} For $r = n/3$, any digraph where every vertex has an out-degree $\ge n/3$ is guaranteed to contain a directed triangle ($3$-cycle).
+    \item \textbf{Application Bound:} If a problem requires you to construct a directed graph without any small cycles of length $\le L$, the maximum out-degree you can safely assign to any vertex is strictly bounded by:
+    $$\delta^+(u) \le \frac{n - 1}{L}$$
+\end{itemize}
+
+Häggkvist's Cycle Conjecture (Independent Edges):
+Guarantees when a set of matching edges can be entirely enclosed inside a single cycle based on degree constraints.
+\begin{itemize}
+    \item \textbf{Definition ($c_k$-graph):} A graph of order $n$ where every pair of non-adjacent vertices $x, y$ satisfies $d(x) + d(y) \ge n + k$.
+    \item \textbf{Statement:} Every set of independent (non-adjacent) edges in a $c_1$-graph ($d(x) + d(y) \ge n + 1$) can be completely contained within a single cycle.
+\end{itemize}
+
+Chvátal's Toughness Conjecture (Hamiltonian Boundaries):
+Connects a graph's structural connectivity (toughness) directly to whether it contains a Hamilton cycle.
+\begin{itemize}
+    \item \textbf{Toughness ($t$):} A graph $G$ is $t$-tough if, for every subset of vertices $S$ whose removal disconnects the graph, the number of resulting connected components $c(G \setminus S)$ satisfies:
+    $$t \le \frac{|S|}{c(G \setminus S)}$$
+    \item \textbf{Property:} Every Hamiltonian graph must be at least $1$-tough (necessary condition).
+    \item \textbf{Conjecture:} There exists a constant threshold $t$ (originally hypothesized as $2$, but proven to be larger) such that any $t$-tough graph is guaranteed to be Hamiltonian.
+\end{itemize}
+
+Seymour's Second Neighborhood Conjecture:
+Guarantees the existence of a vertex that spreads "wider" in its second hop than its first hop in directed graphs without $2$-cycles.
+\begin{itemize}
+    \item \textbf{Statement:} Every simple digraph without loops or $2$-cycles (digons) contains at least one vertex $v$ whose second neighborhood is at least as large as its first neighborhood:
+    $$|N^+(N^+(v)) \setminus N^+(v) \setminus \{v\}| \ge |N^+(v)|$$
+\end{itemize}
+
+Hadwiger's Conjecture (Minor vs. Coloring):
+A deep generalization of the Four Color Theorem mapping structural graph contractions to chromatic bounds.
+\begin{itemize}
+    \item \textbf{Statement:} If a graph $G$ cannot be colored with fewer than $k$ colors ($\chi(G) \ge k$), then $G$ must contain the complete graph $K_k$ as a minor (can be formed by deleting vertices/edges and contracting edges).
+    \item \textbf{Equivalences:} The case $k=5$ is exactly equivalent to the Four Color Theorem for planar graphs.
+\end{itemize}

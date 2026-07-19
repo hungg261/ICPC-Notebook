@@ -1,0 +1,46 @@
+% Aliens Trick (WQS Binary Search)
+
+Optimizes DP states from $O(N \cdot K)$ to $O(N \log (\text{Max } C))$ for concave or convex cost functions where you must choose exactly $K$ items. It works by introducing a penalty (lambda) for each chosen item and binary searching for the optimal penalty.
+
+\begin{lstlisting}
+int n, k;
+vector<long long> a;
+
+// Returns {min_cost, number_of_items_chosen} under the current penalty
+pair<long long, int> check(long long lambda) {
+    // dp[i] stores {best_cost, item_count}
+    vector<pair<long long, int>> dp(n + 1, {1e18, 0});
+    dp[0] = {0, 0};
+
+    for (int i = 1; i <= n; i++) {
+        // Base transition without creating a new group/item
+        dp[i] = dp[i - 1]; 
+
+        // speculative transition by starting a new item/group
+        long long cost_transition = dp[i - 1].first + a[i] - lambda; 
+        if (cost_transition < dp[i].first) {
+            dp[i] = {cost_transition, dp[i - 1].second + 1};
+        }
+    }
+    return dp[n];
+}
+
+long long solve_aliens() {
+    long long l = 0, r = 1e12, ans = -1;
+    
+    while (l <= r) {
+        long long mid = (l + r) >> 1;
+        auto [cost, count] = check(mid);
+        
+        if (count >= k) {
+            ans = cost + k * mid; // Reconstruct original cost by removing penalty
+            r = mid - 1;          // Adjust boundaries depending on convexity
+        } else {
+            l = mid + 1;
+        }
+    }
+    return ans;
+}
+\end{lstlisting}
+
+Initialize your inputs, then call \lstinline|solve_aliens()| to run the optimization template over the penalty space coordinates.

@@ -1,0 +1,22 @@
+% Sparse Table RMQ
+
+Static Range Minimum Query (RMQ) initialization in $O(N \log N)$ and query execution in $O(1)$.
+\begin{lstlisting}
+struct SparseTable {
+    int n, K; vector<vector<int>> st;
+    SparseTable(const vector<int>& a) {
+        n = a.size(); K = __lg(n);
+        st.assign(K + 1, vector<int>(n));
+        for (int i = 0; i < n; i++) st[0][i] = a[i];
+        for (int j = 1; j <= K; j++) {
+            for (int i = 0; i + (1 << j) <= n; i++) {
+                st[j][i] = min(st[j - 1][i], st[j - 1][i + (1 << (j - 1))]);
+            }
+        }
+    }
+    int query(int l, int r) {
+        int j = __lg(r - l + 1);
+        return min(st[j][l], st[j][r - (1 << j) + 1]);
+    }
+};
+\end{lstlisting}

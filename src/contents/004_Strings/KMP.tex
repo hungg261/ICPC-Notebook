@@ -1,0 +1,32 @@
+% KMP (Knuth-Morris-Pratt) Algorithm
+
+Pattern matching in $O(N + M)$ time complexity using a prefix function (pi array).
+
+\begin{lstlisting}
+vector<int> prefix_function(string s) {
+    int n = s.length();
+    vector<int> pi(n, 0);
+    for (int i = 1; i < n; i++) {
+        int j = pi[i - 1];
+        while (j > 0 && s[i] != s[j]) j = pi[j - 1];
+        if (s[i] == s[j]) j++;
+        pi[i] = j;
+    }
+    return pi;
+}
+
+vector<int> kmp_search(string text, string pattern) {
+    string s = pattern + "#" + text;
+    int n = s.length(), m = pattern.length();
+    vector<int> pi = prefix_function(s);
+    vector<int> matches;
+    for (int i = m + 1; i < n; i++) {
+        if (pi[i] == m) {
+            matches.push_back(i - 2 * m); // 0-indexed position in text
+        }
+    }
+    return matches;
+}
+\end{lstlisting}
+
+To find all occurrences of a \lstinline|pattern| inside a \lstinline|text|, call \lstinline|kmp_search(text, pattern)|. It returns a vector containing the starting 0-indexed positions of all valid matches.

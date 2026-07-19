@@ -1,0 +1,51 @@
+% Stress Tester
+
+An automated, cross-platform stress testing harness using identical execution checking paths.
+
+#define int long long
+
+\begin{lstlisting}
+// checker.cpp
+int32_t main() {
+    ifstream f_user("user.out"), f_brute("brute.out");
+    string s_user, s_brute;
+    while (f_user >> s_user) {
+        if (!(f_brute >> s_brute) || s_user != s_brute) return 1;
+    }
+    if (f_brute >> s_brute) return 1;
+    return 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+// main.cpp
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+int rand_range(int l, int r) {
+    uniform_int_distribution<long long> dist(l, r);
+    return dist(rng);
+}
+
+void gen_test() {
+    ofstream out("test.in");
+    out << rand_range(1, 100) << " " << rand_range(1, 100) << "\n";
+}
+
+int32_t main() {
+    system("g++ -O3 user.cpp -o user");
+    system("g++ -O3 brute.cpp -o brute");
+    system("g++ -O3 checker.cpp -o checker");
+
+    for (int t = 1; t <= 10000; ++t) {
+        gen_test();
+        system("./user < test.in > user.out");
+        system("./brute < test.in > brute.out");
+        if (system("./checker")) {
+            cout << "WA on test " << t << "\n";
+            return 0;
+        }
+    }
+    cout << "All tests passed!\n";
+    return 0;
+}
+\end{lstlisting}

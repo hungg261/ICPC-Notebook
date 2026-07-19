@@ -1,0 +1,79 @@
+% Palindrome Tree (Eertree)
+
+A specialized tree structure that processes characters online to maintain all unique palindromic substrings of a string in $O(N)$ time and space complexity.
+
+\begin{lstlisting}
+struct PalindromeTree {
+    static const int ALPHABET_SIZE = 26;
+    struct Node {
+        int next[ALPHABET_SIZE];
+        int len;
+        int link;
+        int cnt; // Frequency of the palindrome substring
+    };
+
+    string s;
+    vector<Node> tree;
+    int sz, last;
+
+    PalindromeTree() {
+        s = "";
+        // Node 1: Imaginary root of odd length (-1)
+        // Node 2: Root of even length (0)
+        tree.push_back({}); // Dummy at index 0
+        tree.push_back({}); tree[1].len = -1; tree[1].link = 1;
+        tree.push_back({}); tree[2].len = 0;  tree[2].link = 1;
+        memset(tree[1].next, 0, sizeof(tree[1].next));
+        memset(tree[2].next, 0, sizeof(tree[2].next));
+        sz = 2; last = 2;
+    }
+
+    int get_link(int u) {
+        int curr_pos = s.length() - 1;
+        while (true) {
+            int prev_pos = curr_pos - 1 - tree[u].len;
+            if (prev_pos >= 0 && s[prev_pos] == s[curr_pos]) return u;
+            u = tree[u].link;
+        }
+    }
+
+    void insert(char ch) {
+        s += ch;
+        int c = ch - 'a';
+        int curr = get_link(last);
+
+        if (tree[curr].next[c]) {
+            last = tree[curr].next[c];
+            tree[last].cnt++;
+            return;
+        }
+
+        sz++;
+        last = sz;
+        tree.push_back({});
+        memset(tree[sz].next, 0, sizeof(tree[sz].next));
+        
+        tree[sz].len = tree[curr].len + 2;
+        tree[curr].next[c] = sz;
+
+        if (tree[sz].len == 1) {
+            tree[sz].link = 2;
+            tree[sz].cnt = 1;
+            return;
+        }
+
+        int link_node = get_link(tree[curr].link);
+        tree[sz].link = tree[link_node].next[c];
+        tree[sz].cnt = 1;
+    }
+
+    void pull_frequencies() {
+        // Propagate counts from longer palindromes to their suffix links
+        for (int i = sz; i > 2; i--) {
+            tree[tree[i].link].cnt += tree[i].cnt;
+        }
+    }
+};
+\end{lstlisting}
+
+Initialize via \lstinline|PalindromeTree pt| and append characters one by one using \lstinline|pt.insert(c)|. Call \lstinline|pt.pull_frequencies()| at the end to get the exact total occurrence count of every unique palindromic substring inside \lstinline|tree[i].cnt|.

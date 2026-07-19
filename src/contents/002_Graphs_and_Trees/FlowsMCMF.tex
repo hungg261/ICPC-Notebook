@@ -1,0 +1,75 @@
+% Min Cost Max Flow (MCMF)
+
+Finds the maximum flow with the minimum total cost in $O(F \cdot E \log V)$ using SPFA (or Dijkstra with potentials) for networks without negative cycles.
+
+\begin{lstlisting}
+const long long INF = 1e18;
+
+struct MCMF {
+    struct Edge { int to; long long cap, flow, cost; int rev; };
+    int n, source, sink;
+    vector<vector<Edge>> adj;
+    vector<long long> dist;
+    vector<int> parent, parent_edge;
+    vector<bool> in_queue;
+
+    MCMF(int n, int source, int sink) : n(n), source(source), sink(sink), adj(n + 1), dist(n + 1), parent(n + 1), parent_edge(n + 1), in_queue(n + 1) {}
+
+    void add_edge(int from, int to, long long cap, long long cost) {
+        adj[from].push_back({to, cap, 0, cost, (int)adj[to].size()});
+        adj[to].push_back({from, 0, 0, -cost, (int)adj[from].size() - 1});
+    }
+
+    bool spfa() {
+        fill(dist.begin(), dist.end(), INF);
+        fill(in_queue.begin(), in_queue.end(), false);
+        queue<int> q;
+        
+        dist[source] = 0;
+        q.push(source);
+        in_queue[source] = true;
+
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            in_queue[u] = false;
+
+            for (int i = 0; i < adj[u].size(); i++) {
+                auto& edge = adj[u][i];
+                if (edge.cap - edge.flow > 0 && dist[u] + edge.cost < dist[edge.to]) {
+                    dist[edge.to] = dist[u] + edge.cost;
+                    parent[edge.to] = u;
+                    parent_edge[edge.to] = i;
+                    if (!in_queue[edge.to]) {
+                        q.push(edge.to);
+                        in_queue[edge.to] = true;
+                    }
+                }
+            }
+        }
+        return dist[sink] != INF;
+    }
+
+    pair<long long, long long> solve() {
+        long long max_flow = 0, min_cost = 0;
+        while (spfa()) {
+            long long pushed = INF;
+            for (int v = sink; v != source; v = parent[v]) {
+                int u = parent[v];
+                int idx = parent_edge[v];
+                pushed = min(pushed, adj[u][idx].cap - adj[u][idx].flow);
+            }
+            for (int v = sink; v != source; v = parent[v]) {
+                int u = parent[v];
+                int idx = parent_edge[v];
+                adj[u][idx].flow += pushed;
+                adj[v][adj[u][idx].rev].flow -= pushed;
+                min_cost += pushed * adj[u][idx].cost;
+            }
+            max_flow += pushed;
+        }
+        return {max_flow, min_cost};
+    }
+};
+\end{lstlisting}
+
+Initialize via \lstinline|MCMF solver(n, source, sink)|. Push paths via \lstinline|solver.add_edge(u, v, cap, cost)| and call \lstinline|solver.solve()| to retrieve the \lstinline|{max_flow, min_cost}| pair coordinates.

@@ -1,0 +1,61 @@
+% Persistent Segment Tree (Pointer Implementation)
+
+Maintains multiple historical versions of a Segment Tree using explicit pointers. Each point update creates at most $O(\log N)$ new nodes, preserving previous versions in $O(\log N)$ time and space.
+
+\begin{lstlisting}
+struct Node {
+    int val;
+    Node *l, *r;
+    Node(int val = 0) : val(val), l(nullptr), r(nullptr) {}
+    Node(Node* original) {
+        val = original->val;
+        l = original->l;
+        r = original->r;
+    }
+};
+
+struct PersistentSegTree {
+    int n;
+    vector<Node*> roots;
+
+    PersistentSegTree(int n) : n(n) {
+        roots.push_back(build(1, n));
+    }
+
+    Node* build(int l, int r) {
+        Node* curr = new Node(0);
+        if (l == r) return curr;
+        int mid = (l + r) >> 1;
+        curr->l = build(l, mid);
+        curr->r = build(mid + 1, r);
+        return curr;
+    }
+
+    Node* update(Node* prev_node, int l, int r, int pos, int val) {
+        Node* curr = new Node(prev_node);
+        if (l == r) {
+            curr->val += val;
+            return curr;
+        }
+        int mid = (l + r) >> 1;
+        if (pos <= mid) curr->l = update(prev_node->l, l, mid, pos, val);
+        else curr->r = update(prev_node->r, mid + 1, r, pos, val);
+        curr->val = curr->l->val + curr->r->val;
+        return curr;
+    }
+
+    int query(Node* node, int l, int r, int ql, int qr) {
+        if (ql <= l && r <= qr) return node->val;
+        int mid = (l + r) >> 1, res = 0;
+        if (ql <= mid) res += query(node->l, l, mid, ql, qr);
+        if (qr > mid) res += query(node->r, mid + 1, r, ql, qr);
+        return res;
+    }
+
+    void upgrade(int version, int pos, int val) {
+        roots.push_back(update(roots[version], 1, n, pos, val));
+    }
+};
+\end{lstlisting}
+
+Initialize via \lstinline|PersistentSegTree pst(n)|. Call \lstinline|pst.upgrade(v, pos, val)| to branch a new version from version \lstinline|v|. Query data from version \lstinline|v| via \lstinline|pst.query(pst.roots[v], 1, n, ql, qr)|.

@@ -1,0 +1,62 @@
+% Treap (Randomized Binary Search Tree)
+
+A balanced binary search tree combining BST and Heap properties, executing insertion, deletion, and splits in $O(\log N)$ expected time using randomized priorities.
+
+\begin{lstlisting}
+mt19937 treap_rng(1337);
+
+struct Node {
+    int key, prior;
+    int sz;
+    Node *l, *r;
+    Node(int key) : key(key), prior(treap_rng()), sz(1), l(nullptr), r(nullptr) {}
+};
+
+int get_sz(Node* t) { return t ? t->sz : 0; }
+void upd_sz(Node* t) { if (t) t->sz = 1 + get_sz(t->l) + get_sz(t->r); }
+
+void split(Node* t, int key, Node*& l, Node*& r) {
+    if (!t) l = r = nullptr;
+    else if (t->key <= key) {
+        split(t->r, key, t->r, r);
+        l = t; upd_sz(l);
+    } else {
+        split(t->l, key, l, t->l);
+        r = t; upd_sz(r);
+    }
+}
+
+void merge(Node*& t, Node* l, Node* r) {
+    if (!l || !r) t = l ? l : r;
+    else if (l->prior > r->prior) {
+        merge(l->r, l->r, r);
+        t = l; upd_sz(t);
+    } else {
+        merge(r->l, l, r->l);
+        t = r; upd_sz(t);
+    }
+}
+
+void insert(Node*& t, Node* it) {
+    if (!t) t = it;
+    else if (it->prior > t->prior) {
+        split(t, it->key, it->l, it->r);
+        t = it; upd_sz(t);
+    } else {
+        insert(t->key <= it->key ? t->r : t->l, it);
+        upd_sz(t);
+    }
+}
+
+void erase(Node*& t, int key) {
+    if (!t) return;
+    if (t->key == key) {
+        Node* th = t;
+        merge(t, t->l, t->r);
+        delete th;
+    } else {
+        erase(key < t->key ? t->l : t->r, key);
+        upd_sz(t);
+    }
+}
+\end{lstlisting}

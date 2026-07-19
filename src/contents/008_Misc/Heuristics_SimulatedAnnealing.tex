@@ -1,0 +1,45 @@
+% Simulated Annealing (Heuristics)
+
+A randomized optimization technique used to find global minima/maxima for NP-hard problems (e.g., TSP) by slowly lowering a temperature $T$ parameter to escape local optima.
+
+\begin{lstlisting}
+mt19937_64 sa_rng(1337);
+inline double get_rand() { return (double)sa_rng() / mt19937_64::max(); }
+
+struct State {
+    long long cost;
+    void init() { /* Construct initial valid state and calculate cost */ }
+    void mutate() { /* Apply a small random perturbation to state */ }
+    void revert() { /* Revert the mutation if rejected */ }
+};
+
+void simulated_annealing() {
+    State current; current.init();
+    State best = current;
+
+    double T = 1e5;        // Initial temperature
+    double T_min = 1e-3;   // Minimum cut-off temperature
+    double alpha = 0.9995; // Cooling schedule factor
+
+    auto start_time = chrono::steady_clock::now();
+
+    while (T > T_min) {
+        // Time-limit safety guard (e.g., break at 0.95 seconds to prevent TLE)
+        auto current_time = chrono::steady_clock::now();
+        if (chrono::duration<double>(current_time - start_time).count() > 0.95) break;
+
+        long long old_cost = current.cost;
+        current.mutate();
+        long long new_cost = current.cost;
+
+        long long diff = new_cost - old_cost; // Assume minimization problem
+
+        if (diff < 0 || exp(-diff / T) > get_rand()) {
+            if (new_cost < best.cost) best = current; // Accept and update best
+        } else {
+            current.revert(); // Reject mutation
+        }
+        T *= alpha; // Cool down
+    }
+}
+\end{lstlisting}

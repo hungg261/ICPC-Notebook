@@ -1,0 +1,64 @@
+% 2-SAT Solver
+
+Solves the 2-Satisfiability problem for a set of clauses $(u \lor v)$ in $O(V + E)$ using Tarjan's Strongly Connected Components algorithm.
+
+\begin{lstlisting}
+struct TwoSat {
+    int n;
+    vector<vector<int>> adj;
+    vector<int> tin, low, scc_id;
+    vector<bool> in_stack, answer;
+    stack<int> st;
+    int timer, scc_count;
+
+    TwoSat(int n) : n(n), adj(2 * n + 1), tin(2 * n + 1, -1), low(2 * n + 1, -1),
+                    scc_id(2 * n + 1, -1), in_stack(2 * n + 1, false), answer(n + 1, false),
+                    timer(0), scc_count(0) {}
+
+    // Var input uses 1-indexed values. Use negative sign for negation (e.g., -u)
+    void add_clause(int u, int v) {
+        int not_u = (u > 0) ? u + n : -u;
+        int act_u = (u > 0) ? u : -u + n;
+        int not_v = (v > 0) ? v + n : -v;
+        int act_v = (v > 0) ? v : -v + n;
+        adj[not_u].push_back(act_v);
+        adj[not_v].push_back(act_u);
+    }
+
+    void dfs(int u) {
+        tin[u] = low[u] = ++timer;
+        st.push(u);
+        in_stack[u] = true;
+        for (int v : adj[u]) {
+            if (tin[v] == -1) {
+                dfs(v);
+                low[u] = min(low[u], low[v]);
+            } else if (in_stack[v]) {
+                low[u] = min(low[u], tin[v]);
+            }
+        }
+        if (low[u] == tin[u]) {
+            scc_count++;
+            while (true) {
+                int v = st.top(); st.pop();
+                in_stack[v] = false;
+                scc_id[v] = scc_count;
+                if (u == v) break;
+            }
+        }
+    }
+
+    bool solve() {
+        for (int i = 1; i <= 2 * n; i++) {
+            if (tin[i] == -1) dfs(i);
+        }
+        for (int i = 1; i <= n; i++) {
+            if (scc_id[i] == scc_id[i + n]) return false;
+            answer[i] = scc_id[i] < scc_id[i + n];
+        }
+        return true;
+    }
+};
+\end{lstlisting}
+
+Initialize via \lstinline|TwoSat solver(n)|. Pass your clauses using 1-indexed integers into \lstinline|solver.add_clause(u, v)|. Call \lstinline|solver.solve()| which returns a boolean indicating satisfiability. The true/false configuration for variable \lstinline|i| is populated directly inside \lstinline|solver.answer[i]|.

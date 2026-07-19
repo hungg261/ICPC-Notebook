@@ -1,0 +1,47 @@
+% Articulation Points \& Bridges
+
+Finds all articulation points (cut vertices) and bridges in an undirected graph in $O(V + E)$ using a single DFS traversal (Tarjan/Hopcroft-Tarjan algorithm).
+\begin{lstlisting}
+struct CutVerticesBridges {
+    int n, timer;
+    vector<vector<int>> adj;
+    vector<int> tin, low;
+    vector<bool> is_cut;
+    vector<pair<int, int>> bridges;
+
+    CutVerticesBridges(int n, const vector<vector<int>>& adj) : 
+        n(n), adj(adj), timer(0), 
+        tin(n + 1, -1), low(n + 1, -1), is_cut(n + 1, false) {}
+
+    void dfs(int u, int p = -1) {
+        tin[u] = low[u] = ++timer;
+        int children = 0;
+
+        for (int v : adj[u]) {
+            if (v == p) continue;
+            if (tin[v] != -1) {
+                low[u] = min(low[u], tin[v]);
+            } else {
+                dfs(v, u);
+                low[u] = min(low[u], low[v]);
+                if (low[v] >= tin[u] && p != -1) {
+                    is_cut[u] = true;
+                }
+                if (low[v] > tin[u]) {
+                    bridges.push_back({min(u, v), max(u, v)});
+                }
+                children++;
+            }
+        }
+        if (p == -1 && children > 1) {
+            is_cut[u] = true;
+        }
+    }
+
+    void run() {
+        for (int i = 1; i <= n; i++) {
+            if (tin[i] == -1) dfs(i);
+        }
+    }
+};
+\end{lstlisting}

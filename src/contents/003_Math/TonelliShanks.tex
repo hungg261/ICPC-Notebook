@@ -1,0 +1,51 @@
+% Tonelli-Shanks Algorithm
+
+Solves the modular congruence $x^2 \equiv n \pmod p$ for a prime $p$ in $O(\log^2 p)$ time complexity. It finds the modular square root if it exists.
+
+\begin{lstlisting}
+long long power(long long base, long long p, long long mod) {
+    long long res = 1; base %= mod;
+    while (p > 0) {
+        if (p & 1) res = (__int128)res * base % mod;
+        base = (__int128)base * base % mod;
+        p >>= 1;
+    }
+    return res;
+}
+
+long long tonelli_shanks(long long n, long long p) {
+    if (p == 2) return n & 1;
+    if (power(n, (p - 1) / 2, p) != 1) return -1; // No solution (Legendre symbol)
+    if (p % 4 == 3) return power(n, (p + 1) / 4, p);
+
+    long long q = p - 1, s = 0;
+    while (q % 2 == 0) { q /= 2; s++; }
+
+    long long z = 2;
+    while (power(z, (p - 1) / 2, p) == 1) z++;
+
+    long long m = s, c = power(z, q, p), t = power(n, q, p), r = power(n, (q + 1) / 2, p);
+
+    while (t != 1) {
+        long long t2k = t, k = 0;
+        for (k = 1; k < m; k++) {
+            t2k = (__int128)t2k * t2k % p;
+            if (t2k == 1) break;
+        }
+        if (k == m) return -1;
+        long long b = power(c, 1LL << (m - k - 1), p);
+        r = (__int128)r * b % p;
+        c = (__int128)b * b % p;
+        t = (__int128)t * c % p;
+        m = k;
+    }
+    return r;
+}
+\end{lstlisting}
+
+Call \lstinline|tonelli_shanks(n, p)| to find a value $x$ such that $x^2 \equiv n \pmod p$. 
+\begin{itemize}
+    \item Returns a valid solution $x \in [0, p-1]$ if it exists.
+    \item Returns \lstinline|-1| if $n$ is a quadratic non-residue modulo $p$ (no solution exists).
+    \item Note that if $x$ is a solution, $p - x$ is also a valid solution.
+\end{itemize}

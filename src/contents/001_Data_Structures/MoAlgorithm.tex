@@ -1,0 +1,46 @@
+% Mo's Algorithm
+
+An offline query processing structure that groups and sorts queries into square-root-sized blocks to process range queries in $O((N + Q) \sqrt{N})$ total time.
+
+\begin{lstlisting}
+const int BLOCK_SIZE = 450;
+
+struct Query {
+    int l, r, id;
+    bool operator<(const Query& other) const {
+        int block_this = l / BLOCK_SIZE;
+        int block_other = other.l / BLOCK_SIZE;
+        if (block_this != block_other) return block_this < block_other;
+        return (block_this & 1) ? (r < other.r) : (r > other.r);
+    }
+};
+
+long long current_answer = 0;
+vector<int> cnt;
+
+void add(int idx, const vector<int>& a) {
+    
+}
+
+void remove(int idx, const vector<int>& a) {
+    
+}
+
+vector<long long> solve_mo(int n, const vector<int>& a, vector<Query>& queries) {
+    int q = queries.size();
+    sort(queries.begin(), queries.end());
+
+    cnt.assign(1000005, 0);
+    vector<long long> answers(q);
+    int cur_l = 0, cur_r = -1;
+
+    for (const auto& query : queries) {
+        while (cur_l > query.l) { cur_l--; add(cur_l, a); }
+        while (cur_r < query.r) { cur_r++; add(cur_r, a); }
+        while (cur_l < query.l) { remove(cur_l, a); cur_l++; }
+        while (cur_r > query.r) { remove(cur_r, a); cur_r--; }
+        answers[query.id] = current_answer;
+    }
+    return answers;
+}
+\end{lstlisting}

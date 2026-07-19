@@ -1,0 +1,53 @@
+% Dijkstra Algorithm
+
+Shortest path algorithm from a single source vertex to all other vertices. The adjacency list with \lstinline|priority_queue| version runs in $O(E \log V)$ and is optimal for sparse graphs. The adjacency matrix version runs in $O(V^2)$ and is optimal for dense graphs ($E \approx V^2$).
+\begin{lstlisting}
+const long long INF = 1e18;
+struct Edge { int to, weight; };
+
+vector<long long> dijkstra(int source, int n, const vector<vector<Edge>>& adj) {
+    vector<long long> dist(n + 1, INF);
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
+    
+    dist[source] = 0;
+    pq.push({0, source});
+    
+    while (!pq.empty()) {
+        auto [d, u] = pq.top(); pq.pop();
+        if (d > dist[u]) continue;
+        
+        for (const auto& edge : adj[u]) {
+            if (dist[u] + edge.weight < dist[edge.to]) {
+                dist[edge.to] = dist[u] + edge.weight;
+                pq.push({dist[edge.to], edge.to});
+            }
+        }
+    }
+    return dist;
+}
+
+vector<long long> dijkstra_dense(int source, int n, const vector<vector<long long>>& adj) {
+    vector<long long> dist(n + 1, INF);
+    vector<bool> visited(n + 1, false);
+    
+    dist[source] = 0;
+    for (int i = 1; i <= n; i++) {
+        int u = -1;
+        for (int v = 1; v <= n; v++) {
+            if (!visited[v] && (u == -1 || dist[v] < dist[u])) {
+                u = v;
+            }
+        }
+        
+        if (dist[u] == INF) break;
+        visited[u] = true;
+        
+        for (int v = 1; v <= n; v++) {
+            if (adj[u][v] != INF && dist[u] + adj[u][v] < dist[v]) {
+                dist[v] = dist[u] + adj[u][v];
+            }
+        }
+    }
+    return dist;
+}
+\end{lstlisting}

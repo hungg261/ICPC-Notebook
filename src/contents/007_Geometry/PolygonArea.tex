@@ -1,0 +1,25 @@
+% Polygon Area (Shoelace Formula)
+
+Computes the area of a polygon in $O(N)$ given its vertices ordered sequentially along the perimeter.
+
+\begin{lstlisting}
+struct Point {
+    long long x, y;
+};
+
+long long cross(Point a, Point b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+double polygon_area(const vector<Point>& pts) {
+    long long area2 = 0;
+    int n = pts.size();
+    for (int i = 0; i < n; i++) {
+        int next_i = (i + 1 == n) ? 0 : i + 1;
+        area2 += cross(pts[i], pts[next_i]);
+    }
+    return abs(area2) / 2.0;
+}
+\end{lstlisting}
+
+Pass vertices sequentially (either clockwise or counter-clockwise). The function returns the true floating-point area by evaluating the absolute value of the total signed cross-product sum divided by two.

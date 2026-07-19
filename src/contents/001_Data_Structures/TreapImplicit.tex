@@ -1,0 +1,61 @@
+% Implicit Treap
+
+An implicit balanced binary search tree that indexes elements by their array positions rather than explicit keys. It supports range operations, updates, and array splits/merges in $O(\log N)$ expected time.
+
+\begin{lstlisting}
+mt19937 implicit_rng(1337);
+
+struct Node {
+    int val, prior;
+    int sz;
+    bool rev;
+    Node *l, *r;
+    Node(int val) : val(val), prior(implicit_rng()), sz(1), rev(false), l(nullptr), r(nullptr) {}
+};
+
+int get_sz(Node* t) { return t ? t->sz : 0; }
+void upd_sz(Node* t) { if (t) t->sz = 1 + get_sz(t->l) + get_sz(t->r); }
+
+void push(Node* t) {
+    if (t && t->rev) {
+        t->rev = false;
+        swap(t->l, t->r);
+        if (t->l) t->l->rev ^= true;
+        if (t->r) t->r->rev ^= true;
+    }
+}
+
+void split(Node* t, int add, Node*& l, Node*& r) {
+    if (!t) { l = r = nullptr; return; }
+    push(t);
+    int curr_idx = add + get_sz(t->l);
+    if (curr_idx < add) {
+        split(t->r, curr_idx + 1, t->r, r);
+        l = t; upd_sz(l);
+    } else {
+        split(t->l, add, l, t->l);
+        r = t; upd_sz(r);
+    }
+}
+
+void merge(Node*& t, Node* l, Node* r) {
+    push(l); push(r);
+    if (!l || !r) t = l ? l : r;
+    else if (l->prior > r->prior) {
+        merge(l->r, l->r, r);
+        t = l; upd_sz(t);
+    } else {
+        merge(r->l, l, r->l);
+        t = r; upd_sz(t);
+    }
+}
+
+void reverse_range(Node*& t, int ql, int qr) {
+    Node *l1, *r1, *l2, *r2;
+    split(t, ql, l1, r1);
+    split(r1, qr - ql + 1, l2, r2);
+    if (l2) l2->rev ^= true;
+    merge(r1, l2, r2);
+    merge(t, l1, r1);
+}
+\end{lstlisting}
