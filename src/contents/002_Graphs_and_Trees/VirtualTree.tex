@@ -1,43 +1,28 @@
 % Virtual Tree (Auxiliary Tree)
 
-Constructs a compressed tree containing only a specific subset of "k" marked nodes and their essential Lowest Common Ancestors (LCA) in $O(K \log K)$.
+Builds a compressed tree of $K$ marked nodes and their LCAs in $O(K \log K)$. Clear \lstinline|v_adj| via \lstinline|k_nodes| after use.
 
 \begin{lstlisting}
 struct VirtualTree {
-    LCA &lca;
-    vector<vector<int>> v_adj;
-
+    LCA &lca; vector<vector<int>> v_adj;
     VirtualTree(LCA &lca) : lca(lca), v_adj(lca.n + 1) {}
 
     void build(vector<int> &k_nodes) {
-        sort(k_nodes.begin(), k_nodes.end(), [&](int a, int b) {
-            return lca.tin[a] < lca.tin[b];
-        });
+        auto cmp = [&](int a, int b) { return lca.tin[a] < lca.tin[b]; };
+        sort(k_nodes.begin(), k_nodes.end(), cmp);
 
         int m = k_nodes.size();
-        for (int i = 0; i < m - 1; i++) {
-            int anc = lca.query(k_nodes[i], k_nodes[i + 1]);
-            k_nodes.push_back(anc);
-        }
-        sort(k_nodes.begin(), k_nodes.end(), [&](int a, int b) {
-            return lca.tin[a] < lca.tin[b];
-        });
+        for (int i = 0; i < m - 1; i++) k_nodes.push_back(lca.query(k_nodes[i], k_nodes[i + 1]));
+        sort(k_nodes.begin(), k_nodes.end(), cmp);
         k_nodes.erase(unique(k_nodes.begin(), k_nodes.end()), k_nodes.end());
 
         for (int u : k_nodes) v_adj[u].clear();
-
         vector<int> st;
         for (int u : k_nodes) {
-            while (!st.empty() && !lca.is_ancestor(st.back(), u)) {
-                st.pop_back();
-            }
-            if (!st.empty()) {
-                v_adj[st.back()].push_back(u);
-            }
+            while (!st.empty() && !lca.is_ancestor(st.back(), u)) st.pop_back();
+            if (!st.empty()) v_adj[st.back()].push_back(u);
             st.push_back(u);
         }
     }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|VirtualTree vt(lca_instance)| and call \lstinline|vt.build(k_nodes)|. The resulting compressed hierarchy is populated directly inside \lstinline|vt.v_adj|.

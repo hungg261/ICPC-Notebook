@@ -1,72 +1,47 @@
 % Boruvka's Algorithm
 
-Finds the Minimum Spanning Tree (MST) of a graph in $O(E \log V)$. It is highly efficient for parallelization and maps components iteratively using cheapest-edge contraction.
+MST in $O(E \log V)$. Efficient when component-wise cheap edges can be found faster than scanning all edges. Returns -1 if graph is disconnected.
 
 \begin{lstlisting}
 struct Boruvka {
     struct Edge { int u, v; long long weight; int id; };
-    int n;
-    vector<Edge> edges;
-    vector<int> parent, sz;
+    int n; vector<Edge> edges; vector<int> parent, sz;
 
-    Boruvka(int n) : n(n), parent(n + 1), sz(n + 1, 1) {
-        iota(parent.begin(), parent.end(), 0);
-    }
+    Boruvka(int n) : n(n), parent(n + 1), sz(n + 1, 1) { iota(parent.begin(), parent.parent.end(), 0); }
 
-    void add_edge(int u, int v, long long w, int id = 0) {
-        edges.push_back({u, v, w, id});
-    }
+    void add_edge(int u, int v, long long w, int id = 0) { edges.push_back({u, v, w, id}); }
 
-    int find_set(int v) {
-        if (v == parent[v]) return v;
-        return parent[v] = find_set(parent[v]);
-    }
+    int find_set(int v) { return v == parent[v] ? v : parent[v] = find_set(parent[v]); }
 
     bool union_sets(int a, int b) {
         a = find_set(a); b = find_set(b);
         if (a == b) return false;
         if (sz[a] < sz[b]) swap(a, b);
-        parent[b] = a; sz[a] += sz[b];
-        return true;
+        parent[b] = a; sz[a] += sz[b]; return true;
     }
 
     long long solve(vector<int>& mst_edges) {
-        long long total_weight = 0;
-        int num_components = n;
+        long long total_weight = 0; int num_components = n;
         vector<int> cheapest(n + 1);
-
         while (num_components > 1) {
             fill(cheapest.begin(), cheapest.end(), -1);
             for (int i = 0; i < edges.size(); i++) {
-                int set_u = find_set(edges[i].u);
-                int set_v = find_set(edges[i].v);
+                int set_u = find_set(edges[i].u), set_v = find_set(edges[i].v);
                 if (set_u == set_v) continue;
-
-                if (cheapest[set_u] == -1 || edges[i].weight < edges[cheapest[set_u]].weight) {
-                    cheapest[set_u] = i;
-                }
-                if (cheapest[set_v] == -1 || edges[i].weight < edges[cheapest[set_v]].weight) {
-                    cheapest[set_v] = i;
-                }
+                if (cheapest[set_u] == -1 || edges[i].weight < edges[cheapest[set_u]].weight) cheapest[set_u] = i;
+                if (cheapest[set_v] == -1 || edges[i].weight < edges[cheapest[set_v]].weight) cheapest[set_v] = i;
             }
-
             bool flag = false;
-            for (int i = 1; i <= n; i++) {
-                if (cheapest[i] != -1) {
-                    int idx = cheapest[i];
-                    if (union_sets(edges[idx].u, edges[idx].v)) {
-                        total_weight += edges[idx].weight;
-                        mst_edges.push_back(edges[idx].id);
-                        num_components--;
-                        flag = true;
-                    }
+            for (int i = 1; i <= n; i++) if (cheapest[i] != -1) {
+                int idx = cheapest[i];
+                if (union_sets(edges[idx].u, edges[idx].v)) {
+                    total_weight += edges[idx].weight; mst_edges.push_back(edges[idx].id);
+                    num_components--; flag = true;
                 }
             }
-            if (!flag) break; // Graph is disconnected
+            if (!flag) break;
         }
         return (num_components == 1) ? total_weight : -1;
     }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|Boruvka solver(n)|, push edges, and call \lstinline|solver.solve(mst_edges)|. It returns the minimum weight sum and populates the vector with selected edge IDs.

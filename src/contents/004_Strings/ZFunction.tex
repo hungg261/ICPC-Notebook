@@ -1,39 +1,25 @@
 % Z-Algorithm
 
-Computes the Z-array in $O(N)$ time complexity, where each element $Z[i]$ stores the length of the longest common prefix between the string $s$ and its suffix starting at index $i$.
+Computes Z-array in $O(N)$ where $Z[i]$ is the LCP length of $s$ and its suffix starting at $i$.
 
 \begin{lstlisting}
 vector<int> z_function(string s) {
-    int n = s.length();
-    vector<int> z(n, 0);
+    int n = s.length(); vector<int> z(n, 0);
     int l = 0, r = 0;
     for (int i = 1; i < n; i++) {
-        if (i <= r) {
-            z[i] = min(r - i + 1, z[i - l]);
-        }
-        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
-            z[i]++;
-        }
-        if (i + z[i] - 1 > r) {
-            l = i;
-            r = i + z[i] - 1;
-        }
+        if (i <= r) z[i] = min(r - i + 1, z[i - l]);
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
+        if (i + z[i] - 1 > r) { l = i; r = i + z[i] - 1; }
     }
     return z;
 }
 
 vector<int> z_search(string text, string pattern) {
-    string s = pattern + "#" + text;
-    int m = pattern.length();
-    vector<int> z = z_function(s);
-    vector<int> matches;
+    string s = pattern + "#" + text; int m = pattern.length();
+    vector<int> z = z_function(s), matches;
     for (int i = m + 1; i < s.length(); i++) {
-        if (z[i] == m) {
-            matches.push_back(i - m - 1); // 0-indexed position in text
-        }
+        if (z[i] == m) matches.push_back(i - m - 1);
     }
     return matches;
 }
 \end{lstlisting}
-
-To find all occurrences of a \lstinline|pattern| inside a \lstinline|text|, call \lstinline|z_search(text, pattern)|. It utilizes a special separator character like \lstinline|'#'| to prevent bounds crossing and returns a vector containing all starting 0-indexed match indices.

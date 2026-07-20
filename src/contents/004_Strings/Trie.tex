@@ -1,41 +1,48 @@
 % Trie
 
-Prefix tree structure for character string tracking, insertions, and searches in $O(L)$ where $L$ represents string length.
+Array-based Trie acting as a multiset. Allows duplicate words, $O(L)$ insertion, search, and deletion.
+
 \begin{lstlisting}
 struct Trie {
     static const int ALPHABET_SIZE = 26;
-    struct TrieNode {
-        TrieNode* children[ALPHABET_SIZE];
-        bool is_end_of_word;
-        TrieNode() {
-            is_end_of_word = false;
-            for (int i = 0; i < ALPHABET_SIZE; i++) children[i] = nullptr;
-        }
+    struct Node {
+        int next[ALPHABET_SIZE], cnt = 0, is_end = 0;
+        Node() { memset(next, -1, sizeof(next)); }
     };
 
-    TrieNode* root;
-    Trie() { root = new TrieNode(); }
+    vector<Node> trie;
+    Trie() { trie.push_back(Node()); }
 
-    void insert(const string& key) {
-        TrieNode* curr = root;
-        for (char c : key) {
-            int index = c - 'a';
-            if (!curr->children[index]) curr->children[index] = new TrieNode();
-            curr = curr->children[index];
+    void insert(const string& s) {
+        int u = 0; trie[u].cnt++;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (trie[u].next[idx] == -1) {
+                trie[u].next[idx] = trie.size(); trie.push_back(Node());
+            }
+            u = trie[u].next[idx]; trie[u].cnt++;
         }
-        curr->is_end_of_word = true;
+        trie[u].is_end++;
     }
 
-    bool search(const string& key) {
-        TrieNode* curr = root;
-        for (char c : key) {
-            int index = c - 'a';
-            if (!curr->children[index]) return false;
-            curr = curr->children[index];
+    bool search(const string& s) {
+        int u = 0;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (trie[u].next[idx] == -1 || trie[trie[u].next[idx]].cnt == 0) return false;
+            u = trie[u].next[idx];
         }
-        return curr->is_end_of_word;
+        return trie[u].is_end > 0;
+    }
+
+    void remove(const string& s) {
+        if (!search(s)) return;
+        int u = 0; trie[u].cnt--;
+        for (char c : s) {
+            int idx = c - 'a', nxt = trie[u].next[idx];
+            trie[nxt].cnt--; u = nxt;
+        }
+        trie[u].is_end--;
     }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|Trie trie| to store and look up strings containing standard lowercase alphabetical letters.

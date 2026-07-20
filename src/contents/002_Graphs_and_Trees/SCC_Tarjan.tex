@@ -1,47 +1,35 @@
 % Tarjan Algorithm
 
-Finds Strongly Connected Components (SCC) in a directed graph, or bridges and articulation points in an undirected graph in $O(V + E)$ using a single DFS traversal.
+Finds Strongly Connected Components (SCC) in directed graphs in $O(V + E)$. Components are labeled $1$ to \lstinline|scc_count| in \lstinline|scc_id|.
+
 \begin{lstlisting}
 struct Tarjan {
-    int n, timer, scc_count;
-    vector<vector<int>> adj;
-    vector<int> tin, low, scc_id;
-    vector<bool> in_stack;
-    stack<int> st;
+    int n, timer, scc_count; vector<vector<int>> adj;
+    vector<int> tin, low, scc_id; vector<bool> in_stack; stack<int> st;
 
     Tarjan(int n, const vector<vector<int>>& adj) : 
-        n(n), adj(adj), timer(0), scc_count(0),
-        tin(n + 1, -1), low(n + 1, -1), scc_id(n + 1, -1), in_stack(n + 1, false) {}
+        n(n), adj(adj), timer(0), scc_count(0), tin(n + 1, -1), low(n + 1, -1), scc_id(n + 1, -1), in_stack(n + 1, false) {}
 
     void dfs(int u) {
-        tin[u] = low[u] = ++timer;
-        st.push(u);
-        in_stack[u] = true;
-
+        tin[u] = low[u] = ++timer; st.push(u); in_stack[u] = true;
         for (int v : adj[u]) {
             if (tin[v] == -1) {
-                dfs(v);
-                low[u] = min(low[u], low[v]);
+                dfs(v); low[u] = min(low[u], low[v]);
             } else if (in_stack[v]) {
                 low[u] = min(low[u], tin[v]);
             }
         }
-
         if (low[u] == tin[u]) {
             scc_count++;
             while (true) {
-                int v = st.top(); st.pop();
-                in_stack[v] = false;
-                scc_id[v] = scc_count;
+                int v = st.top(); st.pop(); in_stack[v] = false; scc_id[v] = scc_count;
                 if (u == v) break;
             }
         }
     }
 
     void run() {
-        for (int i = 1; i <= n; i++) {
-            if (tin[i] == -1) dfs(i);
-        }
+        for (int i = 1; i <= n; i++) if (tin[i] == -1) dfs(i);
     }
 };
 \end{lstlisting}

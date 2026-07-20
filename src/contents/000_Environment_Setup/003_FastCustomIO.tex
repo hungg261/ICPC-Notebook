@@ -1,6 +1,7 @@
 % Custom Fast I/O Extensions
 
-Platform-independent low-level fast I/O implementation using unlocked character reading for extreme execution speed.
+Low-level fast I/O using unlocked character reading. Handles positive integers. Returns -1 on EOF.
+
 \begin{lstlisting}
 #ifdef _WIN32
 #define GETCHAR _getchar_nolock
@@ -8,31 +9,11 @@ Platform-independent low-level fast I/O implementation using unlocked character 
 #define GETCHAR getchar_unlocked
 #endif
 
-inline int readInt() {
-    int x = 0;
-    char ch = GETCHAR();
-    while (ch < '0' || ch > '9') {
-        if (ch == EOF) return -1;
-        ch = GETCHAR();
-    }
-    while (ch >= '0' && ch <= '9') {
-        x = (x << 3) + (x << 1) + (ch - '0');
-        ch = GETCHAR();
-    }
-    return x;
-}
-
-inline long long readLL() {
-    long long x = 0;
-    char ch = GETCHAR();
-    while (ch < '0' || ch > '9') {
-        if (ch == EOF) return -1;
-        ch = GETCHAR();
-    }
-    while (ch >= '0' && ch <= '9') {
-        x = (x << 3) + (x << 1) + (ch - '0');
-        ch = GETCHAR();
-    }
+template<typename T = int>
+inline T readNum() {
+    T x = 0; char ch = GETCHAR();
+    while (ch < '0' || ch > '9') { if (ch == EOF) return -1; ch = GETCHAR(); }
+    while (ch >= '0' && ch <= '9') { x = (x << 3) + (x << 1) + (ch - '0'); ch = GETCHAR(); }
     return x;
 }
 \end{lstlisting}

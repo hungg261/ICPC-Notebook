@@ -1,0 +1,43 @@
+% Binary Trie (Bit Trie)
+
+$O(B)$ max XOR query on 32-bit integers. Acting as a multiset using node counters.
+
+\begin{lstlisting}
+struct BitTrie {
+    static const int BITS = 30;
+    struct Node {
+        int next[2] = {0, 0}, cnt = 0;
+    };
+    vector<Node> trie;
+    BitTrie() { trie.push_back(Node()); }
+
+    void insert(int x) {
+        int u = 0; trie[u].cnt++;
+        for (int i = BITS; i >= 0; i--) {
+            int bit = (x >> i) & 1;
+            if (!trie[u].next[bit]) { trie[u].next[bit] = trie.size(); trie.push_back(Node()); }
+            u = trie[u].next[bit]; trie[u].cnt++;
+        }
+    }
+
+    void remove(int x) {
+        int u = 0; trie[u].cnt--;
+        for (int i = BITS; i >= 0; i--) {
+            u = trie[u].next[(x >> i) & 1]; trie[u].cnt--;
+        }
+    }
+
+    int max_xor(int x) {
+        int u = 0, res = 0;
+        for (int i = BITS; i >= 0; i--) {
+            int bit = (x >> i) & 1, toggle = bit ^ 1;
+            if (trie[u].next[toggle] && trie[trie[u].next[toggle]].cnt > 0) {
+                res |= (1 << i); u = trie[u].next[toggle];
+            } else {
+                u = trie[u].next[bit];
+            }
+        }
+        return res;
+    }
+};
+\end{lstlisting}

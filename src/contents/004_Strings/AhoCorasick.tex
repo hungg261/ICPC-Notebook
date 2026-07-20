@@ -1,16 +1,13 @@
 % Aho-Corasick Automaton
 
-Multi-pattern string matching automaton built on top of a Trie. It constructs suffix links and dictionary links using BFS in $O(\sum |pattern|)$ time, allowing simultaneous matching of multiple strings in $O(|text|)$.
+Multi-pattern matching in $O(\sum |pattern| + |text|)$. Converts Trie to DFA via transition table optimization.
 
 \begin{lstlisting}
 struct AhoCorasick {
     static const int ALPHABET_SIZE = 26;
     struct Node {
-        int next[ALPHABET_SIZE];
-        int link = -1; // Suffix link
-        int exit_link = -1; // Dict link to nearest pattern end node
-        vector<int> pattern_ids; // IDs of patterns ending at this node
-
+        int next[ALPHABET_SIZE], link = -1, exit_link = -1;
+        vector<int> ids;
         Node() { memset(next, -1, sizeof(next)); }
     };
 
@@ -22,37 +19,27 @@ struct AhoCorasick {
         for (char c : s) {
             int idx = c - 'a';
             if (trie[u].next[idx] == -1) {
-                trie[u].next[idx] = trie.size();
-                trie.push_back(Node());
+                trie[u].next[idx] = trie.size(); trie.push_back(Node());
             }
             u = trie[u].next[idx];
         }
-        trie[u].pattern_ids.push_back(id);
+        trie[u].ids.push_back(id);
     }
 
     void build() {
         queue<int> q;
         for (int i = 0; i < ALPHABET_SIZE; i++) {
-            if (trie[0].next[i] != -1) {
-                trie[trie[0].next[i]].link = 0;
-                q.push(trie[0].next[i]);
-            } else {
-                trie[0].next[i] = 0; // Optimization: transform Trie into a DFA transition table
-            }
+            if (trie[0].next[i] != -1) { trie[trie[0].next[i]].link = 0; q.push(trie[0].next[i]); }
+            else trie[0].next[i] = 0;
         }
-
         while (!q.empty()) {
             int u = q.front(); q.pop();
             for (int i = 0; i < ALPHABET_SIZE; i++) {
                 int v = trie[u].next[i];
                 if (v != -1) {
                     trie[v].link = trie[trie[u].link].next[i];
-                    
-                    // Construct dictionary exit link
                     int slink = trie[v].link;
-                    if (!trie[slink].pattern_ids.empty()) trie[v].exit_link = slink;
-                    else trie[v].exit_link = trie[slink].exit_link;
-
+                    trie[v].exit_link = !trie[slink].ids.empty() ? slink : trie[slink].exit_link;
                     q.push(v);
                 } else {
                     trie[u].next[i] = trie[trie[u].link].next[i];
@@ -62,5 +49,3 @@ struct AhoCorasick {
     }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|AhoCorasick ac|, call \lstinline|ac.insert(s, id)| for all patterns, and then run \lstinline|ac.build()| once. When parsing a text, traverse using the modified transition matrix \lstinline|u = ac.trie[u].next[c - 'a']|. Use the \lstinline|exit_link| chain at each step to collect all matched dictionary patterns efficiently.

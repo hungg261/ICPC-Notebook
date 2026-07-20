@@ -1,56 +1,38 @@
 % Chinese Remainder Theorem (CRT)
 
-Solves a system of simultaneous modular congruences $x \equiv r_i \pmod{m_i}$ for pairwise coprime moduli in $O(N \log(\max M_i))$ time complexity using the Extended Euclidean Algorithm.
+Solves $x \equiv r_i \pmod{m_i}$ for non-coprime moduli. Returns \lstinline|{ans, lcm}|, or \lstinline|{-1, -1}| if impossible.
 
 \begin{lstlisting}
 long long extgcd(long long a, long long b, long long &x, long long &y) {
-    if (b == 0) { x = 1; y = 0; return a; }
-    long long x1, y1;
-    long long d = extgcd(b, a % b, x1, y1);
-    x = y1;
-    y = x1 - y1 * (a / b);
-    return d;
+    if (!b) { x = 1; y = 0; return a; }
+    long long x1, y1, d = extgcd(b, a % b, x1, y1);
+    x = y1; y = x1 - y1 * (a / b); return d;
 }
 
-// Solves a system of 2 congruences: x = r1 (mod m1) and x = r2 (mod m2).
-// Works even if m1 and m2 are NOT coprime. Returns {-1, -1} if no solution exists.
 pair<long long, long long> crt_two(long long r1, long long m1, long long r2, long long m2) {
-    long long x, y;
-    long long g = extgcd(m1, m2, x, y);
+    long long x, y, g = extgcd(m1, m2, x, y);
     if ((r2 - r1) % g != 0) return {-1, -1};
-    
-    long long lcm = m1 / g * m2;
-    long long mod = m2 / g;
+    long long lcm = m1 / g * m2, mod = m2 / g;
     long long x0 = ((x % mod) + mod) % mod;
-    long long factor = (r2 - r1) / g;
-    long long ans = (r1 + (__int128)factor * x0 % lcm * m1) % lcm;
-    if (ans < 0) ans += lcm;
-    return {ans, lcm};
+    long long ans = (r1 + (__int128)((r2 - r1) / g) * x0 % lcm * m1) % lcm;
+    return {ans < 0 ? ans + lcm : ans, lcm};
 }
 
-// Solves a system of N congruences. Returns {-1, -1} if no solution exists.
-// Input format: vectors of pairs {remainder, modulus}
-pair<long long, long long> crt(const vector<pair<long long, long long>>& equations) {
-    if (equations.empty()) return {0, 1};
-    long long r_ans = equations[0].first;
-    long long m_ans = equations[0].second;
-    
-    for (size_t i = 1; i < equations.size(); i++) {
-        auto [r, m] = crt_two(r_ans, m_ans, equations[i].first, equations[i].second);
+pair<long long, long long> crt(const vector<pair<long long, long long>>& eq) {
+    if (eq.empty()) return {0, 1};
+    long long r_ans = eq[0].first, m_ans = eq[0].second;
+    for (size_t i = 1; i < eq.size(); i++) {
+        auto [r, m] = crt_two(r_ans, m_ans, eq[i].first, eq[i].second);
         if (m == -1) return {-1, -1};
-        r_ans = r;
-        m_ans = m;
+        r_ans = r; m_ans = m;
     }
     return {r_ans, m_ans};
 }
 \end{lstlisting}
 
-To find a number $x$ that satisfies $x \equiv 2 \pmod 3$, $x \equiv 3 \pmod 5$, and $x \equiv 2 \pmod 7$:
-\begin{lstlisting}
-vector<pair<long long, long long>> eq = {{2, 3}, {3, 5}, {2, 7}};
-pair<long long, long long> ans = crt(eq);
-if (ans.second != -1) {
-    long long x = ans.first;   // Unique solution modulo LCM (23)
-    long long lcm = ans.second; // LCM of all moduli (105)
-}
-\end{lstlisting}
+Usage guide for $x \equiv r_i \pmod{m_i}$:
+\begin{itemize}
+    \item Pass equations as \lstinline|{r_i, m_i}| into \lstinline|vector<pair<long long, long long>> eq|.
+    \item Call \lstinline|auto [ans, lcm] = crt(eq);|. If \lstinline|lcm == -1|, no solution exists.
+    \item Safe guard: Ensure $0 \le r_i < m_i$ before calling to avoid incorrect \lstinline|r2 - r1| signs inside.
+\end{itemize}

@@ -1,41 +1,24 @@
 % Convex Hull (Andrew's Monotone Chain)
 
-Computes the convex hull of a set of 2D integer points in $O(N \log N)$ time. It sorts points lexicographically and builds the upper and lower hulls separately.
+Computes 2D Convex Hull in $O(N \log N)$. Returns points in CCW order. Change \lstinline|<= 0| to \lstinline|< 0| to include collinear points.
 
 \begin{lstlisting}
-struct Point {
-    long long x, y;
-    bool operator<(const Point& o) const {
-        if (x != o.x) return x < o.x;
-        return y < o.y;
-    }
-};
-
 long long cross(Point a, Point b, Point c) {
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
 
 vector<Point> convex_hull(vector<Point>& pts) {
-    int n = pts.size(), k = 0;
-    if (n <= 3) return pts;
-    vector<Point> hull(2 * n);
-    sort(pts.begin(), pts.end());
-
-    // Build lower hull
+    int n = pts.size(), k = 0; if (n <= 3) return pts;
+    vector<Point> hull(2 * n); sort(pts.begin(), pts.end());
+    
     for (int i = 0; i < n; ++i) {
         while (k >= 2 && cross(hull[k - 2], hull[k - 1], pts[i]) <= 0) k--;
         hull[k++] = pts[i];
     }
-
-    // Build upper hull
     for (int i = n - 2, t = k + 1; i >= 0; i--) {
         while (k >= t && cross(hull[k - 2], hull[k - 1], pts[i]) <= 0) k--;
         hull[k++] = pts[i];
     }
-
-    hull.resize(k - 1);
-    return hull;
+    hull.resize(k - 1); return hull;
 }
 \end{lstlisting}
-
-Pass a \lstinline|vector<Point>| to \lstinline|convex_hull(pts)|. The returned points are ordered counter-clockwise. To allow collinear points on the hull edge, change \lstinline|<= 0| to \lstinline|< 0| inside both loops.

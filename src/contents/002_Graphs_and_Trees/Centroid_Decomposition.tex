@@ -1,54 +1,37 @@
 % Centroid Decomposition
 
-Divides a tree into a tree of centroids in $O(N \log N)$ total time. It is highly effective for solving tree path queries by ensuring that the maximum component size is halved at each step, bounding the maximum centroid tree depth at $O(\log N)$.
+Builds a centroid tree in $O(N \log N)$ time with depth $O(\log N)$. Tree layout is stored in \lstinline|parent| for upward updates.
 
 \begin{lstlisting}
 struct CentroidDecomposition {
-    int n;
-    vector<vector<int>> adj;
-    vector<int> sz, parent;
-    vector<bool> removed;
+    int n; vector<vector<int>> adj;
+    vector<int> sz, parent; vector<bool> removed;
 
     CentroidDecomposition(int n, const vector<vector<int>>& tree_adj) : 
         n(n), adj(tree_adj), sz(n + 1), parent(n + 1, 0), removed(n + 1, false) {}
 
     int get_sz(int u, int p) {
         sz[u] = 1;
-        for (int v : adj[u]) {
-            if (v != p && !removed[v]) {
-                sz[u] += get_sz(v, u);
-            }
-        }
+        for (int v : adj[u]) if (v != p && !removed[v]) sz[u] += get_sz(v, u);
         return sz[u];
     }
 
     int find_centroid(int u, int p, int comp_sz) {
         for (int v : adj[u]) {
-            if (v != p && !removed[v] && sz[v] > comp_sz / 2) {
-                return find_centroid(v, u, comp_sz);
-            }
+            if (v != p && !removed[v] && sz[v] > comp_sz / 2) return find_centroid(v, u, comp_sz);
         }
         return u;
     }
 
     int build_tree(int u) {
-        int comp_sz = get_sz(u, 0);
-        int centroid = find_centroid(u, 0, comp_sz);
+        int comp_sz = get_sz(u, 0), centroid = find_centroid(u, 0, comp_sz);
         removed[centroid] = true;
-
         for (int v : adj[centroid]) {
-            if (!removed[v]) {
-                int child_centroid = build_tree(v);
-                parent[child_centroid] = centroid;
-            }
+            if (!removed[v]) parent[build_tree(v)] = centroid;
         }
         return centroid;
     }
 
-    void init(int start_node = 1) {
-        build_tree(start_node);
-    }
+    void init(int start_node = 1) { build_tree(start_node); }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|CentroidDecomposition cd(n, adj)| and call \lstinline|cd.init()|. The generated structural tree layout is stored in \lstinline|parent|, allowing distance or value statistics to be updated upwards through centroid ancestors.

@@ -1,17 +1,11 @@
 % Optimization \& Diagnostic Pragmas
 
-Enables advanced compiler optimizations, loop unrolling, and vectorization targeted for modern architectures, while silencing diagnostic warnings on older judge systems.
+Enables SIMD vectorization, loop unrolling, and silences diagnostic warnings on older judge systems. Place at the absolute top of the source file.
+
 \begin{lstlisting}
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
-\end{lstlisting}
-
-Place these optimization lines at the absolute top of your source file, before any include statements. The \lstinline|avx2| enables 256-bit SIMD vectorization for speedups in tight loops.
-
-\begin{lstlisting}
 #pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wunused-result"
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 \end{lstlisting}
-
-The \lstinline|diagnostic| directives prevent compilation warnings or failures on older platforms that do not support modern targets, and silence warnings for ignored return values (e.g., from \lstinline|scanf| or \lstinline|freopen|).

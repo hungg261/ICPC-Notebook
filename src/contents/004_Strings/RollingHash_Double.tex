@@ -1,13 +1,10 @@
 % String Double Hashing
 
-Anti-hash-kill String Hashing implementation using dynamic base generation and double rolling hash matching under random secure primes.
+Anti-hash-kill rolling hash with random bases. Input range $[l, r]$ for \lstinline|get(l, r)| is 0-indexed.
 
 \begin{lstlisting}
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-
 struct StringHash {
-    long long MOD1 = 1e9 + 7, MOD2 = 1e9 + 9;
-    long long BASE1, BASE2;
+    long long MOD1 = 1e9 + 7, MOD2 = 1e9 + 9, BASE1, BASE2;
     vector<long long> h1, h2, p1, p2;
 
     StringHash(const string& s) {
@@ -28,11 +25,7 @@ struct StringHash {
         l++; r++;
         long long res1 = (h1[r] - h1[l - 1] * p1[r - l + 1]) % MOD1;
         long long res2 = (h2[r] - h2[l - 1] * p2[r - l + 1]) % MOD2;
-        if (res1 < 0) res1 += MOD1;
-        if (res2 < 0) res2 += MOD2;
-        return {res1, res2};
+        return {res1 < 0 ? res1 + MOD1 : res1, res2 < 0 ? res2 + MOD2 : res2};
     }
 };
 \end{lstlisting}
-
-To verify matching substrings over range $[l, r]$, initialize via \lstinline|StringHash hasher(s)| and query using 0-indexed values \lstinline|hasher.get(l, r)|.

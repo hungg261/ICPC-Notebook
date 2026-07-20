@@ -1,6 +1,6 @@
 % LineContainer (CHT)
 
-Maintains a dynamic set of lines $y = kx + m$ to query the maximum or minimum value at any $x$ in $O(\log N)$ using a variant of \lstinline|std::set|.
+Dynamic Convex Hull Trick for maximum query in $O(\log N)$. For Minimum: insert \lstinline|add(-k, -m)| and negate output \lstinline|-query(x)|.
 
 \begin{lstlisting}
 struct Line {
@@ -12,9 +12,7 @@ struct Line {
 struct LineContainer : set<Line, less<>> {
     static const long long INF = LLONG_MAX;
     
-    long long div(long long a, long long b) {
-        return a / b - ((a ^ b) < 0 && a % b);
-    }
+    long long div(long long a, long long b) { return a / b - ((a ^ b) < 0 && a % b); }
     
     bool isect(iterator x, iterator y) {
         if (y == end()) { x->p = INF; return false; }
@@ -26,20 +24,12 @@ struct LineContainer : set<Line, less<>> {
     void add(long long k, long long m) {
         auto z = insert({k, m, 0}), y = z++, x = y;
         while (isect(y, z)) z = erase(z);
-        if (x != begin() && isect(--x, y)) { isect(x, y = erase(y)); }
+        if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
         while ((y = x) != begin() && (--x)->p >= y->p) isect(x, erase(y));
     }
     
     long long query(long long x) {
-        assert(!empty());
-        auto l = *lower_bound(x);
-        return l.k * x + l.m;
+        assert(!empty()); auto l = *lower_bound(x); return l.k * x + l.m;
     }
 };
 \end{lstlisting}
-
-This structure natively computes the \textbf{MAXIMUM} value. 
-\begin{itemize}
-    \item \textbf{To find Maximum:} Call \lstinline|add(k, m)| and query directly via \lstinline|query(x)|.
-    \item \textbf{To find Minimum:} Insert lines as \lstinline|add(-k, -m)|. When querying, negate the output: \lstinline|-query(x)|.
-\end{itemize}

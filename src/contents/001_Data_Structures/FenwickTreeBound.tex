@@ -1,14 +1,16 @@
 % Fenwick Tree with lower/upper bound
 
-Finds the smallest index with a given prefix sum target in $O(\log N)$ using binary lifting. \lstinline|lower_bound| finds the first index where the prefix sum is $\ge$ target. \lstinline|upper_bound| finds the first index where the prefix sum is $>$ target.
+$O(\log N)$ binary lifting to find the first index where prefix sum $\ge$ or $>$ target. Works only for non-negative frequencies.
 
 \begin{lstlisting}
 struct BIT {
     int n; vector<int> tree;
     BIT(int n) : n(n), tree(n + 1, 0) {}
+
     void update(int i, int delta) {
         for (; i <= n; i += i & -i) tree[i] += delta;
     }
+
     int lower_bound(int sum) {
         int idx = 0;
         for (int i = 1 << __lg(n); i > 0; i >>= 1) {
@@ -18,6 +20,7 @@ struct BIT {
         }
         return idx + 1;
     }
+
     int upper_bound(int sum) {
         int idx = 0;
         for (int i = 1 << __lg(n); i > 0; i >>= 1) {

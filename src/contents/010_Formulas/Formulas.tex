@@ -1,45 +1,45 @@
-% Essential Mathematics Formulas
+% Essential Formulas
 
-A concise compilation of counting sequences, identities, and structural counting theorems frequently encountered in competitive programming.
+\textbf{Combinatorics \& Modular Queries:}
+$C_n^k = \frac{n!}{k!(n-k)!} \pmod M$. Precompute factorials in $O(N)$. Linear inverse:
+\lstinline|inv[i] = -(M / i) * inv[M % i] % M + M;|
 
-\subsection{Combinatorics \& Modular Precomputations}
-Precompute factorials and modular inverse factorials in $O(N)$ for $O(1)$ combination queries modulo prime $M$:
-$$C_n^k = \frac{n!}{k!(n-k)!} \pmod M$$
-$$inv[i] = -\lfloor M/i \rfloor \cdot inv[M \pmod i] \pmod M$$
+\textbf{Vandermonde's Identity:} $\sum_{k=0}^r C_m^k C_n^{r-k} = C_{m+n}^r$ (Choosing $r$ items from two combined groups).
 
-\subsection{Catalan Numbers}
-Counts binary search trees with $n$ nodes, valid parenthesization pairs, and non-crossing polygon dissections.
-$$C_0 = 1, \quad C_n = \sum_{i=0}^{n-1} C_i C_{n-1-i} = \frac{1}{n+1} C_{2n}^n = C_{2n}^n - C_{2n}^{n-1}$$
-The first few terms: $1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862$.
+\textbf{Fermat's Polygonal Number Theorem (Gauss EUREKA):}
+Every $N > 0$ is a sum of at most $k$ polygonal numbers of side $k$.
+Formula for $n$-th polygonal number of side $k$: $P_k(n) = \frac{(k - 2)n^2 - (k - 4)n}{2}$.
+$\bullet$ Triangular ($k=3$): $T_n = \frac{n(n+1)}{2} \implies$ Max 3 numbers to form $N$.
+$\bullet$ Square ($k=4$): $S_n = n^2 \implies$ Max 4 numbers to form $N$ (Lagrange).
+$\bullet$ Pentagonal ($k=5$): $P_n = \frac{3n^2-n}{2} \implies$ Max 5 numbers to form $N$.
+$\bullet$ Hexagonal ($k=6$): $H_n = 2n^2-n \implies$ Max 6 numbers to form $N$.
 
-\subsection{Derangements (Permutations with no fixed points)}
-Counts permutations of length $n$ where no element $i$ appears in its original $i$-th position.
-$$D_1 = 0, \quad D_2 = 1, \quad D_n = (n-1)(D_{n-1} + D_{n-2}) = n D_{n-1} + (-1)^n$$
-The first few terms: $0, 1, 2, 9, 44, 265, 1854, 14833, 133496$.
+\textbf{Catalan Numbers:} (BSTs, valid parenthesization, non-crossing polygon dissections).
+$C_0 = 1, \, C_n = \sum_{i=0}^{n-1} C_i C_{n-1-i} = \frac{1}{n+1} C_{2n}^n = C_{2n}^n - C_{2n}^{n-1}$
+Terms: $1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862$.
 
-\subsection{Stirling Numbers of the Second Kind}
-$S(n, k)$ represents the number of ways to partition a set of $n$ labeled elements into $k$ unlabeled non-empty subsets.
-$$S(n, k) = S(n-1, k-1) + k \cdot S(n-1, k)$$
-Base conditions: $S(0, 0) = 1, \quad S(n, 0) = S(0, n) = 0$.
-Number of ways to partition $n$ labeled items into $k$ labeled boxes is $k! \cdot S(n, k)$.
+\textbf{Derangements:} (Permutations with no fixed points).
+$D_1 = 0, \, D_2 = 1, \, D_n = (n-1)(D_{n-1} + D_{n-2}) = n D_{n-1} + (-1)^n$
+Terms: $0, 1, 2, 9, 44, 265, 1854, 14833, 133496$.
 
-\subsection{Lucas' Theorem}
-Computes $C_n^k \pmod p$ for a small prime $p$ when $n, k \le 10^{18}$. Express $n$ and $k$ in base $p$:
-$$n = n_m p^m + n_{m-1} p^{m-1} + \dots + n_0, \quad k = k_m p^m + k_{m-1} p^{m-1} + \dots + k_0$$
-$$C_n^k \equiv \prod_{i=0}^{m} C_{n_i}^{k_i} \pmod p \quad (\text{where } C_{n_i}^{k_i} = 0 \text{ if } n_i < k_i)$$
+\textbf{Stirling Numbers of the 2nd Kind:} (Partition $n$ labeled items into $k$ unlabeled non-empty subsets).
+$S(n, k) = S(n-1, k-1) + k \cdot S(n-1, k)$. Base: $S(0, 0) = 1, \, S(n, 0) = S(0, n) = 0$.
+Partition $n$ labeled items into $k$ labeled boxes $= k! \cdot S(n, k)$.
 
-\subsection{Graph Theory Counting}
+\textbf{Lucas' Theorem:} $C_n^k \pmod p$ for small prime $p$ ($n, k \le 10^{18}$). Base-$p$ representations:
+$n = \sum n_i p^i, \, k = \sum k_i p^i \implies C_n^k \equiv \prod C_{n_i}^{k_i} \pmod p$ (where $C_{n_i}^{k_i} = 0$ if $n_i < k_i$).
+
+\textbf{Burnside's Lemma:} Number of orbits (distinct objects under symmetry) $= \frac{1}{|G|} \sum_{g \in G} |X^g|$ where $|G|$ is size of symmetry group, and $|X^g|$ is number of elements fixed by symmetry $g$.
+
+\textbf{Graph Theory Counting:}
 \begin{itemize}
-    \item \textbf{Cayley's Formula:} The number of unique labeled spanning trees in a complete graph $K_n$ is $n^{n-2}$.
-    \item \textbf{Handshaking Lemma:} $\sum \deg(v) = 2 \cdot |E|$. Total number of vertices with odd degree is always even.
-    \item \textbf{Euler's Planar Formula:} For any connected planar graph: $V - E + F = 2$ (where $F$ includes the outer infinite face).
+    \item \textbf{Cayley's Formula:} Labeled spanning trees in $K_n = n^{n-2}$. In a forest of $k$ trees with roots $r_1..r_k$ covering all $n$ nodes, ways to connect them into a single tree $= n^{k-2} \cdot \prod \text{sz}(T_i)$.
+    \item \textbf{Euler's Planar Formula:} Connected planar graph: $V - E + F = 2$.
+    \item \textbf{Matrix Tree Theorem:} Let $A$ be adjacency matrix, $D$ degree matrix. Kirchhoff matrix $L = D - A$. Delete row $i$ and col $i$. Determinant of resulting matrix $=$ number of spanning trees.
 \end{itemize}
 
-\subsection{Geometry Theorems}
+\textbf{Geometry Theorems:}
 \begin{itemize}
-    \item \textbf{Pick's Theorem:} Calculates the area $A$ of a polygon whose vertices all lie on an integer grid:
-    $$A = I + \frac{B}{2} - 1$$
-    where $I$ is the number of interior grid points, and $B$ is the number of boundary grid points.
-    \item \textbf{Boundary Points on Segment:} The number of integer points strictly lying on the line segment connecting $(x_1, y_1)$ and $(x_2, y_2)$ including both endpoints is:
-    $$\gcd(|x_1 - x_2|, |y_1 - y_2|) + 1$$
+    \item \textbf{Pick's Theorem:} Grid polygon area $A = I + B/2 - 1$. ($I$: interior points, $B$: boundary points).
+    \item \textbf{Boundary Points:} Integer points on segment $(x_1, y_1)$ to $(x_2, y_2)$ inclusive $=\gcd(|x_1 - x_2|, |y_1 - y_2|) + 1$.
 \end{itemize}

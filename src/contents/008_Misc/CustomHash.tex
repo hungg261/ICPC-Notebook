@@ -1,7 +1,5 @@
 % Custom Hash for hashmap \& hashset
 
-A secure custom hash structure to prevent $O(N^2)$ worst-case time complexity attacks (anti-hash-kill) caused by malicious test case inputs.
-
 \begin{lstlisting}
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {

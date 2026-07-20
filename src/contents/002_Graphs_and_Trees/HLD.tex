@@ -1,73 +1,51 @@
 % Heavy-Light Decomposition (HLD)
 
-Decomposes a tree into paths where each vertex belongs to exactly one heavy path. Allows range queries and updates on paths in $O(\log^2 N)$ when paired with a Segment Tree.
+Path queries/updates in $O(\log^2 N)$ with Segment Tree. Continuous range per heavy path mapped via \lstinline|pos|. For edge queries, use \lstinline|pos[u] + 1| instead of \lstinline|pos[u]| at the final step.
 
 \begin{lstlisting}
 struct HLD {
-    int n, timer;
-    vector<vector<int>> adj;
+    int n, timer; vector<vector<int>> adj;
     vector<int> parent, depth, heavy, head, pos;
 
     HLD(int n, const vector<vector<int>>& tree_adj) : 
-        n(n), timer(0), adj(tree_adj), 
-        parent(n + 1), depth(n + 1), heavy(n + 1, -1), head(n + 1), pos(n + 1) {}
+        n(n), timer(0), adj(tree_adj), parent(n + 1), depth(n + 1), heavy(n + 1, -1), head(n + 1), pos(n + 1) {}
 
     int dfs_sz(int u, int p, int d) {
-        int size = 1, max_c_size = 0;
-        parent[u] = p; depth[u] = d;
-        for (int v : adj[u]) {
-            if (v != p) {
-                int c_size = dfs_sz(v, u, d + 1);
-                size += c_size;
-                if (c_size > max_c_size) {
-                    max_c_size = c_size;
-                    heavy[u] = v;
-                }
-            }
+        int size = 1, max_c_size = 0; parent[u] = p; depth[u] = d;
+        for (int v : adj[u]) if (v != p) {
+            int c_size = dfs_sz(v, u, d + 1); size += c_size;
+            if (c_size > max_c_size) { max_c_size = c_size; heavy[u] = v; }
         }
         return size;
     }
 
     void decompose(int u, int h) {
         head[u] = h; pos[u] = ++timer;
-        if (heavy[u] != -1) {
-            decompose(heavy[u], h);
-        }
-        for (int v : adj[u]) {
-            if (v != parent[u] && v != heavy[u]) {
-                decompose(v, v);
-            }
-        }
+        if (heavy[u] != -1) decompose(heavy[u], h);
+        for (int v : adj[u]) if (v != parent[u] && v != heavy[u]) decompose(v, v);
     }
 
-    void init(int root = 1) {
-        dfs_sz(root, 0, 0);
-        decompose(root, root);
-    }
+    void init(int root = 1) { dfs_sz(root, 0, 0); decompose(root, root); }
 
     template<typename SegTree>
     int query_path(int u, int v, SegTree& seg) {
-        int res = 0; // Set to identity element (e.g., -INF for max, 0 for sum)
+        int res = 0;
         for (; head[u] != head[v]; v = parent[head[v]]) {
             if (depth[head[u]] > depth[head[v]]) swap(u, v);
-            res += seg.query(1, 1, n, pos[head[v]], pos[v]); // Modify operation accordingly
+            res += seg.query(pos[head[v]], pos[v]);
         }
         if (depth[u] > depth[v]) swap(u, v);
-        res += seg.query(1, 1, n, pos[u], pos[v]); // Node values query
-        // For edge values query, use: pos[heavy_child_of_u] instead of pos[u]
-        return res;
+        return res + seg.query(pos[u], pos[v]);
     }
 
     template<typename SegTree>
     void update_path(int u, int v, int val, SegTree& seg) {
         for (; head[u] != head[v]; v = parent[head[v]]) {
             if (depth[head[u]] > depth[head[v]]) swap(u, v);
-            seg.update(1, 1, n, pos[head[v]], pos[v], val);
+            seg.update(pos[head[v]], pos[v], val);
         }
         if (depth[u] > depth[v]) swap(u, v);
-        seg.update(1, 1, n, pos[u], pos[v], val);
+        seg.update(pos[u], pos[v], val);
     }
 };
 \end{lstlisting}
-
-Initialize via \lstinline|HLD hld(n, adj)| and call \lstinline|hld.init(root)|. The \lstinline|pos| array maps vertices to a continuous segment workspace. Pass your standard \lstinline|SegTree| template into \lstinline|query_path| and \lstinline|update_path| to run path computations.

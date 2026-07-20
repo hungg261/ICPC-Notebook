@@ -1,14 +1,15 @@
 % Chtholly Tree (Old Driver Tree)
 
-An efficient data structure for processing range assignment queries on arrays using \lstinline|std::set|. It maintains segments of identical values as elements. Average time complexity is $O(M \log \log N)$ for random inputs where segment merge/assign operations occur frequently.
-
 \begin{lstlisting}
 struct Node {
     int l, r;
     mutable long long val;
+
     Node(int l, int r = -1, long long val = 0) : l(l), r(r), val(val) {}
+
     bool operator<(const Node& o) const { return l < o.l; }
 };
+
 
 struct ChthollyTree {
     set<Node> odt;
@@ -20,37 +21,36 @@ struct ChthollyTree {
         }
     }
 
-    // Splits the segment containing pos into [l, pos-1] and [pos, r]
-    // Returns an iterator pointing to the newly created segment starting at pos
     auto split(int pos) {
         auto it = odt.lower_bound(Node(pos));
         if (it != odt.end() && it->l == pos) return it;
+
         --it;
         if (it->r < pos) return odt.end();
+
         int l = it->l, r = it->r;
         long long v = it->val;
+
         odt.erase(it);
         odt.insert(Node(l, pos - 1, v));
         return odt.insert(Node(pos, r, v)).first;
     }
 
-    // Assigns a single uniform value to the entire range [l, r]
     void assign(int l, int r, long long val) {
-        auto itr = split(r + 1);
+        auto itr = split(r + 1); // split(r + 1) first
         auto itl = split(l);
+
         odt.erase(itl, itr);
         odt.insert(Node(l, r, val));
     }
 
-    // Example range query operation (add value to range)
     void add_range(int l, int r, long long val) {
         auto itr = split(r + 1);
         auto itl = split(l);
+
         for (; itl != itr; ++itl) {
             itl->val += val;
         }
     }
 };
 \end{lstlisting}
-
-Always call \lstinline|split(r + 1)| before \lstinline|split(l)| to protect the lower bound iterator validity from being invalidated during structural modification steps.

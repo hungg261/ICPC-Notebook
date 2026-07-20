@@ -1,30 +1,22 @@
-% Flow with Lower Bound Setup Guide
+% Flow with Lower Bound
 
-Graph transformation steps to solve network flows with a lower bound constraint $[L(u,v), C(u,v)]$ on edges.
+Graph transformation for network flows with lower bounds $[L, C]$.
 
-Graph Transformation Steps:
 \begin{enumerate}
-    \item \textbf{Modify Edges:} Replace each original edge $(u, v)$ with capacity $C - L$.
-    \item \textbf{Track Vertex Demand:} Maintain an array \lstinline|delta[u]| initialized to 0. For each original edge $(u, v)$ with lower bound $L$:
-    $$\text{delta}[u] \leftarrow \text{delta}[u] - L, \quad \text{delta}[v] \leftarrow \text{delta}[v] + L$$
-    \item \textbf{Add Super Source ($S'$) \& Super Sink ($T'$):} For every vertex $u$:
-        \begin{itemize}
-        \item If $\text{delta}[u] > 0$: Add edge $(S', u)$ with capacity $\text{delta}[u]$.
-        \item If $\text{delta}[u] < 0$: Add edge $(u, T')$ with capacity $-\text{delta}[u]$.
+    \item \textbf{Transform Graph:} New capacity is $C - L$. Update demands: $\text{delta}[u] -= L, \, \text{delta}[v] += L$.
+    \item \textbf{Super Source ($S'$) \& Sink ($T'$):} For each vertex $u$:
+    \begin{itemize}
+        \item $\text{delta}[u] > 0$: Add edge $(S', u)$ with capacity $\text{delta}[u]$.
+        \item $\text{delta}[u] < 0$: Add edge $(u, T')$ with capacity $-\text{delta}[u]$.
     \end{itemize}
 \end{enumerate}
 
-Feasible Flow (No Source/Sink):
-Run Max Flow from $S'$ to $T'$. The flow is feasible if and only if the \lstinline|max_flow| equals the sum of all positive \lstinline|delta[u]|. Real flow on edge $(u, v) = L(u,v) + \text{current\_flow}(u, v)$.
+\textbf{Feasible Flow (Circulatory):} Run Max Flow $S' \to T'$. Feasible iff $\text{max\_flow} == \sum_{\text{delta} > 0} \text{delta}$. Real flow $= L + \text{current\_flow}$.
 
-Max/Min Flow with Source ($S$) and Sink ($T$):
+\textbf{Max/Min Flow with Source ($S$) and Sink ($T$):}
 \begin{enumerate}
-    \item Add a feedback edge $(T, S)$ with capacity $\infty$ and lower bound $0$ to make the network circulatory.
-    \item Run Max Flow from $S'$ to $T'$. Check feasibility (must saturate all $S'$ edges).
-    \item Store the temporary flow value: $\lstinline|initial_flow| = \text{flow on edge } (T, S)$.
-    \item Remove the feedback edge $(T, S)$ from the graph.
-    \item \textbf{For Maximum Flow:} Run Max Flow from $S$ to $T$ on the residual graph. 
-    $$\lstinline|Max Flow| = \lstinline|initial_flow| + \text{new\_flow}(S, T)$$
-    \item \textbf{For Minimum Flow:} Run Max Flow from $T$ to $S$ on the residual graph to return excess flow.
-    $$\lstinline|Min Flow| = \lstinline|initial_flow| - \text{new\_flow}(T, S)$$
+    \item Add edge $(T, S)$ with capacity $\infty$. Run Max Flow $S' \to T'$ to check feasibility.
+    \item Save \lstinline|init_flow| = flow on $(T, S)$, then remove edge $(T, S)$.
+    \item \textbf{Max Flow:} Run Max Flow $S \to T$. \lstinline|Total| = \lstinline|init_flow| + new\_flow($S, T$).
+    \item \textbf{Min Flow:} Run Max Flow $T \to S$. \lstinline|Total| = \lstinline|init_flow| - new\_flow($T, S$).
 \end{enumerate}

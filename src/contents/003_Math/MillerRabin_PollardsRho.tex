@@ -1,6 +1,7 @@
 % Miller-Rabin Primality Test \& Pollard's Rho
 
-Deterministic Miller-Rabin primality test for 64-bit integers in $O(K \log^3 N)$ alongside Pollard's Rho algorithm for prime factorization in $O(N^{1/4})$.
+Deterministic 64-bit primality check in $O(\log N)$ and factorization in $O(N^{1/4})$.
+
 \begin{lstlisting}
 typedef unsigned long long ull;
 
@@ -13,8 +14,7 @@ ull power(ull base, ull p, ull mod) {
     ull res = 1; base %= mod;
     while (p > 0) {
         if (p & 1) res = mul_mod(res, base, mod);
-        base = mul_mod(base, base, mod);
-        p >>= 1;
+        base = mul_mod(base, base, mod); p >>= 1;
     }
     return res;
 }
@@ -56,10 +56,6 @@ ull pollard_rho(ull n) {
 void factorize(ull n, vector<ull>& factors) {
     if (n == 1) return;
     if (miller_rabin(n)) { factors.push_back(n); return; }
-    ull p = pollard_rho(n);
-    factorize(p, factors);
-    factorize(n / p, factors);
+    ull p = pollard_rho(n); factorize(p, factors); factorize(n / p, factors);
 }
 \end{lstlisting}
-
-Use \lstinline|miller_rabin(n)| to check primality. To find all prime factors, use \lstinline|factorize(n, factors)| then \lstinline|sort(factors.begin(), factors.end())|.

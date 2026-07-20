@@ -1,9 +1,8 @@
 % Euler's Totient Function (Phi)
 
-Computes Euler's totient function $\phi(n)$, which counts the number of integers up to $n$ that are relatively prime to $n$. Single queries run in $O(\sqrt{N})$, and precomputation for a range $[1, N]$ runs in $O(N \log \log N)$ using a sieve.
+Single query in $O(\sqrt{N})$. Sieve precomputation up to $N$ in $O(N \log \log N)$.
 
 \begin{lstlisting}
-// 1. Single value query in O(sqrt(N))
 long long phi_single(long long n) {
     long long res = n;
     for (long long i = 2; i * i <= n; i++) {
@@ -16,19 +15,12 @@ long long phi_single(long long n) {
     return res;
 }
 
-// 2. Precompute phi for all numbers from 1 to N using Sieve
 vector<int> phi_sieve(int n) {
     vector<int> phi(n + 1);
     for (int i = 0; i <= n; i++) phi[i] = i;
-    for (int i = 2; i <= n; i++) {
-        if (phi[i] == i) { // i is prime
-            for (int j = i; j <= n; j += i) {
-                phi[j] -= phi[j] / i;
-            }
-        }
+    for (int i = 2; i <= n; i++) if (phi[i] == i) {
+        for (int j = i; j <= n; j += i) phi[j] -= phi[j] / i;
     }
     return phi;
 }
 \end{lstlisting}
-
-Use \lstinline|phi_single(n)| for isolated large values. For multiple queries up to $N$, run \lstinline|vector<int> phi = phi_sieve(N)| during initialization to fetch results in $O(1)$.

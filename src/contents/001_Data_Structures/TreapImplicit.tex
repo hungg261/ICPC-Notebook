@@ -1,16 +1,13 @@
 % Implicit Treap
 
-An implicit balanced binary search tree that indexes elements by their array positions rather than explicit keys. It supports range operations, updates, and array splits/merges in $O(\log N)$ expected time.
+Indexed by array positions instead of keys. Supports range operations (e.g., reverse) and split/merge in $O(\log N)$ expected time.
 
 \begin{lstlisting}
-mt19937 implicit_rng(1337);
-
 struct Node {
-    int val, prior;
-    int sz;
+    int val, prior, sz;
     bool rev;
     Node *l, *r;
-    Node(int val) : val(val), prior(implicit_rng()), sz(1), rev(false), l(nullptr), r(nullptr) {}
+    Node(int val) : val(val), prior(rng()), sz(1), rev(false), l(nullptr), r(nullptr) {}
 };
 
 int get_sz(Node* t) { return t ? t->sz : 0; }
@@ -25,15 +22,14 @@ void push(Node* t) {
     }
 }
 
-void split(Node* t, int add, Node*& l, Node*& r) {
+void split(Node* t, int k, Node*& l, Node*& r) {
     if (!t) { l = r = nullptr; return; }
     push(t);
-    int curr_idx = add + get_sz(t->l);
-    if (curr_idx < add) {
-        split(t->r, curr_idx + 1, t->r, r);
+    if (get_sz(t->l) < k) {
+        split(t->r, k - get_sz(t->l) - 1, t->r, r);
         l = t; upd_sz(l);
     } else {
-        split(t->l, add, l, t->l);
+        split(t->l, k, l, t->l);
         r = t; upd_sz(r);
     }
 }

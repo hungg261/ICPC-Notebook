@@ -1,6 +1,6 @@
 % Mo's Algorithm
 
-An offline query processing structure that groups and sorts queries into square-root-sized blocks to process range queries in $O((N + Q) \sqrt{N})$ total time.
+Offline queries sorted by $\sqrt{N}$-sized blocks. Total time $O((N + Q) \sqrt{N})$. Set BLOCK\_SIZE $\approx N / \sqrt{Q}$.
 
 \begin{lstlisting}
 const int BLOCK_SIZE = 450;
@@ -8,38 +8,31 @@ const int BLOCK_SIZE = 450;
 struct Query {
     int l, r, id;
     bool operator<(const Query& other) const {
-        int block_this = l / BLOCK_SIZE;
-        int block_other = other.l / BLOCK_SIZE;
-        if (block_this != block_other) return block_this < block_other;
-        return (block_this & 1) ? (r < other.r) : (r > other.r);
+        int b1 = l / BLOCK_SIZE, b2 = other.l / BLOCK_SIZE;
+        if (b1 != b2) return b1 < b2;
+        return (b1 & 1) ? (r < other.r) : (r > other.r);
     }
 };
 
 long long current_answer = 0;
 vector<int> cnt;
 
-void add(int idx, const vector<int>& a) {
-    
-}
+void add(int idx, const vector<int>& a) {}
+void remove(int idx, const vector<int>& a) {}
 
-void remove(int idx, const vector<int>& a) {
-    
-}
-
-vector<long long> solve_mo(int n, const vector<int>& a, vector<Query>& queries) {
-    int q = queries.size();
+vector<long long> solve_mo(vector<Query>& queries, const vector<int>& a) {
     sort(queries.begin(), queries.end());
-
-    cnt.assign(1000005, 0);
-    vector<long long> answers(q);
+    cnt.assign(1000005, 0); current_answer = 0;
+    
+    vector<long long> answers(queries.size());
     int cur_l = 0, cur_r = -1;
 
-    for (const auto& query : queries) {
-        while (cur_l > query.l) { cur_l--; add(cur_l, a); }
-        while (cur_r < query.r) { cur_r++; add(cur_r, a); }
-        while (cur_l < query.l) { remove(cur_l, a); cur_l++; }
-        while (cur_r > query.r) { remove(cur_r, a); cur_r--; }
-        answers[query.id] = current_answer;
+    for (const auto& q : queries) {
+        while (cur_l > q.l) add(--cur_l, a);
+        while (cur_r < q.r) add(++cur_r, a);
+        while (cur_l < q.l) remove(cur_l++, a);
+        while (cur_r > q.r) remove(cur_r--, a);
+        answers[q.id] = current_answer;
     }
     return answers;
 }

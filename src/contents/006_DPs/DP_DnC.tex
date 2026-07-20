@@ -1,46 +1,24 @@
 % Divide \& Conquer Optimization
 
-Reduces DP transitions from $O(N^2)$ to $O(N \log N)$ for relations of the form $dp[i][j] = \min_{k < j} \{ dp[i-1][k] + cost(k, j) \}$. It requires the optimal transition index to satisfy monotonicity: $opt[i][j] \le opt[i][j+1]$.
+Reduces DP from $O(N^2)$ to $O(N \log N)$ when transition satisfies monotonicity: $opt[i][j] \le opt[i][j+1]$.
 
 \begin{lstlisting}
-int n, g;
-vector<long long> dp_before, dp_curr;
-
-long long cost(int k, int j) {
-    long long value = 0;
-    return value;
-}
+long long cost(int k, int j) { return 0; }
 
 void compute(int l, int r, int opt_l, int opt_r) {
     if (l > r) return;
-
-    int mid = (l + r) >> 1;
-    int best_k = -1;
-    dp_curr[mid] = 1e18;
+    int mid = (l + r) >> 1, best_k = -1; dp_curr[mid] = 1e18;
 
     for (int k = opt_l; k <= min(mid, opt_r); k++) {
         long long current_cost = dp_before[k] + cost(k, mid);
-        if (current_cost < dp_curr[mid]) {
-            dp_curr[mid] = current_cost;
-            best_k = k;
-        }
+        if (current_cost < dp_curr[mid]) { dp_curr[mid] = current_cost; best_k = k; }
     }
-
-    compute(l, mid - 1, opt_l, best_k);
-    compute(mid + 1, r, best_k, opt_r);
+    compute(l, mid - 1, opt_l, best_k); compute(mid + 1, r, best_k, opt_r);
 }
 
 void solve_dp() {
-    dp_before.assign(n + 1, 0);
-    dp_curr.assign(n + 1, 0);
-
-    for (int j = 1; j <= n; j++) {
-        dp_before[j] = cost(0, j);
-    }
-
-    for (int i = 2; i <= g; i++) {
-        compute(1, n, 0, n);
-        dp_before = dp_curr;
-    }
+    dp_before.assign(n + 1, 0); dp_curr.assign(n + 1, 0);
+    for (int j = 1; j <= n; j++) dp_before[j] = cost(0, j);
+    for (int i = 2; i <= g; i++) { compute(1, n, 0, n); dp_before = dp_curr; }
 }
 \end{lstlisting}

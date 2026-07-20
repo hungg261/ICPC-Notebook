@@ -1,45 +1,32 @@
 % Li Chao Tree
 
-Maintains a set of lines or line segments to query the maximum or minimum value at any integer coordinate $x$ within a fixed range $[L, R]$ in $O(\log(R - L))$.
+Maximum query of lines on $[L, R]$ in $O(\log(R - L))$. For Minimum: init with \lstinline|{0, INF}|, change comparison to \lstinline|<|, and use \lstinline|min()| in query.
 
 \begin{lstlisting}
-const long long INF = 1e18;
-
 struct Line {
     long long k, m;
     long long operator()(long long x) { return k * x + m; }
 };
 
 struct LiChaoTree {
-    int n;
-    vector<Line> tree;
-    LiChaoTree(int n) : n(n), tree(4 * n, {0, -INF}) {} // Set to {0, INF} for Minimum
+    int n; vector<Line> tree;
+    LiChaoTree(int n) : n(n), tree(4 * n, {0, -INF}) {}
 
     void insert(int node, int l, int r, Line newline) {
         int mid = (l + r) >> 1;
-        // Change condition to '>' for Minimum
-        bool bit_l = newline(l) > tree[node](l);
-        bool bit_m = newline(mid) > tree[node](mid);
-
+        bool bit_l = newline(l) > tree[node](l), bit_m = newline(mid) > tree[node](mid);
         if (bit_m) swap(tree[node], newline);
         if (l == r) return;
-
         if (bit_l != bit_m) insert(node << 1, l, mid, newline);
         else insert(node << 1 | 1, mid + 1, r, newline);
     }
 
     long long query(int node, int l, int r, int x) {
         if (l == r) return tree[node](x);
-        int mid = (l + r) >> 1;
-        long long res = tree[node](x);
-        if (x <= mid) res = max(res, query(node << 1, l, mid, x)); // Use min() for Minimum
-        else res = max(res, query(node << 1 | 1, mid + 1, r, x));   // Use min() for Minimum
+        int mid = (l + r) >> 1; long long res = tree[node](x);
+        if (x <= mid) res = max(res, query(node << 1, l, mid, x));
+        else res = max(res, query(node << 1 | 1, mid + 1, r, x));
         return res;
     }
 };
 \end{lstlisting}
-
-This default implementation computes the \textbf{MAXIMUM} over the coordinate range $[1, N]$.
-\begin{itemize}
-    \item \textbf{To compute Minimum:} Change the initialization line dummy to \lstinline|{0, INF}|, replace both line comparisons with \lstinline|>| to \lstinline|<|, and substitute overall node merging functions from \lstinline|max()| to \lstinline|min()|.
-\end{itemize}

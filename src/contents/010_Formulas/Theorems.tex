@@ -1,25 +1,21 @@
-% Essential Graph and Number Theory Theorems
+% Essential Theorems
 
-A cheat-sheet of critical theorems, invariants, and structural properties required for structural analysis and reduction tasks.
+Critical theorems and properties for structural reductions and mathematical transformations.
 
-Graph Theory Invariants \& Reductions:
+\textbf{Graph Theory Invariants \& Reductions:}
 \begin{itemize}
-    \item \textbf{Dilworth's Theorem:} In any finite partially ordered set (poset), the length of the maximum antichain (a subset of elements where no two are comparable) equals the minimum number of chains needed to cover the entire poset. (Reduces to Maximum Bipartite Matching via Konig's reduction).
-    \item \textbf{Konig's Theorem:} In any bipartite graph, the number of edges in a maximum matching is equal to the number of vertices in a minimum vertex cover.
-    \item \textbf{Vertex Cover vs. Independent Set:} For any graph $G = (V, E)$, a subset $S \subseteq V$ is a vertex cover if and only if its complement $V \setminus S$ is an independent set. Thus:
-    $$|Minimum\ Vertex\ Cover| + |Maximum\ Independent\ Set| = |V|$$
-    \item \textbf{Gallai's Identity:} In any graph without isolated vertices, the maximum matching size $\alpha'(G)$ and the minimum edge cover size $\beta'(G)$ satisfy:
-    $$\alpha'(G) + \beta'(G) = |V|$$
-    \item \textbf{Matrix Tree Theorem (Kirchhoff's):} To find the total number of unique spanning trees in an undirected graph, construct the Laplacian matrix $L = D - A$, where $D$ is the degree matrix and $A$ is the adjacency matrix. Delete the $i$-th row and $i$-th column of $L$ to form $L_i$. The number of spanning trees equals $\det(L_i)$.
-    \item \textbf{Eulerian Path Conditions:} A connected undirected graph has an Eulerian cycle if and only if every vertex has an even degree. It has an Eulerian path if and only if exactly 0 or 2 vertices have an odd degree.
+    \item \textbf{Dilworth:} Max antichain (no two comparable) $=$ min chains to cover poset. Reduces to Max Bipartite Matching.
+    \item \textbf{Konig:} In any bipartite graph, $|Max\ Matching| = |Min\ Vertex\ Cover|$.
+    \item \textbf{Independent Set:} $S$ is vertex cover iff $V \setminus S$ is independent set $\implies |Min\ Vertex\ Cover| + |Max\ Independent\ Set| = |V|$.
+    \item \textbf{Gallai:} In graphs without isolated nodes, $|Max\ Matching| + |Min\ Edge\ Cover| = |V|$.
+    \item \textbf{Eulerian Path:} Undirected: cycle iff all degrees even; path iff exactly 0 or 2 nodes have odd degree. Directed: cycle iff $in[u]=out[u]$ for all $u$; path iff at most one node has $out-in=1$ and at most one has $in-out=1$.
 \end{itemize}
 
-Number Theory Identities:
+\textbf{Number Theory Identities:}
 \begin{itemize}
-    \item \textbf{Euler's Theorem:} If $\gcd(a, m) = 1$, then $a^{\phi(m)} \equiv 1 \pmod m$. 
-    \item \textbf{Fermat's Little Theorem:} If $p$ is a prime, then $a^p \equiv a \pmod p$, and $a^{p-1} \equiv 1 \pmod p$ when $\gcd(a, p) = 1$.
-    \item \textbf{Bézout's Identity:} For any integers $a$ and $b$ with $d = \gcd(a, b)$, there exist integers $x$ and $y$ such that $ax + by = d$. The values can be fetched via Extended GCD.
-    \item \textbf{Wilson's Theorem:} A positive integer $n > 1$ is a prime if and only if:
-    $$(n-1)! \equiv -1 \pmod n$$
-    \item \textbf{Mobius Inversion Formula:} If $g(n) = \sum_{d|n} f(d)$ for every integer $n$, then $f(n) = \sum_{d|n} \mu(d)g(n/d)$, where $\mu(d)$ is the Mobius function.
+    \item \textbf{Euler \& Fermat:} $\gcd(a, m) = 1 \implies a^{\phi(m)} \equiv 1 \pmod m$. If $p$ is prime, $a^{p-1} \equiv 1 \pmod p$.
+    \item \textbf{Bezout:} $\exists x, y$ such that $ax + by = \gcd(a, b)$, solved via ExtGCD.
+    \item \textbf{Wilson:} Integer $n > 1$ is prime iff $(n-1)! \equiv -1 \pmod n$.
+    \item \textbf{Mobius Inversion:} If $g(n) = \sum_{d|n} f(d)$, then $f(n) = \sum_{d|n} \mu(d)g(n/d)$.
+    \item \textbf{GCD Properties:} $\gcd(a^n - 1, a^m - 1) = a^{\gcd(n, m)} - 1$.
 \end{itemize}

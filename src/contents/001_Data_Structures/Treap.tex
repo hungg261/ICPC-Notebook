@@ -1,15 +1,12 @@
-% Treap (Randomized Binary Search Tree)
+% Treap
 
-A balanced binary search tree combining BST and Heap properties, executing insertion, deletion, and splits in $O(\log N)$ expected time using randomized priorities.
+Balanced BST combining BST and Heap properties. Operations run in $O(\log N)$ expected time. 
 
 \begin{lstlisting}
-mt19937 treap_rng(1337);
-
 struct Node {
-    int key, prior;
-    int sz;
+    int key, prior, sz;
     Node *l, *r;
-    Node(int key) : key(key), prior(treap_rng()), sz(1), l(nullptr), r(nullptr) {}
+    Node(int key) : key(key), prior(rng()), sz(1), l(nullptr), r(nullptr) {}
 };
 
 int get_sz(Node* t) { return t ? t->sz : 0; }
@@ -51,12 +48,9 @@ void insert(Node*& t, Node* it) {
 void erase(Node*& t, int key) {
     if (!t) return;
     if (t->key == key) {
-        Node* th = t;
-        merge(t, t->l, t->r);
-        delete th;
+        Node* th = t; merge(t, t->l, t->r); delete th;
     } else {
-        erase(key < t->key ? t->l : t->r, key);
-        upd_sz(t);
+        erase(key < t->key ? t->l : t->r, key); upd_sz(t);
     }
 }
 \end{lstlisting}

@@ -1,18 +1,11 @@
 % Extended Euclidean
 
-Computes the greatest common divisor of $a$ and $b$, and finds integers $x$ and $y$ such that $ax + by = \gcd(a, b)$ in $O(\log(\min(a, b)))$. \lstinline|extgcd| returns the $\gcd(a, b)$ and updates $x$ and $y$ via references.
+Computes $\gcd(a, b)$ and finds $x, y$ such that $ax + by = \gcd(a, b)$ in $O(\log(\min(a, b)))$. Modular inverse of $a \pmod m$ is \lstinline|(x % m + m) % m| if $\gcd == 1$.
+
 \begin{lstlisting}
 long long extgcd(long long a, long long b, long long &x, long long &y) {
-    if (b == 0) {
-        x = 1; y = 0;
-        return a;
-    }
-    long long x1, y1;
-    long long d = extgcd(b, a % b, x1, y1);
-    x = y1;
-    y = x1 - y1 * (a / b);
-    return d;
+    if (!b) { x = 1; y = 0; return a; }
+    long long x1, y1, d = extgcd(b, a % b, x1, y1);
+    x = y1; y = x1 - y1 * (a / b); return d;
 }
 \end{lstlisting}
-
-To find the modular inverse of $a$ modulo $m$ using this algorithm, ensure $\gcd(a, m) = 1$. The inverse exists if $d = 1$, and it can be computed as \lstinline|(x % m + m) % m| after calling \lstinline|extgcd(a, m, x, y)|.

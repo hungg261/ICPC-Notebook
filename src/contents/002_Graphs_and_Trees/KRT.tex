@@ -1,6 +1,6 @@
 % Kruskal Reconstruction Tree (KRT)
 
-A tree structure built on top of DSU by processing edges in increasing order of weight. It allows path max/min edge queries between any two vertices to be reduced to an LCA query in $O(1)$ after preprocessing.
+Max/min edge query on path becomes LCA query. Root of LCA gives \lstinline|node_weight[LCA(u, v)]|. Preprocess LCA on \lstinline|adj| up to \lstinline|node_cnt| ($2N-1$ nodes).
 
 \begin{lstlisting}
 struct KRT {
@@ -13,31 +13,20 @@ struct KRT {
     }
 
     int find_set(int v) {
-        if (v == parent[v]) return v;
-        return parent[v] = find_set(parent[v]);
+        return v == parent[v] ? v : parent[v] = find_set(parent[v]);
     }
 
     void build(vector<tuple<int, int, int>>& edges) {
-        // Sort edges by weight for MST order
         sort(edges.begin(), edges.end());
-
         for (auto [w, u, v] : edges) {
-            int root_u = find_set(u);
-            int root_v = find_set(v);
-
+            int root_u = find_set(u), root_v = find_set(v);
             if (root_u != root_v) {
                 node_cnt++;
                 node_weight[node_cnt] = w;
-
-                parent[root_u] = node_cnt;
-                parent[root_v] = node_cnt;
-                
-                adj[node_cnt].push_back(root_u);
-                adj[node_cnt].push_back(root_v);
+                parent[root_u] = node_cnt; parent[root_v] = node_cnt;
+                adj[node_cnt].push_back(root_u); adj[node_cnt].push_back(root_v);
             }
         }
     }
 };
 \end{lstlisting}
-
-Pass graph edges as \lstinline|{weight, u, v}| array to \lstinline|build(edges)|. The resulting reconstruction tree contains at most $2N - 1$ nodes where original vertices are leaves ($1 \le i \le N$). The maximum edge weight on the path between $U$ and $V$ in the original graph is exactly equal to \lstinline|node_weight[LCA(u, v)]|.

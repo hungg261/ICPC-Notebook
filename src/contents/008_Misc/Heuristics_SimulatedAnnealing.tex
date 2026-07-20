@@ -1,43 +1,38 @@
 % Simulated Annealing (Heuristics)
 
-A randomized optimization technique used to find global minima/maxima for NP-hard problems (e.g., TSP) by slowly lowering a temperature $T$ parameter to escape local optima.
+Randomized optimization for NP-hard problems. Escapes local minima by accepting worse states with a temperature-dependent probability $P = e^{-\Delta / T}$.
 
 \begin{lstlisting}
-mt19937_64 sa_rng(1337);
-inline double get_rand() { return (double)sa_rng() / mt19937_64::max(); }
+inline double get_rand() { return (double)rng() / mt19937::max(); }
 
 struct State {
     long long cost;
-    void init() { /* Construct initial valid state and calculate cost */ }
-    void mutate() { /* Apply a small random perturbation to state */ }
-    void revert() { /* Revert the mutation if rejected */ }
+    void init() {}   // Generate initial state & compute cost
+    void mutate() {} // Apply small random modification & update cost
+    void revert() {} // Undo mutation if rejected
 };
 
 void simulated_annealing() {
-    State current; current.init();
-    State best = current;
+    State curr; curr.init();
+    State best = curr;
 
-    double T = 1e5;        // Initial temperature
-    double T_min = 1e-3;   // Minimum cut-off temperature
-    double alpha = 0.9995; // Cooling schedule factor
-
+    double T = 1e5, T_min = 1e-3, alpha = 0.9995; // Adjust parameters based on problem
     auto start_time = chrono::steady_clock::now();
 
     while (T > T_min) {
-        // Time-limit safety guard (e.g., break at 0.95 seconds to prevent TLE)
-        auto current_time = chrono::steady_clock::now();
-        if (chrono::duration<double>(current_time - start_time).count() > 0.95) break;
+        // TLE Protection: Exit just before 1.0s time limit
+        auto elapsed = chrono::duration<double>(chrono::steady_clock::now() - start_time).count();
+        if (elapsed > 0.95) break;
 
-        long long old_cost = current.cost;
-        current.mutate();
-        long long new_cost = current.cost;
+        long long old_cost = curr.cost;
+        curr.mutate();
+        long long diff = curr.cost - old_cost; // Negative means improvement (Minimization)
 
-        long long diff = new_cost - old_cost; // Assume minimization problem
-
+        // Metropolis Criterion: Accept if better, or with probability exp(-diff / T)
         if (diff < 0 || exp(-diff / T) > get_rand()) {
-            if (new_cost < best.cost) best = current; // Accept and update best
+            if (curr.cost < best.cost) best = curr;
         } else {
-            current.revert(); // Reject mutation
+            curr.revert();
         }
         T *= alpha; // Cool down
     }

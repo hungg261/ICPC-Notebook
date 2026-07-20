@@ -1,28 +1,26 @@
 % Checklist \& Code::Blocks Setup
 
-Contest preparation, environment validation, and Code::Blocks Abbreviation snippets configuration.
+Contest preparation, environment validation, and shortcuts.
+
+\textbf{Contest Preparation \& Environment Verification:}
 \begin{itemize}
-    \item Bring identities, credentials, pens, and printed Team Notebook.
+    \item Bring ID, credentials, pens, and printed Team Notebook.
     \item Verify system time, keyboard layout, and workspace comfort.
-    \item Configure Code::Blocks: \lstinline|Settings -> Compiler -> Compiler Settings -> Flag "-std=c++17"| (or \lstinline|"-std=c++14"|).
-    \item Add compiler flags: \lstinline|-O3|, \lstinline|-Wall|, \lstinline|-Wextra|, and \lstinline|-Wshadow|.
-    \item Enable auto-save: \lstinline|Settings -> Environment -> Autosave -> Check every 1 minute|.
-    \item Configure Abbreviations in \lstinline|Settings -> Editor -> Abbreviations| to add quick snippets for \lstinline|freopen|, standard template, and \lstinline|#define| macros, then use \lstinline|Ctrl + J| to expand them.
-    \item Write a stress tester script to automatically generate test cases, compare output files using \lstinline|diff -w|, and look for counter-examples.
+    \item Enable C++17/14: \lstinline|Settings -> Compiler -> Compiler Settings -> Flag "-std=c++17"|.
+    \item Add compiler optimization \& warning flags: \lstinline|-O3|, \lstinline|-Wall|, \lstinline|-Wextra|, \lstinline|-Wshadow|.
+    \item Enable auto-save: \lstinline|Settings -> Environment -> Autosave -> Check every 1 min|.
+    \item Snippets: \lstinline|Settings -> Editor -> Abbreviations|. Expands with \lstinline|Ctrl + J|.
 \end{itemize}
 
-Essential Code::Blocks Shortcuts:
+\textbf{Essential Code::Blocks Shortcuts:}
 \begin{itemize}
     \item \lstinline|Ctrl + Shift + C|: Comment selected block.
     \item \lstinline|Ctrl + Shift + X|: Uncomment selected block.
-    \item \lstinline|Ctrl + F9|: Compile project/file.
-    \item \lstinline|Ctrl + F10|: Run compiled executable.
-    \item \lstinline|F9|: Compile and run instantly.
-    \item \lstinline|Ctrl + Space|: Open autocomplete suggestions.
-    \item \lstinline|Ctrl + Shift + Space|: Show function parameter tips.
+    \item \lstinline|Ctrl + F9| / \lstinline|Ctrl + F10| / \lstinline|F9|: Compile / Run / Both.
+    \item \lstinline|Ctrl + Space| / \lstinline|Ctrl + Shift + Space|: Autocomplete / Parameter tips.
     \item \lstinline|Alt + G|: Jump to declaration or definition.
-    \item \lstinline|Alt + Up/Down Arrow|: Move selected lines up or down.
-    \item \lstinline|Ctrl + E|: Select next occurrence of the same keyword.
+    \item \lstinline|Alt + Up/Down|: Move selected lines up or down.
+    \item \lstinline|Ctrl + E|: Select next occurrence of keyword (Multi-select).
     \item \lstinline|Ctrl + Click|: Multi-edit at custom positions.
     \item \lstinline|Ctrl + D|: Duplicate selected text or current line.
     \item \lstinline|Ctrl + T|: Swap current line with the line above it.

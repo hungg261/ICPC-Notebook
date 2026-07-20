@@ -1,82 +1,54 @@
 % Matrix Exponentiation Template
 
-A complete matrix template for solving recurrence relations and dynamic programming optimizations in $O(K^3 \log N)$, featuring modular addition, subtraction, multiplication, and fast power operations.
+Solves linear recurrence relations and DP optimizations in $O(K^3 \log N)$. Handles modular addition, subtraction, multiplication, and fast power.
+
 \begin{lstlisting}
 const int MOD = 1e9 + 7;
 
 struct Matrix {
-    int r, c;
-    vector<vector<long long>> mat;
+    int r, c; vector<vector<long long>> mat;
     
     Matrix(int r, int c, bool identity = false) : r(r), c(c), mat(r, vector<long long>(c, 0)) {
-        if (identity) {
-            for (int i = 0; i < min(r, c); i++) mat[i][i] = 1;
-        }
+        if (identity) for (int i = 0; i < min(r, c); i++) mat[i][i] = 1;
     }
     
-    Matrix operator+(const Matrix& other) const {
+    Matrix operator+(const Matrix& o) const {
         Matrix res(r, c);
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                res.mat[i][j] = (mat[i][j] + other.mat[i][j]) % MOD;
-            }
-        }
+        for (int i = 0; i < r; i++) for (int j = 0; j < c; j++)
+            res.mat[i][j] = (mat[i][j] + o.mat[i][j]) % MOD;
         return res;
     }
 
-    Matrix operator-(const Matrix& other) const {
+    Matrix operator-(const Matrix& o) const {
         Matrix res(r, c);
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                res.mat[i][j] = (mat[i][j] - other.mat[i][j] + MOD) % MOD;
-            }
-        }
+        for (int i = 0; i < r; i++) for (int j = 0; j < c; j++)
+            res.mat[i][j] = (mat[i][j] - o.mat[i][j] + MOD) % MOD;
         return res;
     }
 
-    Matrix operator*(const Matrix& other) const {
-        Matrix res(r, other.c);
-        for (int i = 0; i < r; i++) {
-            for (int k = 0; k < c; k++) {
-                for (int j = 0; j < other.c; j++) {
-                    res.mat[i][j] = (res.mat[i][j] + mat[i][k] * other.mat[k][j]) % MOD;
-                }
-            }
-        }
+    Matrix operator*(const Matrix& o) const {
+        Matrix res(r, o.c);
+        for (int i = 0; i < r; i++) for (int k = 0; k < c; k++) for (int j = 0; j < o.c; j++)
+            res.mat[i][j] = (res.mat[i][j] + mat[i][k] * o.mat[k][j]) % MOD;
         return res;
     }
 
     Matrix power(long long p) const {
-        Matrix res(r, r, true);
-        Matrix base = *this;
+        Matrix res(r, r, true), base = *this;
         while (p > 0) {
             if (p & 1) res = res * base;
-            base = base * base;
-            p >>= 1;
+            base = base * base; p >>= 1;
         }
         return res;
     }
 };
 \end{lstlisting}
 
-To initialize a matrix with custom values or solve Fibonacci $F_n = F_{n-1} + F_{n-2}$, use the following initialization pattern:
+Fibonacci $F_n$ example ($T^{n-1} \cdot F_1$):
 \begin{lstlisting}
-// 1. Initialize a 2x2 transition matrix T
-Matrix T(2, 2);
-T.mat = {
-    {1, 1},
-    {1, 0}
-};
+Matrix T(2, 2); T.mat = {{1, 1}, {1, 0}};
+Matrix F(2, 1); F.mat = {{1}, {0}}; // F[1]=1, F[0]=0
 
-// 2. Initialize a 2x1 base state column vector F
-Matrix F(2, 1);
-F.mat = {
-    {1}, // F[1] = 1
-    {0}  // F[0] = 0
-};
-
-// 3. Compute T^(n-1) * F to get F[n]
-Matrix Tn = T.power(n - 1);
-Matrix Ans = Tn * F;
+Matrix Ans = T.power(n - 1) * F;
 long long fn = Ans.mat[0][0];
 \end{lstlisting}
