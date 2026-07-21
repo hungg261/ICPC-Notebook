@@ -1,8 +1,8 @@
 % Geometry Templates (Integer \& Double)
 
-Complete 2D geometry templates. Integer version for 100% precision; double version handles fractions using \lstinline|EPS|. 
+Complete 2D geometry templates. Integer version for 100\% precision; double version handles fractions using \lstinline|EPS|. 
 
-\begin{lstlisting}[caption={1. INTEGER GEOMETRY TEMPLATE}]
+\begin{lstlisting}
 struct Point {
     long long x, y;
     Point(long long x = 0, long long y = 0) : x(x), y(y) {}
@@ -29,7 +29,7 @@ bool intersect(Point a, Point b, Point a_c, Point d) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={2. DOUBLE GEOMETRY TEMPLATE}]
+\begin{lstlisting}
 const double EPS = 1e-9;
 
 struct Point {

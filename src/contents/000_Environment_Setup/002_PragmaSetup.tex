@@ -1,11 +1,16 @@
 % Optimization \& Diagnostic Pragmas
 
-Enables SIMD vectorization, loop unrolling, and silences diagnostic warnings on older judge systems. Place at the absolute top of the source file.
+Place at the absolute top of the source file.
 
 \begin{lstlisting}
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"
-#pragma GCC diagnostic ignored "-Wunused-result"
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wshadow"
+// Your code
+#pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 \end{lstlisting}

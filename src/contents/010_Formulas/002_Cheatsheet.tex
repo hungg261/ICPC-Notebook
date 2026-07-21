@@ -129,10 +129,38 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         $2^{50}$ & $1.12 \times 10^{15}$ & $10^{15}$ & P \\ \hline
         $2^{60}$ & $1.15 \times 10^{18}$ & $10^{18}$ & E \\ \hline
     \end{tabular}
-\end{enumerate}
 
-\begin{itemize}
-    \item Highly Composite Numbers tables are crucial for finding numbers with the maximum number of divisors under a specific upper bound.
-    \item Max values: $12!$ fits signed 32-bit \lstinline|int|, $20!$ fits signed 64-bit \lstinline|long long|.
-    \item 2D cross product with 64-bit coordinates requires \lstinline|__int128| for intermediate steps.
-\end{itemize}
+    \item \textbf{Complexity Limits}
+    \begin{description}[leftmargin=0.4cm, noitemsep, topsep=0pt]
+        \item[$O(N!)$ / $O(N^2 \cdot 2^N)$] $N \le 11$
+        \item[$O(2^N \cdot N)$] $N \le 20$
+        \item[$O(2^{N/2})$] $N \le 40$
+        \item[$O(N^3)$] $N \le 500$
+        \item[$O(N^2)$] $N \le 5000$
+        \item[$O(N \log N)$] $N \le 2 \cdot 10^5$
+        \item[$O(N)$] $N \le 10^7$
+        \item[$O(\log N)$ / $O(1)$] $N > 10^8$
+    \end{description}
+
+    \item \textbf{Submission Checklist}
+    \begin{description}[leftmargin=0.4cm, noitemsep, topsep=0pt]
+        \item[Multi-test] Clear global arrays/vectors.
+        \item[Bounds] Check $N$ vs $N+5$ (1-indexed).
+        \item[Overflow] Cast \lstinline|1LL * a * b|, mod every step.
+        \item[INF] Use $10^{18}$ for \lstinline|long long|.
+        \item[Precision] Use \lstinline|long double| for geometry.
+        \item[Corners] Test $N=0, N=1$, empty strings.
+        \item[Interactive] Call \lstinline|endl| / \lstinline|fflush|.
+    \end{description}
+
+
+    \item \textbf{Terminal Shortcuts}
+    \begin{description}[leftmargin=0.4cm, noitemsep, topsep=0pt]
+        \item[Maximize stack size] \texttt{ulimit -s unlimited}
+        \item[New terminal tab] \texttt{Ctrl+Shift+T}
+        \item[Kill hanging program] \texttt{Ctrl+C}
+        \item[Optimize compilation] \texttt{g++ -O3 m.cpp}
+        \item[Redirect I/O for testing] \texttt{./a.out < in > out}
+        \item[Compare outputs (ignore space)] \texttt{diff -w out sol}
+    \end{description}
+\end{enumerate}

@@ -2,7 +2,8 @@
 
 Automated stress testing harness using identical execution checking paths. Run \lstinline|main.cpp| to compile and test.
 
-\begin{lstlisting}[caption={checker.cpp}]
+\begin{lstlisting}
+// checker.cpp
 int32_t main() {
     ifstream f_user("user.out"), f_brute("brute.out");
     string s_user, s_brute;
@@ -14,7 +15,8 @@ int32_t main() {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={main.cpp}]
+\begin{lstlisting}
+// main.cpp
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 int rand_range(int l, int r) {

@@ -1,0 +1,38 @@
+% Bellman-Ford
+
+Finds shortest paths from a single source or detects negative cycles. Time complexity: $O(V \cdot E)$.
+
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+const long long INF = 1e18;
+struct Edge { int u, v; long long w; };
+
+int n, m;
+vector<Edge> edges;
+vector<long long> dist;
+
+bool bellman_ford(int src) {
+    dist.assign(n + 1, INF);
+    dist[src] = 0;
+
+    for (int i = 1; i < n; i++) {
+        bool any = false;
+        for (auto &e : edges) {
+            if (dist[e.u] == INF) continue;
+            long long &ans = dist[e.v];
+            if (dist[e.u] + e.w < ans) {
+                ans = dist[e.u] + e.w;
+                any = true;
+            }
+        }
+        if (!any) break;
+    }
+
+    for (auto &e : edges) {
+        if (dist[e.u] != INF && dist[e.u] + e.w < dist[e.v]) return true;
+    }
+    return false;
+}
+\end{lstlisting}

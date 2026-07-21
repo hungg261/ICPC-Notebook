@@ -1,7 +1,5 @@
 % Vocabulary \& Definitions
 
-% Vocabulary, Geometry, Advanced Math & CP Definitions
-
 \begin{description}[leftmargin=0.5cm, style=nextline, noitemsep, topsep=0pt]
     \item[Arbitrary] Bất kỳ, không ràng buộc.
     \item[Bipartite Graph] Đồ thị 2 phía (cạnh chỉ nối giữa 2 phía).
@@ -15,23 +13,18 @@
     \item[Lexicographically] Thứ tự từ điển (so sánh như chuỗi).
     \item[Monotonicity] Tính đơn điệu (luôn tăng/giảm $\rightarrow$ chặt nhị phân).
     \item[Idempotent] Lũy đẳng ($f(x, x) = x \rightarrow$ GCD, Max, Min).
-    \item[Pairwise distinct] Đôi một phân biệt (tất cả đều khác nhau).
     \item[Mutually exclusive] Xung khắc (không thể xảy ra cùng lúc).
     \item[Complement] Phần bù / Đồ thị bù (đảo ngược cạnh).
     \item[Inversion] Cặp nghịch thế ($i < j$ nhưng $A[i] > A[j]$).
     \item[Adjacent] Kề nhau (đỉnh kề, ô lưới kề cạnh/góc).
     \item[Consecutive] Liên tiếp (phần tử liên tiếp trong mảng).
     \item[Alternative] Luân phiên / Thay thế (ví dụ: chuỗi ký tự dạng 010101).
-    \item[Permutation] Hoán vị (dãy chứa $1 \dots N$ đúng một lần).
     \item[Parity] Tính chẵn lẻ (bit parity, tổng chẵn/lẻ).
     \item[Coprime] Nguyên tố cùng nhau ($\text{gcd}(a,b) = 1$).
-    \item[Cyclic shift] Dịch vòng quanh (đẩy phần tử cuối lên đầu).
     \item[Bijective] Song ánh (ánh xạ 1-1 tương ứng hoàn toàn).
     \item[Invariants] Đại lượng bất biến (giá trị không đổi qua các thao tác).
-    \item[Strictly] Nghiêm ngặt (Ví dụ: strictly increasing = tăng ngặt $>$, không dấu $=$).
     \item[Predecessor / Successor] Phần tử đứng ngay trước / đứng ngay sau.
 
-    \item[Expected value / Expectation] Giá trị kỳ vọng (thường giải bằng DP trạng thái hoặc khử Gauss).
     \item[With replacement] Có hoàn lại (bốc thăm xong bỏ lại vào hộp $\rightarrow$ xác suất không đổi).
     \item[Without replacement] Không hoàn lại (bốc thăm xong giữ luôn bên ngoài $\rightarrow$ xác suất thay đổi).
     \item[Composite number] Hợp số (số có nhiều hơn 2 ước dương).
@@ -39,7 +32,6 @@
     \item[Quotient / Remainder] Thương số / Số dư trong phép chia.
     \item[Coefficient] Hệ số (ví dụ: hệ số của đa thức $x^k$).
     \item[Modulo / Congruence] Phép lấy số dư / Quan hệ đồng dư ($a \equiv b \pmod m$).
-    \item[Factorial] Giai thừa ($n!$).
 
     \item[Collinear] Thẳng hàng (các điểm cùng nằm trên 1 đường thẳng).
     \item[Coplanar] Đồng phẳng (các điểm cùng thuộc 1 mặt phẳng).
@@ -68,7 +60,6 @@
     \item[Orthocenter] Trực tâm (giao điểm các đường cao của tam giác).
     \item[Sector / Segment] Hình quạt tròn (giới hạn bởi 2 bán kính và cung) / Hình viên phân (giới hạn bởi dây cung và cung).
 
-    \item[Adjacency Matrix / List] Ma trận kề / Danh sách kề để biểu diễn đồ thị.
     \item[Incidence Matrix] Ma trận liên thuộc (biểu diễn mối quan hệ giữa đỉnh và cạnh).
     \item[Identity Matrix] Ma trận đơn vị (đường chéo chính bằng 1, các vị trí khác bằng 0).
     \item[Transpose] Ma trận chuyển vị (đổi hàng thành cột).
@@ -81,13 +72,41 @@
     \item[Trivial / Non-trivial] Hiển nhiên, tầm thường (ví dụ: trường hợp rỗng, bằng 0) / Không hiển nhiên.
     \item[Symmetric / Asymmetric] Đối xứng / Bất đối xứng.
     \item[Impartial / Partisan game] Trò chơi công bằng (mọi người chơi cùng tập nước đi) / Không công bằng (tập nước đi khác nhau).
+
+    \item[Chordal Graph] Đồ thị dây cung (mọi chu trình độ dài $\ge 4$ đều có một cạnh nối giữa 2 đỉnh không kề nhau).
+    \item[Tournament] Đồ thị giải đấu (đồ thị có hướng thu được bằng cách định hướng cho mọi cạnh của một đồ thị đầy đủ).
+    \item[Self-complementary] Tự bù (đồ thị đẳng cấu với chính đồ thị bù của nó).
+    \item[Eulerian / Hamiltonian] Đồ thị Euler (có chu trình qua mọi cạnh) / Đồ thị Hamilton (có chu trình qua mọi đỉnh).
+    \item[Bridge-connected] Liên thông qua cầu (thành phần không có đỉnh khớp nhưng vẫn chứa cầu).
+    \item[Topologically equivalent] Đồng phôi (hai cấu trúc đồ thị có thể biến đổi qua lại bằng cách thêm/bớt đỉnh bậc 2).
+
+    \item[Submask / Supermask] Mặt nạ con (tập con bit) / Mặt nạ mẹ (tập cha bit) $\rightarrow$ Dấu hiệu nhận biết bài toán SOS DP.
+    \item[Subadditivity / Superadditivity] Tính dưới cộng tính ($f(x+y) \le f(x) + f(y)$) / Tính trên cộng tính ($f(x+y) \ge f(x) + f(y)$).
+    \item[Submodularity] Tính dưới mô-đun ($f(A \cup \{x\}) - f(A) \ge f(B \cup \{x\}) - f(B)$ với $A \subseteq B$ $\rightarrow$ thuật toán tham lam đạt tối ưu).
+    \item[Quasiconvex / Quasiconcave] Hàm tựa lồi (tập mức dưới là tập lồi) / Hàm tựa lõm (tập mức trên là tập lồi) $\rightarrow$ Chặt tam phân.
+    \item[Injective / Surjective] Đơn ánh (không có 2 phần tử trùng ảnh) / Toàn ánh (mọi phần tử đích đều có tạo ảnh).
+    \item[Asymptotic complexity] Độ phức tạp tiệm cận (ước lượng Big-O khi dữ liệu tiến ra vô cùng).
+    \item[Non-decreasing / Non-increasing] Không giảm ($\ge$, có thể bằng nhau) / Không tăng ($\le$, có thể bằng nhau) $\rightarrow$ Ngặt hơn strictly.
+
+    \item[Collinear \& Non-coincident] Thẳng hàng nhưng không trùng nhau (bẫy hình học cực nặng khi xét giao điểm).
+    \item[Strictly convex] Lồi ngặt (không có 3 điểm nào trên biên của đa giác lồi thẳng hàng).
+    \item[Orthogonal polygon] Đa giác trực giao (tất cả các cạnh chỉ nằm ngang hoặc thẳng đứng, góc trong luôn là $90^\circ$ hoặc $270^\circ$).
+    \item[Self-intersecting] Tự cắt (đa giác có các cạnh cắt nhau không phải tại đỉnh $\rightarrow$ không áp dụng được Shoelace thông thường).
+    \item[Minkowski Sum] Tổng Minkowski (tập hợp tổng các vector của hai tập điểm $\rightarrow$ dùng để gộp nhanh hai bao lồi).
+
+    \item[Ad-hoc] Bài toán không có thuật toán chuẩn mực (chỉ dựa vào quan sát, mẹo, hoán vị hoặc cấu trúc đặc biệt để giải).
+    \item[Amortized time] Độ phức tạp thời gian khấu hao (chia đều chi phí của thao tác đắt đỏ cho chuỗi các thao tác $\rightarrow$ ví dụ: DSU, SegTree).
+    \item[Lexicographically largest] Lớn nhất theo thứ tự từ điển.
+    \item[Pigeonhole Principle] Nguyên lý chuồng bồ câu (Dirichlet - bẫy toán tư duy đếm hoặc tìm chu trình lặp).
+    \item[Heuristic] Thuật toán xấp xỉ / Phỏng đoán (không đảm bảo tối ưu 100\% nhưng chạy nhanh, dùng trong bài toán tối ưu NP-hard).
+    \item[Alternately] Một cách luân phiên (hết người/thao tác này rồi bắt buộc tới người/thao tác kia).
 \end{description}
 
-
-\vspace{1cm}
-
 % \columnbreak
+
+\vspace{2.25cm}
 \hrule
+\vspace{0.25cm}
 
 \begin{center}
 \textbf{TRÌNH - HIEUTHUHAI}
@@ -137,6 +156,6 @@ How much in the bank? (countable, countable) \\
 How many houses bought? (countable, countable) \\
 How many shows a year? (countable, countable) \\
 How many trophies? (countable, countable) \\
-How many fans do I have? (UNCOUNTABLE, UNCOUNTABLE!)
+How many fans do I have? (uncountable, uncountable!)
 
 \end{multicols*}
