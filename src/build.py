@@ -43,4 +43,3 @@ def build_contents():
 
 if __name__ == "__main__":
     build_contents()
-    os.chdir("src")
