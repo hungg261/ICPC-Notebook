@@ -1,6 +1,6 @@
 % Dinic Algorithm
 
-Max flow algorithm running in $O(V^2 E)$ (worst case) and $O(E \sqrt{V})$ on unit networks.
+Max flow and min-cut algorithm running in $O(V^2 E)$ (worst case) and $O(E \sqrt{V})$ on unit networks.
 
 \begin{lstlisting}
 const long long INF = 1e18;
@@ -53,5 +53,24 @@ struct Dinic {
         }
         return flow;
     }
+
+    vector<pair<int, int>> min_cut() {
+        vector<pair<int, int>> cuts;
+        for (int u = 0; u <= n; ++u) {
+            if (level[u] == -1) continue;
+            for (auto& edge : adj[u]) {
+                if (edge.cap > 0 && level[edge.to] == -1) {
+                    cuts.push_back({u, edge.to});
+                }
+            }
+        }
+        return cuts;
+    }
 };
 \end{lstlisting}
+
+\begin{itemize}
+    \item Call \lstinline|max_flow()| first to compute the maximum flow from \lstinline|source| to \lstinline|sink|.
+    \item The array \lstinline|level| retains the reachability from \lstinline|source| in the residual graph. A node $v$ is on the source side of the cut if \lstinline|level[v] != -1|.
+    \item Call \lstinline|min_cut()| after \lstinline|max_flow()| to get all edges belonging to the minimum cut partition.
+\end{itemize}

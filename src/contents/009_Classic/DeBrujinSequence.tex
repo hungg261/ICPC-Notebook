@@ -1,0 +1,33 @@
+% De Bruijn Sequence
+
+Generates the shortest cyclic sequence of length $B^K$ that contains every possible sequence of length $K$ over an alphabet of size $B$ as a substring exactly once.
+
+\begin{lstlisting}
+struct DeBruijn {
+    int b, k;
+    vector<int> sequence, a;
+
+    DeBruijn(int _b, int _k) : b(_b), k(_k), a(_k * _b, 0) {}
+
+    void db_dfs(int t, int p) {
+        if (t > k) {
+            if (k % p == 0) {
+                for (int i = 1; i <= p; ++i) sequence.push_back(a[i]);
+            }
+        } else {
+            a[t] = a[t - p];
+            db_dfs(t + 1, p);
+            for (int i = a[t - p] + 1; i < b; ++i) {
+                a[t] = i;
+                db_dfs(t + 1, t);
+            }
+        }
+    }
+
+    vector<int> generate() {
+        sequence.clear();
+        db_dfs(1, 1);
+        return sequence;
+    }
+};
+\end{lstlisting}

@@ -1,0 +1,18 @@
+% Sum Over Subsets DP (SOS DP)
+
+Calculates $F(mask) = \sum_{sub \subseteq mask} A(sub)$ for all masks in $O(N \cdot 2^N)$ time complexity.
+
+\begin{lstlisting}
+void solve_sos(int n, vector<int>& a) {
+    vector<int> dp = a; // dp[mask] initially stores A[mask]
+    for (int i = 0; i < n; ++i) {
+        for (int mask = 0; mask < (1 << n); ++mask) {
+            if (mask & (1 << i)) {
+                dp[mask] += dp[mask ^ (1 << i)];
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+To compute supersets instead ($F(mask) = \sum_{mask \subseteq super} A(super)$), change the condition to check if the bit is NOT set: \lstinline|if (!(mask & (1 << i)))| and transition via \lstinline|dp[mask] += dp[mask ^ (1 << i)]|.

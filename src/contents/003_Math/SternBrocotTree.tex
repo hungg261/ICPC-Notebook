@@ -1,0 +1,40 @@
+% Stern-Brocot Tree
+
+A data structure that generates all positive irreducible fractions exactly once by maintaining lower and upper bounds.
+
+\begin{lstlisting}
+struct Fraction {
+    long long p, q;
+    bool operator==(const Fraction& o) const { return p * o.q == q * o.p; }
+    bool operator<(const Fraction& o) const { return p * o.q < q * o.p; }
+};
+
+struct SternBrocot {
+    Fraction mediant(Fraction l, Fraction r) {
+        return {l.p + r.p, l.q + r.q};
+    }
+
+    string find_path(Fraction target, int max_depth = 60) {
+        Fraction L = {0, 1}, R = {1, 0};
+        string path = "";
+        for (int i = 0; i < max_depth; ++i) {
+            Fraction M = mediant(L, R);
+            if (target == M) break;
+            if (target < M) {
+                path += 'L';
+                R = M;
+            } else {
+                path += 'R';
+                L = M;
+            }
+        }
+        return path;
+    }
+};
+\end{lstlisting}
+
+\begin{itemize}
+    \item Call \lstinline|mediant(l, r)| to get the fraction between bounds $l$ and $r$.
+    \item Call \lstinline|find_path(target)| to trace the path from the root to the \lstinline|target|.
+    \item Every generated fraction satisfies $\gcd(p, q) = 1$ automatically.
+\end{itemize}

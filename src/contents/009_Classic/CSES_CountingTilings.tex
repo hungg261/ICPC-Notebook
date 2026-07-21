@@ -1,0 +1,37 @@
+% CSES Counting Tilings
+
+Solves the grid tiling problem (CSES 2181) for an $N \times M$ grid using $1 \times 2$ and $2 \times 1$ dominoes in $O(N \cdot M \cdot 2^N)$ time and $O(2^N)$ space complexity.
+
+\begin{lstlisting}
+const int MOD = 1e9 + 7;
+
+int solve_tiling(int n, int m) {
+    if (n > m) swap(n, m); // Optimize for the smaller dimension
+    vector<long long> dp(1 << n, 0);
+    dp[0] = 1;
+
+    for (int j = 0; j < m; ++j) {
+        for (int i = 0; i < n; ++i) {
+            vector<long long> next_dp(1 << n, 0);
+            for (int mask = 0; mask < (1 << n); ++mask) {
+                if (!dp[mask]) continue;
+                
+                if (mask & (1 << i)) {
+                    // Current cell is already covered by a vertical domino from the top row
+                    next_dp[mask ^ (1 << i)] = (next_dp[mask ^ (1 << i)] + dp[mask]) % MOD;
+                } else {
+                    // Option 1: Place a horizontal domino (extends to the right column)
+                    next_dp[mask ^ (1 << i)] = (next_dp[mask ^ (1 << i)] + dp[mask]) % MOD;
+                    
+                    // Option 2: Place a vertical domino down (if not on the last row and bottom cell is empty)
+                    if (i + 1 < n && !(mask & (1 << (i + 1)))) {
+                        next_dp[mask ^ (1 << (i + 1))] = (next_dp[mask ^ (1 << (i + 1))] + dp[mask]) % MOD;
+                    }
+                }
+            }
+            dp = move(next_dp);
+        }
+    }
+    return dp[0];
+}
+\end{lstlisting}

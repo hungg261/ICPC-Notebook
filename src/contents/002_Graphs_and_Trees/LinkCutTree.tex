@@ -1,0 +1,100 @@
+% Link-Cut Tree
+
+A data structure that maintains a forest of rooted trees under dynamic edge insertions (\lstinline|link|) and deletions (\lstinline|cut|). All operations run in $O(\log N)$ amortized time using Splay Trees.
+
+\begin{lstlisting}
+struct Node {
+    int p = 0, ch[2] = {0, 0};
+    bool rev = false;
+};
+
+vector<Node> t;
+
+void init_lct(int n) {
+    t.assign(n + 1, Node());
+}
+
+bool is_root(int x) {
+    return t[t[x].p].ch[0] != x && t[t[x].p].ch[1] != x;
+}
+
+void push(int x) {
+    if (x && t[x].rev) {
+        swap(t[x].ch[0], t[x].ch[1]);
+        if (t[x].ch[0]) t[t[x].ch[0]].rev ^= 1;
+        if (t[x].ch[1]) t[t[x].ch[1]].rev ^= 1;
+        t[x].rev = false;
+    }
+}
+
+void push_all(int x) {
+    if (!is_root(x)) push_all(t[x].p);
+    push(x);
+}
+
+void rotate(int x) {
+    int y = t[x].p, z = t[y].p;
+    int k = (t[y].ch[1] == x);
+    if (!is_root(y)) t[z].ch[t[z].ch[1] == y] = x;
+    t[x].p = z;
+    t[y].ch[k] = t[x].ch[k ^ 1];
+    if (t[x].ch[k ^ 1]) t[t[x].ch[k ^ 1]].p = y;
+    t[x].ch[k ^ 1] = y;
+    t[y].p = x;
+}
+
+void splay(int x) {
+    push_all(x);
+    while (!is_root(x)) {
+        int y = t[x].p, z = t[y].p;
+        if (!is_root(y)) {
+            if ((t[y].ch[1] == x) ^ (t[z].ch[1] == y)) rotate(x);
+            else rotate(y);
+        }
+        rotate(x);
+    }
+}
+
+void access(int x) {
+    for (int t_ch = 0, r = x; r; t_ch = r, r = t[r].p) {
+        splay(r);
+        t[r].ch[1] = t_ch;
+    }
+    splay(x);
+}
+
+void make_root(int x) {
+    access(x);
+    t[x].rev ^= 1;
+}
+
+int find_root(int x) {
+    access(x);
+    while (t[x].ch[0]) {
+        push(x);
+        x = t[x].ch[0];
+    }
+    splay(x);
+    return x;
+}
+
+void link(int x, int y) {
+    make_root(x);
+    if (find_root(y) != x) t[x].p = y;
+}
+
+void cut(int x, int y) {
+    make_root(x);
+    if (find_root(y) == x && t[y].p == x && !t[y].ch[0]) {
+        t[y].p = t[x].ch[1] = 0;
+    }
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Call \lstinline|init_lct(n)| to allocate memory for $n$ nodes ($1$-indexed).
+    \item Call \lstinline|link(x, y)| to add an undirected edge between $x$ and $y$. It automatically checks connectivity to prevent cycles.
+    \item Call \lstinline|cut(x, y)| to remove the edge between $x$ and $y$ if it exists.
+    \item Call \lstinline|make_root(x)| to change the root of the tree containing $x$ to be $x$.
+    \item Call \lstinline|find_root(x)| to get the actual component root of $x$. Useful for dynamic connectivity checks via \lstinline|find_root(x) == find_root(y)|.
+\end{itemize}

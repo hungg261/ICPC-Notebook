@@ -1,0 +1,39 @@
+% ModInt Template
+
+\begin{lstlisting}
+template<int MOD>
+struct ModInt {
+    int v;
+    ModInt() : v(0) {}
+    ModInt(long long _v) { v = int((-MOD < _v && _v < MOD) ? _v : _v % MOD); if (v < 0) v += MOD; }
+    
+    explicit operator int() const { return v; }
+    bool operator==(const ModInt& o) const { return v == o.v; }
+    bool operator!=(const ModInt& o) const { return v != o.v; }
+    
+    ModInt& operator+=(const ModInt& o) { v += o.v; if (v >= MOD) v -= MOD; return *this; }
+    ModInt& operator-=(const ModInt& o) { v -= o.v; if (v < 0) v += MOD; return *this; }
+    ModInt& operator*=(const ModInt& o) { v = int((long long)v * o.v % MOD); return *this; }
+    
+    ModInt pow(long long p) const {
+        ModInt res = 1, base = *this;
+        for (; p > 0; p >>= 1, base *= base) if (p & 1) res *= base;
+        return res;
+    }
+    ModInt inv() const { return pow(MOD - 2); } // Requires MOD to be a prime
+    ModInt& operator/=(const ModInt& o) { return *this *= o.inv(); }
+    
+    friend ModInt operator+(ModInt a, const ModInt& b) { return a += b; }
+    friend ModInt operator-(ModInt a, const ModInt& b) { return a -= b; }
+    friend ModInt operator*(ModInt a, const ModInt& b) { return a *= b; }
+    friend ModInt operator/(ModInt a, const ModInt& b) { return a /= b; }
+};
+using mint = ModInt<1000000007>;
+\end{lstlisting}
+
+\begin{itemize}
+    \item Use \lstinline|mint| to declare variables. For example: \lstinline|mint a = 5, b = 10;|
+    \item Supports all standard arithmetic operators (\lstinline|+, -, *, /|), compound assignments (\lstinline|+=, -=, *=, /=|), and comparisons (\lstinline|==, !=|).
+    \item Call \lstinline|a.pow(p)| to compute $a^p \pmod{MOD}$ efficiently in $O(\log p)$.
+    \item Call \lstinline|a.inv()| to find the modular multiplicative inverse using Fermat's Little Theorem.
+\end{itemize}

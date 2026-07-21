@@ -1,0 +1,84 @@
+% Mo's Algorithm on Trees
+
+Offline queries on trees using Euler Tour (flattening the tree into an array). Set $\text{BLOCK\_SIZE} \approx \frac{2N}{\sqrt{Q}}$ for an optimal time complexity of $O((N + Q)\sqrt{N})$.
+
+\begin{lstlisting}
+const int BLOCK = 450;
+const int MAXN = 100005;
+
+struct Query {
+    int l, r, lc, id;
+    bool operator<(const Query& o) const {
+        int b1 = l / BLOCK, b2 = o.l / BLOCK;
+        if (b1 != b2) return b1 < b2;
+        return (b1 & 1) ? (r < o.r) : (r > o.r);
+    }
+};
+
+int n, q, timer;
+int st[MAXN], en[MAXN], id[2 * MAXN], depth[MAXN], up[MAXN][20];
+vector<int> adj[MAXN];
+bool vis[MAXN];
+
+void dfs(int u, int p) {
+    st[u] = ++timer; id[timer] = u;
+    up[u][0] = p;
+    for (int i = 1; i < 20; ++i) up[u][i] = up[up[u][i-1]][i-1];
+    for (int v : adj[u]) {
+        if (v != p) { depth[v] = depth[u] + 1; dfs(v, u); }
+    }
+    en[u] = ++timer; id[timer] = u;
+}
+
+int get_lca(int u, int v) {
+    if (depth[u] < depth[v]) swap(u, v);
+    for (int i = 19; i >= 0; --i) {
+        if (depth[u] - (1 << i) >= depth[v]) u = up[u][i];
+    }
+    if (u == v) return u;
+    for (int i = 19; i >= 0; --i) {
+        if (up[u][i] != up[v][i]) { u = up[u][i]; v = up[v][i]; }
+    }
+    return up[u][0];
+}
+
+void check(int u) {
+    if (vis[u]) { /* remove_from_data_structure(u); */ }
+    else { /* add_to_data_structure(u); */ }
+    vis[u] ^= 1;
+}
+
+vector<long long> solve_mo_tree(vector<Query>& queries) {
+    timer = 0; dfs(1, 1);
+    for (auto& q : queries) {
+        int u = q.l, v = q.r; // Here q.l and q.r store original tree node indices
+        int lca = get_lca(u, v);
+        if (st[u] > st[v]) swap(u, v);
+        if (lca == u) {
+            q.l = st[u]; q.r = st[v]; q.lc = 0;
+        } else {
+            q.l = en[u]; q.r = st[v]; q.lc = lca;
+        }
+    }
+    sort(queries.begin(), queries.end());
+    
+    vector<long long> answers(queries.size());
+    int cur_l = 1, cur_r = 0;
+    for (const auto& q : queries) {
+        while (cur_l > q.l) check(id[--cur_l]);
+        while (cur_r < q.r) check(id[++cur_r]);
+        while (cur_l < q.l) check(id[cur_l++]);
+        while (cur_r > q.r) check(id[cur_r--]);
+        if (q.lc) check(q.lc);
+        answers[q.id] = 0; // fetch current answer here
+        if (q.lc) check(q.lc);
+    }
+    return answers;
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Convert path queries into range queries on the \lstinline|id| array size $2N$ ($1$-indexed).
+    \item If LCA is one of the endpoints, the range is \lstinline|[st[u], st[v]]|. Otherwise, the range is \lstinline|[en[u], st[v]]| plus the isolated \lstinline|lca| node.
+    \item The function \lstinline|check(u)| toggles the presence of node $u$, handling insertions and deletions symmetrically.
+\end{itemize}

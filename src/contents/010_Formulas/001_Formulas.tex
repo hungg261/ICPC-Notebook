@@ -6,13 +6,18 @@ $C_n^k = \frac{n!}{k!(n-k)!} \pmod M$. Precompute factorials in $O(N)$. Linear i
 
 \textbf{Vandermonde's Identity:} $\sum_{k=0}^r C_m^k C_n^{r-k} = C_{m+n}^r$ (Choosing $r$ items from two combined groups).
 
-\textbf{Fermat's Polygonal Number Theorem (Gauss EUREKA):}
-Every $N > 0$ is a sum of at most $k$ polygonal numbers of side $k$.
-Formula for $n$-th polygonal number of side $k$: $P_k(n) = \frac{(k - 2)n^2 - (k - 4)n}{2}$.
-$\bullet$ Triangular ($k=3$): $T_n = \frac{n(n+1)}{2} \implies$ Max 3 numbers to form $N$.
-$\bullet$ Square ($k=4$): $S_n = n^2 \implies$ Max 4 numbers to form $N$ (Lagrange).
-$\bullet$ Pentagonal ($k=5$): $P_n = \frac{3n^2-n}{2} \implies$ Max 5 numbers to form $N$.
-$\bullet$ Hexagonal ($k=6$): $H_n = 2n^2-n \implies$ Max 6 numbers to form $N$.
+\textbf{Fermat's Polygonal Number (Gauss EUREKA):}
+Every $N > 0$ can be expressed as the sum of at most $k$ polygonal numbers of side $k$ ($\max \text{count} = k$).
+General formula for $n$-th polygonal number of side $k$: 
+$$P_k(n) = \frac{(k - 2)n^2 - (k - 4)n}{2} = n + (k - 2) \cdot \frac{n(n-1)}{2}$$
+\begin{itemize}
+    \item \textbf{Recurrence Relation between Sides:} A $k$-polygonal number can be derived from a $(k-1)$-polygonal number by adding the $(n-1)$-th triangular number ($T_{n-1} = \frac{n(n-1)}{2}$):
+    $$P_k(n) = P_{k-1}(n) + T_{n-1} = P_{k-1}(n) + \frac{n(n-1)}{2}$$
+    \item \textbf{Triangular Decomposition:} Any $k$-polygonal number can be broken down directly into a combination of the $n$-th and $(n-1)$-th triangular numbers:
+    $$P_k(n) = T_n + (k - 3) \cdot T_{n-1}$$
+    \item \textbf{General $O(1)$ Check / Inverse Function:} To check if $N$ is a $k$-polygonal number, solve $(k - 2)n^2 - (k - 4)n - 2N = 0$. Let $\Delta = (k - 4)^2 + 8N(k - 2)$. $N$ is valid iff $\Delta$ is a perfect square and $n = \frac{(k - 4) + \sqrt{\Delta}}{2(k - 2)}$ is an integer.
+    \item \textbf{Find side $k$ from $N$ and $n$:} $k = 2 + \frac{2(N - n)}{n(n - 1)}$.
+\end{itemize}
 
 \textbf{Catalan Numbers:} (BSTs, valid parenthesization, non-crossing polygon dissections).
 $C_0 = 1, \, C_n = \sum_{i=0}^{n-1} C_i C_{n-1-i} = \frac{1}{n+1} C_{2n}^n = C_{2n}^n - C_{2n}^{n-1}$

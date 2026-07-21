@@ -1,0 +1,29 @@
+% Bounded Knapsack with Binary Grouping
+
+Solves the Bounded Knapsack problem where each item $i$ has a limited count $C_i$. Reduces the state space to a 0-1 Knapsack instance in $O(W \sum \log C_i)$ time complexity.
+
+\begin{lstlisting}
+struct Item {
+    long long w, v;
+};
+
+long long bounded_knapsack(int n, long long W, const vector<long long>& weight, const vector<long long>& value, const vector<int>& cnt) {
+    vector<Item> items;
+    for (int i = 0; i < n; ++i) {
+        int rem = cnt[i];
+        for (int k = 1; rem > 0; k <<= 1) {
+            int take = min(k, rem);
+            rem -= take;
+            items.push_back({take * weight[i], take * value[i]});
+        }
+    }
+
+    vector<long long> dp(W + 1, 0);
+    for (const auto& item : items) {
+        for (int c = W; c >= item.w; --c) {
+            dp[c] = max(dp[c], dp[c - item.w] + item.v);
+        }
+    }
+    return dp[W];
+}
+\end{lstlisting}
