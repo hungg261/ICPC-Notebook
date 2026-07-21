@@ -18,7 +18,7 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         $10^{10}$ & 455\,052\,511 \\ \hline
     \end{tabular}
 
-    \item \textbf{Highly Composite Numbers (Max divisors $d(x)$ within range):}
+    \item \textbf{Highly Composite Numbers:}
     \begin{tabular}{|c|r|r|}
         \hline
         $\le n$ & $x$ & $d(x)$ \\ \hline
@@ -40,7 +40,7 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         $10^{18}$ & 841\,613\,874\,341\,688\,000 & 103\,680 \\ \hline
     \end{tabular}
 
-    \item \textbf{Primorials ($n\#$ - Product of primes $\le n$):}
+    \item \textbf{Primorials ($n\#$):}
     \begin{tabular}{|c|r|}
         \hline
         $n$ & $n\#$ \\ \hline
@@ -87,52 +87,52 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         20 & 2\,432\,902\,008\,176\,640\,000 \\ \hline
     \end{tabular}
 
-    \item \textbf{Hashing Bases \& NTT Friendly Modulos:}
-    \begin{tabular}{|l|l|c|c|}
+    \item \textbf{Hashing Bases \& NTT Modulos:}
+    \begin{tabular}{|p{1.2cm}|p{2.3cm}|c|c|}
         \hline
-        \textbf{Type} & \textbf{Value (Prime)} & \textbf{$g$} & \textbf{Max NTT} \\ \hline
+        \textbf{Type} & \textbf{Value (Prime)} & \textbf{$g$} & \textbf{NTT} \\ \hline
         Hash Base & 31, 37, 131, 13331 & — & — \\ \hline
         Hash Base & 163, 233, 10007 & — & — \\ \hline
-        Standard Mod & $10^9 + 7$ (1000000007) & 5 & Non-NTT \\ \hline
-        Standard Mod & $10^9 + 9$ (1000000009) & 13 & Non-NTT \\ \hline
-        Big Prime Mod & $10^18 + 9$ & — & Non-NTT \\ \hline
-        NTT Modulo & 998244353 & 3 & $2^{23}$ \\ \hline
-        NTT Modulo & 167772161 & 3 & $2^{25}$ \\ \hline
-        NTT Modulo & 469762049 & 3 & $2^{26}$ \\ \hline
+        Std Mod & $10^9 + 7$ & 5 & Non \\ \hline
+        Std Mod & $10^9 + 9$ & 13 & Non \\ \hline
+        Big Mod & $10^{18} + 9$ & — & Non \\ \hline
+        NTT Mod & 998244353 & 3 & $2^{23}$ \\ \hline
+        NTT Mod & 167772161 & 3 & $2^{25}$ \\ \hline
+        NTT Mod & 469762049 & 3 & $2^{26}$ \\ \hline
     \end{tabular}
 
-    \item \textbf{Data Type Limits \& Overflow Thresholds:}
-    \begin{tabular}{|l|l|l|l|}
+    \item \textbf{Data Type Limits:}
+    \begin{tabular}{|p{1.1cm}|p{2.0cm}|p{2.1cm}|}
         \hline
-        \textbf{Type} & \textbf{Exact Max Value} & \textbf{Approx.} & \textbf{Safe Geo Cord.} \\ \hline
-        32-bit \lstinline|int| & $2,147,483,647$ & $\approx 2 \times 10^9$ & $X, Y \le 30\,000$ \\ \hline
-        64-bit \lstinline|long long| & $9,223,372,036,854,775,807$ & $\approx 9 \times 10^{18}$ & $X, Y \le 2 \times 10^9$ \\ \hline
-        \lstinline|__int128| & $170,141,183,460,469,231,731,\dots$ & $\approx 1.7 \times 10^{38}$ & Max cross prod \\ \hline
+        \textbf{Type} & \textbf{Max Value} & \textbf{Safe Geo} \\ \hline
+        32-bit \lstinline|int| & $2,147,483,647$ ($\approx 2 \times 10^9$) & $X, Y \le 30\,000$ \\ \hline
+        64-bit \lstinline|ll| & $9.22 \times 10^{18}$ & $X, Y \le 2 \times 10^9$ \\ \hline
+        \lstinline|__int128| & $\approx 1.7 \times 10^{38}$ & Max cross prod \\ \hline
     \end{tabular}
 
-    \item \textbf{Fibonacci \& Catalan Number Limits:}
-    \begin{tabular}{|l|l|l|}
+    \item \textbf{Sequence Limits:}
+    \begin{tabular}{|p{1.2cm}|p{2.0cm}|p{2.0cm}|}
         \hline
-        \textbf{Sequence} & \textbf{Max Index (32-bit \lstinline|int|)} & \textbf{Max Index (64-bit \lstinline|long long|)} \\ \hline
-        Fibonacci ($F_n$) & $F_{46} = 1,836,311,903$ & $F_{92} = 7,540,113,804,746,346,429$ \\ \hline
-        Catalan ($C_n$) & $C_{19} = 1,767,263,190$ & $C_{33} = 3,323,236,238,014,923,730$ \\ \hline
+        \textbf{Seq.} & \textbf{Max 32-bit} & \textbf{Max 64-bit} \\ \hline
+        Fibonacci & $F_{46} \approx 1.83 \times 10^9$ & $F_{92} \approx 7.54 \times 10^{18}$ \\ \hline
+        Catalan & $C_{19} \approx 1.76 \times 10^9$ & $C_{33} \approx 3.32 \times 10^{18}$ \\ \hline
     \end{tabular}
 
-    \item \textbf{Powers of 2 and Powers of 10 Quick Reference:}
+    \item \textbf{Powers Quick Reference:}
     \begin{tabular}{|c|r||c|r|}
         \hline
-        $2^n$ & \textbf{Exact Value} & $10^n$ & \textbf{Prefix Name} \\ \hline
-        $2^{10}$ & 1\,024 & $10^3$ & Kilo (K) \\ \hline
-        $2^{20}$ & 1\,048\,576 & $10^6$ & Mega (M) \\ \hline
-        $2^{30}$ & 1\,073\,741\,824 & $10^9$ & Giga (G) \\ \hline
-        $2^{40}$ & 1\,099\,511\,627\,776 & $10^{12}$ & Tera (T) \\ \hline
-        $2^{50}$ & 1\,125\,899\,906\,842\,624 & $10^{15}$ & Peta (P) \\ \hline
-        $2^{60}$ & 1\,152\,921\,504\,606\,846\,976 & $10^{18}$ & Exa (E) \\ \hline
+        $2^n$ & \textbf{Exact Value} & $10^n$ & \textbf{Pref.} \\ \hline
+        $2^{10}$ & 1\,024 & $10^3$ & K \\ \hline
+        $2^{20}$ & 1\,048\,576 & $10^6$ & M \\ \hline
+        $2^{30}$ & 1\,073\,741\,824 & $10^9$ & G \\ \hline
+        $2^{40}$ & $1.09 \times 10^{12}$ & $10^{12}$ & T \\ \hline
+        $2^{50}$ & $1.12 \times 10^{15}$ & $10^{15}$ & P \\ \hline
+        $2^{60}$ & $1.15 \times 10^{18}$ & $10^{18}$ & E \\ \hline
     \end{tabular}
 \end{enumerate}
 
 \begin{itemize}
     \item Highly Composite Numbers tables are crucial for finding numbers with the maximum number of divisors under a specific upper bound.
-    \item Max values for standard types: $12!$ fits within standard 32-bit signed \lstinline|int| (since $13!$ overflows), while $20!$ is the largest factorial fitting inside a 64-bit signed \lstinline|long long| (since $21!$ overflows).
-    \item For geometry tasks, computing a 2D cross product $A \times B = x_A y_B - y_A x_B$ using 64-bit coordinates requires \lstinline|__int128| to completely safe-guard against intermediate overflow.
+    \item Max values: $12!$ fits signed 32-bit \lstinline|int|, $20!$ fits signed 64-bit \lstinline|long long|.
+    \item 2D cross product with 64-bit coordinates requires \lstinline|__int128| for intermediate steps.
 \end{itemize}

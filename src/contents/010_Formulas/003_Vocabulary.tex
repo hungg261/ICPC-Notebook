@@ -1,0 +1,142 @@
+% Vocabulary \& Definitions
+
+% Vocabulary, Geometry, Advanced Math & CP Definitions
+
+\begin{description}[leftmargin=0.5cm, style=nextline, noitemsep, topsep=0pt]
+    \item[Arbitrary] Bất kỳ, không ràng buộc.
+    \item[Bipartite Graph] Đồ thị 2 phía (cạnh chỉ nối giữa 2 phía).
+    \item[Matching] Cặp ghép (tập cạnh không chung đỉnh).
+    \item[Maximal Matching] Cặp ghép tối đại (không thể thêm cạnh).
+    \item[Maximum Matching] Cặp ghép cực đại (nhiều cạnh nhất).
+    \item[Perfect Matching] Cặp ghép hoàn hảo (phủ kín mọi đỉnh).
+    \item[Independent Set] Tập độc lập (tập đỉnh không có cạnh nối).
+    \item[Vertex Cover] Phủ đỉnh (tập đỉnh chạm vào mọi cạnh).
+    \item[Edge Cover] Phủ cạnh (tập cạnh chạm vào mọi đỉnh).
+    \item[Lexicographically] Thứ tự từ điển (so sánh như chuỗi).
+    \item[Monotonicity] Tính đơn điệu (luôn tăng/giảm $\rightarrow$ chặt nhị phân).
+    \item[Idempotent] Lũy đẳng ($f(x, x) = x \rightarrow$ GCD, Max, Min).
+    \item[Pairwise distinct] Đôi một phân biệt (tất cả đều khác nhau).
+    \item[Mutually exclusive] Xung khắc (không thể xảy ra cùng lúc).
+    \item[Complement] Phần bù / Đồ thị bù (đảo ngược cạnh).
+    \item[Inversion] Cặp nghịch thế ($i < j$ nhưng $A[i] > A[j]$).
+    \item[Adjacent] Kề nhau (đỉnh kề, ô lưới kề cạnh/góc).
+    \item[Consecutive] Liên tiếp (phần tử liên tiếp trong mảng).
+    \item[Alternative] Luân phiên / Thay thế (ví dụ: chuỗi ký tự dạng 010101).
+    \item[Permutation] Hoán vị (dãy chứa $1 \dots N$ đúng một lần).
+    \item[Parity] Tính chẵn lẻ (bit parity, tổng chẵn/lẻ).
+    \item[Coprime] Nguyên tố cùng nhau ($\text{gcd}(a,b) = 1$).
+    \item[Cyclic shift] Dịch vòng quanh (đẩy phần tử cuối lên đầu).
+    \item[Bijective] Song ánh (ánh xạ 1-1 tương ứng hoàn toàn).
+    \item[Invariants] Đại lượng bất biến (giá trị không đổi qua các thao tác).
+    \item[Strictly] Nghiêm ngặt (Ví dụ: strictly increasing = tăng ngặt $>$, không dấu $=$).
+    \item[Predecessor / Successor] Phần tử đứng ngay trước / đứng ngay sau.
+
+    \item[Expected value / Expectation] Giá trị kỳ vọng (thường giải bằng DP trạng thái hoặc khử Gauss).
+    \item[With replacement] Có hoàn lại (bốc thăm xong bỏ lại vào hộp $\rightarrow$ xác suất không đổi).
+    \item[Without replacement] Không hoàn lại (bốc thăm xong giữ luôn bên ngoài $\rightarrow$ xác suất thay đổi).
+    \item[Composite number] Hợp số (số có nhiều hơn 2 ước dương).
+    \item[Factor / Divisor / Multiple] Ước số / Ước số / Bội số.
+    \item[Quotient / Remainder] Thương số / Số dư trong phép chia.
+    \item[Coefficient] Hệ số (ví dụ: hệ số của đa thức $x^k$).
+    \item[Modulo / Congruence] Phép lấy số dư / Quan hệ đồng dư ($a \equiv b \pmod m$).
+    \item[Factorial] Giai thừa ($n!$).
+
+    \item[Collinear] Thẳng hàng (các điểm cùng nằm trên 1 đường thẳng).
+    \item[Coplanar] Đồng phẳng (các điểm cùng thuộc 1 mặt phẳng).
+    \item[Convex / Concave polygon] Đa giác lồi / Đa giác lõm.
+    \item[Convex Hull] Bao lồi (đa giác lồi nhỏ nhất bao quanh tập điểm).
+    \item[Cross product] Tích có hướng (tìm hướng quay CCW/CW, tính diện tích).
+    \item[Dot product] Tích vô hướng (tính góc, độ dài hình chiếu).
+    \item[Perpendicular / Orthogonal] Vuông góc / Trực giao ($\text{dot product} = 0$).
+    \item[Counter-clockwise (CCW)] Ngược chiều kim đồng hồ ($\text{cross product} > 0$).
+    \item[Clockwise (CW)] Thuận chiều kim đồng hồ ($\text{cross product} < 0$).
+    \item[Degenerate polygon] Đa giác suy biến (các đỉnh thẳng hàng hoặc trùng nhau).
+    \item[Bounding box] Khung hình chữ nhật nhỏ nhất bao quanh vật thể.
+    \item[Incircle] Đường tròn nội tiếp (tiếp xúc trong với các cạnh của đa giác).
+    \item[Incenter] Tâm đường tròn nội tiếp (giao điểm các đường phân giác trong).
+    \item[Inradius ($r$)] Bán kính đường tròn nội tiếp (Tính nhanh: $r = \text{Area}/s$ với $s$ là nửa chu vi).
+    \item[Circumcircle] Đường tròn ngoại tiếp (đi qua tất cả các đỉnh của đa giác).
+    \item[Circumcenter] Tâm đường tròn ngoại tiếp (giao điểm các đường trung trực).
+    \item[Circumradius ($R$)] Bán kính đường tròn ngoại tiếp (Tam giác: $R = abc / (4 \cdot \text{Area})$).
+    \item[Excircle / Excenter] Đường tròn bàng tiếp / Tâm bàng tiếp (tiếp xúc 1 cạnh và 2 cạnh kéo dài).
+    \item[Concyclic] Đồng viên (các điểm cùng nằm trên một đường tròn).
+    \item[Tangent] Tiếp tuyến (đường thẳng tiếp xúc đường tròn tại 1 điểm, vuông góc bán kính).
+    \item[Secant] Cát tuyến (đường thẳng cắt đường tròn tại 2 điểm phân biệt).
+    \item[Chord] Dây cung (đoạn thẳng nối 2 điểm trên đường tròn).
+    \item[Diameter / Radius] Đường kính / Bán kính.
+    \item[Centroid] Trọng tâm (giao điểm các đường trung tuyến; hoặc trung bình cộng tọa độ đa giác).
+    \item[Orthocenter] Trực tâm (giao điểm các đường cao của tam giác).
+    \item[Sector / Segment] Hình quạt tròn (giới hạn bởi 2 bán kính và cung) / Hình viên phân (giới hạn bởi dây cung và cung).
+
+    \item[Adjacency Matrix / List] Ma trận kề / Danh sách kề để biểu diễn đồ thị.
+    \item[Incidence Matrix] Ma trận liên thuộc (biểu diễn mối quan hệ giữa đỉnh và cạnh).
+    \item[Identity Matrix] Ma trận đơn vị (đường chéo chính bằng 1, các vị trí khác bằng 0).
+    \item[Transpose] Ma trận chuyển vị (đổi hàng thành cột).
+    \item[Determinant] Định thức của ma trận (dùng tính diện tích đa giác, giải hệ PT, Matrix-Tree theorem).
+    \item[Planar Graph] Đồ thị phẳng (đồ thị có thể vẽ trên mặt phẳng mà không có hai cạnh nào cắt nhau).
+    \item[Self-loop / Multiple edges] Cạnh tự khuyên (nối đỉnh với chính nó) / Đa cạnh (nhiều cạnh nối cùng một cặp đỉnh).
+    \item[Simultaneously] Đồng thời cùng một lúc (thao tác diễn ra đồng loạt).
+    \item[Respectively] Lần lượt, theo thứ tự tương ứng (ví dụ: các mảng $A, B$ có độ dài $X, Y$ tương ứng).
+    \item[Sufficient / Necessary] Điều kiện đủ / Điều kiện cần.
+    \item[Trivial / Non-trivial] Hiển nhiên, tầm thường (ví dụ: trường hợp rỗng, bằng 0) / Không hiển nhiên.
+    \item[Symmetric / Asymmetric] Đối xứng / Bất đối xứng.
+    \item[Impartial / Partisan game] Trò chơi công bằng (mọi người chơi cùng tập nước đi) / Không công bằng (tập nước đi khác nhau).
+\end{description}
+
+
+\vspace{1cm}
+
+% \columnbreak
+\hrule
+
+\begin{center}
+\textbf{TRÌNH - HIEUTHUHAI}
+\end{center}
+
+\begin{multicols*}{2}
+\raggedright
+\small
+
+\textbf{Tiếng Việt} \\
+\vspace{0.3em}
+Ey ey yeah yeah \\
+Ối zồi ôi ối zồi ôi \\
+Trình là gì mà là trình ai chấm \\
+Anh chỉ biết làm ba mẹ tự hào \\
+Xây căn nhà thật to ở một mình hai tấm \\
+Ối zồi ôi ối zồi ôi \\
+Cứ lên mạng phán xét tưởng là mình oai lắm \\
+Nhìn vào sự nghiệp anh thèm chảy nước miếng \\
+Giống mấy thằng biến thái nó đang rình ai tắm \\
+Mua bao nhiêu căn nhà (đếm được đếm được) \\
+Năm bao nhiêu show (đếm được đếm được) \\
+Bao nhiêu bài hit (đếm được đếm được) \\
+Bao nhiêu trong bank (đếm được đếm được) \\
+Mua bao nhiêu căn nhà (đếm được đếm được) \\
+Năm bao nhiêu show (đếm được đếm được) \\
+Bao nhiêu là cúp (đếm được đếm được) \\
+Có bao nhiêu fan (không đếm được không đếm được)
+
+\columnbreak
+
+\textbf{English} \\
+\vspace{0.3em}
+Ey ey yeah yeah \\
+Oh my god oh my god \\
+What is skill, and who has the right to judge? \\
+I only know how to make my parents proud \\
+Building a huge 2-story house to live by myself \\
+Oh my god oh my god \\
+Keep judging online, thinking you're so cool \\
+Staring at my career, drooling with envy \\
+Just like perverts peeping at someone taking a bath \\
+How many houses bought? (countable, countable) \\
+How many shows a year? (countable, countable) \\
+How many hit songs? (countable, countable) \\
+How much in the bank? (countable, countable) \\
+How many houses bought? (countable, countable) \\
+How many shows a year? (countable, countable) \\
+How many trophies? (countable, countable) \\
+How many fans do I have? (UNCOUNTABLE, UNCOUNTABLE!)
+
+\end{multicols*}
