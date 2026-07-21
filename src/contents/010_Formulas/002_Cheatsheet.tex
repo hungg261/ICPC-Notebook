@@ -4,48 +4,98 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
 
 \begin{enumerate}
     \item \textbf{Number of Primes $\pi(n)$:}
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|r|}
         \hline
-        $n$ & $10^2$ & $10^3$ & $10^4$ & $10^5$ & $10^6$ & $10^7$ & $10^8$ & $10^9$ & $10^{10}$ \\ \hline
-        $\pi(n)$ & 25 & 168 & 1229 & 9592 & 78498 & 664579 & 5761455 & 50847534 & 455052511 \\ \hline
+        $n$ & $\pi(n)$ \\ \hline
+        $10^2$ & 25 \\ \hline
+        $10^3$ & 168 \\ \hline
+        $10^4$ & 1\,229 \\ \hline
+        $10^5$ & 9\,592 \\ \hline
+        $10^6$ & 78\,498 \\ \hline
+        $10^7$ & 664\,579 \\ \hline
+        $10^8$ & 5\,761\,455 \\ \hline
+        $10^9$ & 50\,847\,534 \\ \hline
+        $10^{10}$ & 455\,052\,511 \\ \hline
     \end{tabular}
 
     \item \textbf{Highly Composite Numbers (Max divisors $d(x)$ within range):}
-    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|r|r|}
         \hline
-        $\le n$ & $10^3$ & $10^4$ & $10^5$ & $10^6$ & $10^7$ & $10^8$ & $10^9$ \\ \hline
-        $x$ & 840 & 7560 & 83160 & 720720 & 8648640 & 73513440 & 735134400 \\ \hline
-        $d(x)$ & 32 & 64 & 128 & 240 & 448 & 768 & 1344 \\ \hline
-    \end{tabular}
-    
-    \vspace{0.5em}
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-        \hline
-        $\le n$ & $10^{10}$ & $10^{11}$ & $10^{12}$ & $10^{13}$ & $10^{14}$ & $10^{15}$ & $10^{16}$ & $10^{17}$ & $10^{18}$ \\ \hline
-        $d(x)$ & 2304 & 4032 & 6720 & 10752 & 17280 & 26880 & 41472 & 64512 & 103680 \\ \hline
+        $\le n$ & $x$ & $d(x)$ \\ \hline
+        $10^3$ & 840 & 32 \\ \hline
+        $10^4$ & 7\,560 & 64 \\ \hline
+        $10^5$ & 83\,160 & 128 \\ \hline
+        $10^6$ & 720\,720 & 240 \\ \hline
+        $10^7$ & 8\,648\,640 & 448 \\ \hline
+        $10^8$ & 73\,513\,440 & 768 \\ \hline
+        $10^9$ & 735\,134\,400 & 1\,344 \\ \hline
+        $10^{10}$ & 7\,351\,440\,000 & 2\,304 \\ \hline
+        $10^{11}$ & 69\,837\,768\,000 & 4\,032 \\ \hline
+        $10^{12}$ & 963\,761\,198\,400 & 6\,720 \\ \hline
+        $10^{13}$ & 8\,673\,850\,785\,600 & 10\,752 \\ \hline
+        $10^{14}$ & 95\,412\,358\,641\,600 & 17\,280 \\ \hline
+        $10^{15}$ & 858\,711\,227\,774\,400 & 26\,880 \\ \hline
+        $10^{16}$ & 9\,445\,823\,505\,518\,400 & 41\,472 \\ \hline
+        $10^{17}$ & 93\,512\,652\,704\,632\,000 & 64\,512 \\ \hline
+        $10^{18}$ & 841\,613\,874\,341\,688\,000 & 103\,680 \\ \hline
     \end{tabular}
 
     \item \textbf{Primorials ($n\#$ - Product of primes $\le n$):}
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|r|}
         \hline
-        $n$ & 2 & 3 & 5 & 7 & 11 & 13 & 17 & 19 & 23 & 29 \\ \hline
-        $n\#$ & 2 & 6 & 30 & 210 & 2310 & 30030 & 510510 & 9699690 & 223092870 & 6469693230 \\ \hline
+        $n$ & $n\#$ \\ \hline
+        2 & 2 \\ \hline
+        3 & 6 \\ \hline
+        5 & 30 \\ \hline
+        7 & 210 \\ \hline
+        11 & 2\,310 \\ \hline
+        13 & 30\,030 \\ \hline
+        17 & 510\,510 \\ \hline
+        19 & 9\,699\,690 \\ \hline
+        23 & 223\,092\,870 \\ \hline
+        29 & 6\,469\,693\,230 \\ \hline
+        31 & 200\,560\,490\,130 \\ \hline
+        37 & 7\,420\,738\,134\,810 \\ \hline
+        41 & 304\,250\,263\,527\,210 \\ \hline
+        43 & 13\,082\,761\,331\,670\,030 \\ \hline
+        47 & 614\,889\,782\,588\,491\,410 \\ \hline
     \end{tabular}
 
     \item \textbf{Factorials ($n!$):}
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|r|r|}
         \hline
-        $4!$ & $5!$ & $6!$ & $7!$ & $8!$ & $9!$ & $10!$ & $11!$ & $12!$ & $13!$ \\ \hline
-        24 & 120 & 720 & 5040 & 40320 & 362880 & 3628800 & 39916800 & 479001600 & 6227020800 \\ \hline
+        $n$ & $n!$ \\ \hline
+        1 & 1 \\ \hline
+        2 & 2 \\ \hline
+        3 & 6 \\ \hline
+        4 & 24 \\ \hline
+        5 & 120 \\ \hline
+        6 & 720 \\ \hline
+        7 & 5\,040 \\ \hline
+        8 & 40\,320 \\ \hline
+        9 & 362\,880 \\ \hline
+        10 & 3\,628\,800 \\ \hline
+        11 & 39\,916\,800 \\ \hline
+        12 & 479\,001\,600 \\ \hline
+        13 & 6\,227\,020\,800 \\ \hline
+        14 & 87\,178\,291\,200 \\ \hline
+        15 & 1\,307\,674\,368\,000 \\ \hline
+        16 & 20\,922\,789\,888\,000 \\ \hline
+        17 & 355\,687\,428\,096\,000 \\ \hline
+        18 & 6\,402\,373\,705\,728\,000 \\ \hline
+        19 & 121\,645\,100\,408\,832\,000 \\ \hline
+        20 & 2\,432\,902\,008\,176\,640\,000 \\ \hline
     \end{tabular}
 
     \item \textbf{Hashing Bases \& NTT Friendly Modulos:}
-    \begin{tabular}{|l|l|l|l|}
+    \begin{tabular}{|l|l|c|c|}
         \hline
-        \textbf{Type} & \textbf{Value (Prime)} & \textbf{Primitive Root ($g$)} & \textbf{Max NTT Size} \\ \hline
-        String Hash Base & 31, 37, 131, 13331 & — & — \\ \hline
+        \textbf{Type} & \textbf{Value (Prime)} & \textbf{$g$} & \textbf{Max NTT} \\ \hline
+        Hash Base & 31, 37, 131, 13331 & — & — \\ \hline
+        Hash Base & 163, 233, 10007 & — & — \\ \hline
         Standard Mod & $10^9 + 7$ (1000000007) & 5 & Non-NTT \\ \hline
         Standard Mod & $10^9 + 9$ (1000000009) & 13 & Non-NTT \\ \hline
+        Big Prime Mod & $10^18 + 9$ & — & Non-NTT \\ \hline
         NTT Modulo & 998244353 & 3 & $2^{23}$ \\ \hline
         NTT Modulo & 167772161 & 3 & $2^{25}$ \\ \hline
         NTT Modulo & 469762049 & 3 & $2^{26}$ \\ \hline
@@ -54,22 +104,35 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
     \item \textbf{Data Type Limits \& Overflow Thresholds:}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Type} & \textbf{Exact Max Value} & \textbf{Approx.} & \textbf{Safe Geometry Coordinate} \\ \hline
+        \textbf{Type} & \textbf{Exact Max Value} & \textbf{Approx.} & \textbf{Safe Geo Cord.} \\ \hline
         32-bit \lstinline|int| & $2,147,483,647$ & $\approx 2 \times 10^9$ & $X, Y \le 30\,000$ \\ \hline
         64-bit \lstinline|long long| & $9,223,372,036,854,775,807$ & $\approx 9 \times 10^{18}$ & $X, Y \le 2 \times 10^9$ \\ \hline
-        \lstinline|__int128| & $170,141,183,460,469,231,731,\dots$ & $\approx 1.7 \times 10^{38}$ & Max cross product \\ \hline
+        \lstinline|__int128| & $170,141,183,460,469,231,731,\dots$ & $\approx 1.7 \times 10^{38}$ & Max cross prod \\ \hline
     \end{tabular}
 
     \item \textbf{Fibonacci \& Catalan Number Limits:}
     \begin{tabular}{|l|l|l|}
         \hline
-        \textbf{Sequence} & \textbf{Largest Index fitting 32-bit \lstinline|int|} & \textbf{Largest Index fitting 64-bit \lstinline|long long|} \\ \hline
+        \textbf{Sequence} & \textbf{Max Index (32-bit \lstinline|int|)} & \textbf{Max Index (64-bit \lstinline|long long|)} \\ \hline
         Fibonacci ($F_n$) & $F_{46} = 1,836,311,903$ & $F_{92} = 7,540,113,804,746,346,429$ \\ \hline
-        Catalan ($C_n$) & $C_{19} = 1,767,263,190$ & $C_{35} = 31,162,854,949,073,012,624$ \\ \hline
+        Catalan ($C_n$) & $C_{19} = 1,767,263,190$ & $C_{33} = 3,323,236,238,014,923,730$ \\ \hline
+    \end{tabular}
+
+    \item \textbf{Powers of 2 and Powers of 10 Quick Reference:}
+    \begin{tabular}{|c|r||c|r|}
+        \hline
+        $2^n$ & \textbf{Exact Value} & $10^n$ & \textbf{Prefix Name} \\ \hline
+        $2^{10}$ & 1\,024 & $10^3$ & Kilo (K) \\ \hline
+        $2^{20}$ & 1\,048\,576 & $10^6$ & Mega (M) \\ \hline
+        $2^{30}$ & 1\,073\,741\,824 & $10^9$ & Giga (G) \\ \hline
+        $2^{40}$ & 1\,099\,511\,627\,776 & $10^{12}$ & Tera (T) \\ \hline
+        $2^{50}$ & 1\,125\,899\,906\,842\,624 & $10^{15}$ & Peta (P) \\ \hline
+        $2^{60}$ & 1\,152\,921\,504\,606\,846\,976 & $10^{18}$ & Exa (E) \\ \hline
     \end{tabular}
 \end{enumerate}
 
 \begin{itemize}
     \item Highly Composite Numbers tables are crucial for finding numbers with the maximum number of divisors under a specific upper bound.
-    \item Max values for standard types: $13!$ fits within standard 32-bit signed \lstinline|int|, while $20!$ ($2\,432\,902\,008\,176\,640\,000$) is the largest factorial fitting inside a 64-bit signed \lstinline|long long|.
+    \item Max values for standard types: $12!$ fits within standard 32-bit signed \lstinline|int| (since $13!$ overflows), while $20!$ is the largest factorial fitting inside a 64-bit signed \lstinline|long long| (since $21!$ overflows).
+    \item For geometry tasks, computing a 2D cross product $A \times B = x_A y_B - y_A x_B$ using 64-bit coordinates requires \lstinline|__int128| to completely safe-guard against intermediate overflow.
 \end{itemize}

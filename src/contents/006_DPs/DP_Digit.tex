@@ -1,0 +1,37 @@
+% Digit DP
+
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+string S;
+ll memo[20][2][2]; // pos, smaller, lead
+
+ll dp(int pos, bool smaller, bool lead) {
+    if (pos == S.length()) return 1;
+    ll &ans = memo[pos][smaller][lead];
+    if (ans != -1) return ans;
+
+    ll res = 0;
+    int lim = smaller ? 9 : (S[pos] - '0');
+
+    for (int d = 0; d <= lim; d++) {
+        // Add conditions here (e.g., using d and lead)
+        res += dp(pos + 1, smaller || (d < lim), lead && (d == 0));
+    }
+    return ans = res;
+}
+
+ll solve(ll X) {
+    if (X < 0) return 0;
+    S = to_string(X);
+    memset(memo, -1, sizeof(memo));
+    return dp(0, false, true);
+}
+
+int main() {
+    ll L, R;
+    if (cin >> L >> R) cout << solve(R) - solve(L - 1) << "\n";
+}
+\end{lstlisting}
