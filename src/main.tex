@@ -12,6 +12,7 @@
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{tocloft}
+\usepackage{etoolbox}
 \usepackage{enumitem}
 \usepackage[vietnamese]{babel}
 
@@ -158,4 +159,19 @@
 \input{contents.tex}
 
 \end{multicols*}
+
+
+% Drafts:
+\clearpage
+
+\def\fillto25{%
+  \input{draft.tex}%
+  \clearpage
+  \ifnum\value{page}<26
+    \expandafter\fillto25
+  \fi
+}
+
+\fillto25
+
 \end{document}
