@@ -1,0 +1,28 @@
+% Stars and Bars (Chia kẹo Euler)
+
+Finds the number of integer solutions to equations and inequalities.
+
+1. Standard ($x_i \ge 0$):
+$$\binom{n + k - 1}{k - 1}$$
+
+2. Positive integers ($x_i \ge 1$):
+$$\binom{n - 1}{k - 1}$$
+
+3. Lower bounds ($x_i \ge c_i$):
+Let $n' = n - \sum c_i$. 
+$$\binom{n' + k - 1}{k - 1}$$
+
+4. Identical upper bounds ($0 \le x_i \le L$):
+$$\sum_{i=0}^{k} (-1)^i \binom{k}{i} \binom{n - i(L + 1) + k - 1}{k - 1}$$
+
+5. Distinct upper bounds ($0 \le x_i \le L_i$):
+Let $S$ be a subset of indices $\{1, 2, \dots, k\}$.
+$$\sum_{S} (-1)^{|S|} \binom{n - \sum_{j \in S} (L_j + 1) + k - 1}{k - 1}$$
+
+6. Non-negative Inequality ($\sum_{i=1}^k x_i \le n$ where $x_i \ge 0$):
+$$\binom{n + k}{k}$$
+
+7. Positive Inequality ($\sum_{i=1}^k x_i \le n$ where $x_i \ge 1$):
+$$\binom{n - 1 + k}{k}$$
+
+Note: $\binom{n}{k} = 0$ if $n < k$ or $k < 0$.
