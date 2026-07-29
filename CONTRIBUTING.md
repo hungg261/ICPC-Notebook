@@ -8,6 +8,8 @@ Please follow these streamlined steps to contribute to this project.
 
 ## Directory Structure (`./src`)
 
+**Important note:** Navigate to `./src/build` and run the `restore.py` script to restore the C++ code into all `.tex` files. You must complete this step before making any modifications.
+
 ### New Section
 Create a folder inside `./src` using the format: `./[Numbering]_Section_Name`.
 * *Example:* `011_Contest_Rules` renders as `Contest Rules` (underscores become spaces).
@@ -21,9 +23,9 @@ Create any `.tex` file inside your section folder formatted exactly as follows:
 % Subsection name (Supports \(\LaTeX,\) must escape \& and \_)
 
 Main text goes here. Explain algorithms, usage, or notes.
-\(\begin{lstlisting}
+\begin{lstlisting}
 // C++ source code only
-\end{lstlisting}\)
+\end{lstlisting}
 
 Use \lstinline|inline code| for inline snippets.
 ```
