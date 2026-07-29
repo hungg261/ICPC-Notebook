@@ -2,12 +2,4 @@
 
 Computes the area of a polygon in $O(N)$ given its vertices ordered sequentially. Uses the global \lstinline|Point| and \lstinline|cross| from Geometry Template.
 
-\begin{lstlisting}
-double polygon_area(const vector<Point>& pts) {
-    long long area2 = 0; int n = pts.size();
-    for (int i = 0; i < n; i++) {
-        area2 += cross(pts[i], pts[(i + 1) % n]);
-    }
-    return abs(area2) / 2.0;
-}
-\end{lstlisting}
+\lstinputlisting{contents/007_Geometry/codes/PolygonArea_1.cpp}

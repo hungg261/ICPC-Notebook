@@ -2,17 +2,4 @@
 
 Computes the incenter and circumcenter of a triangle. Ensure points are not collinear.
 
-\begin{lstlisting}
-Point get_incenter(Point A, Point B, Point C) {
-    double a = dist(B, C), b = dist(A, C), c = dist(A, B), p = a + b + c;
-    assert(p > 1e-9); return (A * a + B * b + C * c) / p;
-}
-
-Point get_circumcenter(Point A, Point B, Point C) {
-    double d = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)); assert(abs(d) > 1e-9);
-    double ax = A.x * A.x + A.y * A.y, bx = B.x * B.x + B.y * B.y, cx = C.x * C.x + C.y * C.y;
-    double ux = (ax * (B.y - C.y) + bx * (C.y - A.y) + cx * (A.y - B.y)) / d;
-    double uy = (ax * (C.x - B.x) + bx * (A.x - C.x) + cx * (B.x - A.x)) / d;
-    return {ux, uy};
-}
-\end{lstlisting}
+\lstinputlisting{contents/007_Geometry/codes/Incenter_Circumcenter_1.cpp}
