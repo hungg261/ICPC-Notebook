@@ -1,0 +1,27 @@
+% Source Code Hashing (FNV-1a)
+
+Read from \texttt{code.cpp} and print an 8-character hex hash.
+
+\begin{lstlisting}[language=python]
+# Python
+s = "".join(open("code.cpp").read().split())
+h = 14695981039346656037
+for c in s: h = ((h ^ ord(c)) * 1099511628211) & 0xFFFFFFFFFFFFFFFF
+print(f"Hash: {h & 0xFFFFFFFF:08X}")
+\end{lstlisting}
+
+\begin{lstlisting}[language=c++]
+// C++
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ifstream f("code.cpp");
+    string s = "", l;
+    while (getline(f, l)) for (char c : l) if (!isspace(c)) s += c;
+    unsigned long long h = 14695981039346656037ULL;
+    for (char c : s) h = (h ^ c) * 1099511628211ULL;
+    cout << hex << uppercase << setw(8) << setfill('0') << (h & 0xFFFFFFFF) << "\n";
+}
+\end{lstlisting}
+
+Note that \texttt{code.cpp} is the file containing your source code.
