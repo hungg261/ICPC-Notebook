@@ -1,0 +1,29 @@
+/* Hash: 5C674969 */
+struct BIT {
+    int n; vector<int> tree;
+    BIT(int n) : n(n), tree(n + 1, 0) {}
+
+    void update(int i, int delta) {
+        for (; i <= n; i += i & -i) tree[i] += delta;
+    }
+
+    int lower_bound(int sum) {
+        int idx = 0;
+        for (int i = 1 << __lg(n); i > 0; i >>= 1) {
+            if (idx + i <= n && tree[idx + i] < sum) {
+                idx += i; sum -= tree[idx];
+            }
+        }
+        return idx + 1;
+    }
+
+    int upper_bound(int sum) {
+        int idx = 0;
+        for (int i = 1 << __lg(n); i > 0; i >>= 1) {
+            if (idx + i <= n && tree[idx + i] <= sum) {
+                idx += i; sum -= tree[idx];
+            }
+        }
+        return idx + 1;
+    }
+};

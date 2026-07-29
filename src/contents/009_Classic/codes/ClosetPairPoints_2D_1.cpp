@@ -1,0 +1,23 @@
+/* Hash: 32B496ED */
+bool compare_y(const Point& a, const Point& b) { return a.y < b.y; }
+
+pair<Point, Point> closest_pair(vector<Point>& pts) {
+    int n = pts.size(); sort(pts.begin(), pts.end());
+    double min_d = 1e18; pair<Point, Point> best_pair;
+    set<Point, decltype(&compare_y)> active_set(&compare_y);
+    
+    int left = 0;
+    for (int i = 0; i < n; i++) {
+        while (pts[i].x - pts[left].x >= min_d) active_set.erase(pts[left++]);
+        Point lower_bound_pt = {0, (long long)(pts[i].y - min_d)};
+        auto it = active_set.lower_bound(lower_bound_pt);
+        
+        while (it != active_set.end() && it->y - pts[i].y < min_d) {
+            double d = dist(pts[i], *it);
+            if (d < min_d) { min_d = d; best_pair = {pts[i], *it}; }
+            it++;
+        }
+        active_set.insert(pts[i]);
+    }
+    return best_pair;
+}
