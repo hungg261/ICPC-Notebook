@@ -2,6 +2,17 @@ import os
 import re
 from pathlib import Path
 
+def normalize_src(src):
+    if src.startswith("\r\n"):
+        src = src[2:]
+    elif src.startswith("\n") or src.startswith("\r"):
+        src = src[1:]
+    if src.endswith("\r\n"):
+        src = src[:-2]
+    elif src.endswith("\n") or src.endswith("\r"):
+        src = src[:-1]
+    return src
+
 def get_hash(s):
     s_clean = "".join(s.split())
     h = 14695981039346656037
@@ -34,7 +45,7 @@ def run():
                     lns = src.splitlines()
                     if lns: lns.pop(0)
                     src = "\n".join(lns)
-                if src.startswith("\n"): src = src[1:]
+                src = normalize_src(src)
                 h = get_hash(src)
                 f_cpp.write_text(f"/* Hash: {h} */\n{src}", encoding="utf-8")
 
@@ -59,7 +70,7 @@ def run():
                 vld.add(name)
 
                 d_codes.mkdir(parents=True, exist_ok=True)
-                if src.startswith("\n"): src = src[1:]
+                src = normalize_src(src)
                 h = get_hash(src)
                 (d_codes / name).write_text(f"/* Hash: {h} */\n{src}", encoding="utf-8")
 

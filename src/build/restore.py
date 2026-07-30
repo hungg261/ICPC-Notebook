@@ -2,6 +2,17 @@ import re
 import shutil
 from pathlib import Path
 
+def normalize_src(src):
+    if src.startswith("\r\n"):
+        src = src[2:]
+    elif src.startswith("\n") or src.startswith("\r"):
+        src = src[1:]
+    if src.endswith("\r\n"):
+        src = src[:-2]
+    elif src.endswith("\n") or src.endswith("\r"):
+        src = src[:-1]
+    return src
+
 def run():
     p_inp = r"\\lstinputlisting\{contents/.*?/codes/([^}]+)\.cpp\}"
     goc = Path(__file__).resolve().parent.parent
@@ -40,7 +51,7 @@ def run():
                         lns = src.splitlines()
                         if lns: lns.pop(0)
                         src = "\n".join(lns)
-                    if src.startswith("\n"): src = src[1:]
+                    src = normalize_src(src)
                     lst_block = f"\\begin{{lstlisting}}\n{src}\n\\end{{lstlisting}}"
                     moi += txt[idx : m.start()] + lst_block
                 else:
