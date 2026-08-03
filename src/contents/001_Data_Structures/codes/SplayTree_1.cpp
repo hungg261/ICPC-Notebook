@@ -1,0 +1,40 @@
+/* Hash: 9DB7C656 */
+struct SplayTree {
+    struct Node {
+        int ch[2] = {0, 0}, p = 0, val = 0;
+    } t[100005];
+    int root = 0, tot = 0;
+    void rotate(int x) {
+        int y = t[x].p, z = t[y].p;
+        int k = (t[y].ch[1] == x);
+        t[z].ch[t[z].ch[1] == y] = x; t[x].p = z;
+        t[y].ch[k] = t[x].ch[k ^ 1]; t[t[x].ch[k ^ 1]].p = y;
+        t[x].ch[k ^ 1] = y; t[y].p = x;
+    }
+    void splay(int x, int goal = 0) {
+        while (t[x].p != goal) {
+            int y = t[x].p, z = t[y].p;
+            if (z != goal) {
+                if ((t[y].ch[1] == x) ^ (t[z].ch[1] == y)) rotate(x);
+                else rotate(y);
+            }
+            rotate(x);
+        }
+        if (!goal) root = x;
+    }
+    void insert(int v) {
+        int u = root, p = 0;
+        while (u && t[u].val != v) {
+            p = u;
+            u = t[u].ch[v > t[u].val];
+        }
+        if (u) {
+            splay(u);
+        } else {
+            u = ++tot;
+            if (p) t[p].ch[v > t[p].val] = u;
+            t[u].p = p; t[u].val = v;
+            splay(u);
+        }
+    }
+};

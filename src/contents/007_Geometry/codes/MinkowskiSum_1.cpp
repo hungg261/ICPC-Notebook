@@ -1,0 +1,22 @@
+/* Hash: FA3EBFD4 */
+void reorder(std::vector<Point>& p) {
+    size_t pos = 0;
+    for (size_t i = 1; i < p.size(); ++i) {
+        if (p[i].y < p[pos].y || (p[i].y == p[pos].y && p[i].x < p[pos].x)) pos = i;
+    }
+    std::rotate(p.begin(), p.begin() + pos, p.end());
+}
+std::vector<Point> minkowskiSum(std::vector<Point> A, std::vector<Point> B) {
+    reorder(A); reorder(B);
+    A.push_back(A[0]); A.push_back(A[1]);
+    B.push_back(B[0]); B.push_back(B[1]);
+    std::vector<Point> res;
+    size_t i = 0, j = 0;
+    while (i < A.size() - 2 || j < B.size() - 2) {
+        res.push_back(A[i] + B[j]);
+        long long cross = (A[i + 1] - A[i]).cross(B[j + 1] - B[j]);
+        if (cross >= 0 && i < A.size() - 2) ++i;
+        if (cross <= 0 && j < B.size() - 2) ++j;
+    }
+    return res;
+}
