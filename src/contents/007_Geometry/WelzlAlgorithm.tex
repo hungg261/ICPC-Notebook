@@ -2,4 +2,36 @@
 
 Finds the minimum bounding circle in $O(N)$ expected time. Uses global \lstinline|Point|, \lstinline|dist|, and \lstinline|rng|.
 
-\lstinputlisting{contents/007_Geometry/codes/WelzlAlgorithm_1.h}
+\begin{lstlisting}
+struct Circle { Point center; double r; };
+
+bool is_inside(Point p, Circle c) { return dist(p, c.center) <= c.r + 1e-9; }
+
+Circle circle_from_3_points(Point A, Point B, Point C) {
+    double bx = B.x - A.x, by = B.y - A.y, cx = C.x - A.x, cy = C.y - A.y;
+    double BB = bx * bx + by * by, CC = cx * cx + cy * cy, D = 2 * (bx * cy - by * cx);
+    Point center = {A.x + (cy * BB - by * CC) / D, A.y + (bx * CC - cx * BB) / D};
+    return {center, dist(center, A)};
+}
+
+Circle circle_from_2_points(Point A, Point B) {
+    return {{(A.x + B.x) / 2.0, (A.y + B.y) / 2.0}, dist(A, B) / 2.0};
+}
+
+Circle welzl(vector<Point>& pts, vector<Point> r, int n) {
+    if (n == 0 || r.size() == 3) {
+        if (r.empty()) return {{0, 0}, 0};
+        if (r.size() == 1) return {r[0], 0};
+        if (r.size() == 2) return circle_from_2_points(r[0], r[1]);
+        return circle_from_3_points(r[0], r[1], r[2]);
+    }
+    Point p = pts[n - 1]; Circle c = welzl(pts, r, n - 1);
+    if (is_inside(p, c)) return c;
+    r.push_back(p); return welzl(pts, r, n - 1);
+}
+
+Circle get_smallest_enclosing_circle(vector<Point> pts) {
+    shuffle(pts.begin(), pts.end(), rng);
+    return welzl(pts, {}, pts.size());
+}
+\end{lstlisting}

@@ -2,4 +2,22 @@
 
 Low-level fast I/O using unlocked character reading. Handles positive integers. Returns -1 on EOF.
 
-\lstinputlisting{contents/000_Environment_Setup/codes/003_FastCustomIO_1.h}
+\begin{lstlisting}
+#ifdef _WIN32
+#define GETCHAR _getchar_nolock
+#else
+#define GETCHAR getchar_unlocked
+#endif
+
+template <typename T = int>
+inline bool readNum(T &x) {
+    int ch = GETCHAR(); bool neg = false;
+    while (ch != EOF && (ch < '0' || ch > '9') && ch != '-') ch = GETCHAR();
+    if (ch == EOF) return false;
+    if (ch == '-') { neg = true; ch = GETCHAR(); }
+    x = 0;
+    while (ch >= '0' && ch <= '9') { x = x * 10 + (ch - '0'); ch = GETCHAR(); }
+    if (neg) x = -x;
+    return true;
+}
+\end{lstlisting}
