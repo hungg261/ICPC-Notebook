@@ -2,6 +2,6 @@
 
 Converts static data structures (build $O(f(N))$) into dynamic online variants supporting insertions in amortized $O(\frac{f(N) \log N}{N})$ and queries in $O(g(N) \log N)$.
 
-\lstinputlisting{contents/001_Data_Structures/codes/DynamicInsertion_BinaryGrouping_1.cpp}
+\lstinputlisting{contents/001_Data_Structures/codes/DynamicInsertion_BinaryGrouping_1.h}
 
 Handles dynamic element deletions by initializing two separate \lstinline|DynamicACAM| instances (one for insertions, one for deletions) and tracking the net difference.

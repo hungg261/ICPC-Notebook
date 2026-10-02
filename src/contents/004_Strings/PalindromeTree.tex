@@ -2,6 +2,6 @@
 
 A specialized tree structure that processes characters online to maintain all unique palindromic substrings of a string in $O(N)$ time and space complexity.
 
-\lstinputlisting{contents/004_Strings/codes/PalindromeTree_1.cpp}
+\lstinputlisting{contents/004_Strings/codes/PalindromeTree_1.h}
 
 Initialize via \lstinline|PalindromeTree pt| and append characters one by one using \lstinline|pt.insert(c)|. Call \lstinline|pt.pull_frequencies()| at the end to get the exact total occurrence count of every unique palindromic substring inside \lstinline|tree[i].cnt|.

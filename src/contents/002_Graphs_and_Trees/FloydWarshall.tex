@@ -2,6 +2,6 @@
 
 All-pairs shortest paths in $O(N^3)$ and dynamic vertex insertion in $O(N^2)$.
 
-\lstinputlisting{contents/002_Graphs_and_Trees/codes/FloydWarshall_1.cpp}
+\lstinputlisting{contents/002_Graphs_and_Trees/codes/FloydWarshall_1.h}
 
 Initialize \lstinline|dist[i][i] = 0|. For offline queries where vertices are deleted, reverse the query order and use \lstinline|add_vertex| instead. Negative cycle exists if any \lstinline|dist[i][i] < 0|.

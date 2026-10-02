@@ -14,7 +14,7 @@ def normalize_src(src):
     return src
 
 def run():
-    p_inp = r"\\lstinputlisting\{contents/.*?/codes/([^}]+)\.cpp\}"
+    p_inp = r"\\lstinputlisting\{contents/.*?/codes/([^}]+)\.h\}"
     goc = Path(__file__).resolve().parent.parent
 
     tex_by_dir = {}
@@ -38,10 +38,10 @@ def run():
             for m in matches:
                 full_name = m.group(1)
                 base_name = full_name.rsplit('_', 1)[0] if '_' in full_name else full_name
-                f_cpp = d_codes / f"{full_name}.cpp"
+                f_cpp = d_codes / f"{full_name}.h"
                 
                 if not f_cpp.exists() and d_codes.exists():
-                    for alt_f in d_codes.glob(f"{base_name}_*.cpp"):
+                    for alt_f in d_codes.glob(f"{base_name}_*.h"):
                         f_cpp = alt_f
                         break
 

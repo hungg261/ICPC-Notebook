@@ -2,6 +2,6 @@
 
 Calculates $F(mask) = \sum_{sub \subseteq mask} A(sub)$ for all masks in $O(N \cdot 2^N)$ time complexity.
 
-\lstinputlisting{contents/006_DPs/codes/DP_SOS_1.cpp}
+\lstinputlisting{contents/006_DPs/codes/DP_SOS_1.h}
 
 To compute supersets instead ($F(mask) = \sum_{mask \subseteq super} A(super)$), change the condition to check if the bit is NOT set: \lstinline|if (!(mask & (1 << i)))| and transition via \lstinline|dp[mask] += dp[mask ^ (1 << i)]|.

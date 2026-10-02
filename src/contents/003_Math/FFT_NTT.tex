@@ -2,9 +2,9 @@
 
 Polynomial multiplication in $O(N \log N)$. Use \lstinline|FFT| for high-precision floating-point coefficients and \lstinline|NTT| for exact integer multiplication under a large prime modulus (typically \lstinline|998244353|).
 
-\lstinputlisting{contents/003_Math/codes/FFT_NTT_1.cpp}
+\lstinputlisting{contents/003_Math/codes/FFT_NTT_1.h}
 
-\lstinputlisting{contents/003_Math/codes/FFT_NTT_2.cpp}
+\lstinputlisting{contents/003_Math/codes/FFT_NTT_2.h}
 
 To multiply two polynomials $A(x)$ and $B(x)$, pass their coefficients to \lstinline|multiply_fft| or \lstinline|multiply_ntt|. For example:
-\lstinputlisting{contents/003_Math/codes/FFT_NTT_3.cpp}
+\lstinputlisting{contents/003_Math/codes/FFT_NTT_3.h}

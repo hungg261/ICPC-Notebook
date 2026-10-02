@@ -23,7 +23,7 @@ def get_hash(s):
 
 def run():
     p_lst = r"\\begin\{lstlisting\}((?:\[.*?\])?)(.*?)\\end\{lstlisting\}"
-    p_inp = r"\\lstinputlisting\{contents/.*?/codes/([^}]+)\.cpp\}"
+    p_inp = r"\\lstinputlisting\{contents/.*?/codes/([^}]+)\.h\}"
     goc = Path(__file__).resolve().parent.parent
 
     for f in goc.rglob("*.tex"):
@@ -36,7 +36,7 @@ def run():
         vld = set()
 
         for m in re.finditer(p_inp, txt):
-            f_name = f"{m.group(1)}.cpp"
+            f_name = f"{m.group(1)}.h"
             f_cpp = d_codes / f_name
             if f_cpp.exists():
                 vld.add(f_name)
@@ -62,10 +62,10 @@ def run():
                     idx = m.end()
                     continue
                 
-                while f"{f.stem}_{file_counter}.cpp" in vld:
+                while f"{f.stem}_{file_counter}.h" in vld:
                     file_counter += 1
                 
-                name = f"{f.stem}_{file_counter}.cpp"
+                name = f"{f.stem}_{file_counter}.h"
                 file_counter += 1
                 vld.add(name)
 
@@ -81,7 +81,7 @@ def run():
             f.write_text(moi, encoding="utf-8")
 
         if d_codes.exists():
-            for cur in d_codes.glob(f"{f.stem}_*.cpp"):
+            for cur in d_codes.glob(f"{f.stem}_*.h"):
                 if cur.name not in vld:
                     cur.unlink()
             if not any(d_codes.iterdir()):
