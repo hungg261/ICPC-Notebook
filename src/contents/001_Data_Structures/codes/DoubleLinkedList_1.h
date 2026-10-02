@@ -1,0 +1,32 @@
+/* Hash: DD238EF4 */
+struct Node {
+    int val;
+    Node *L = nullptr, *R = nullptr;
+    Node(int v) : val(v) {}
+};
+struct LinkedList {
+    Node *head = nullptr, *tail = nullptr;
+    void insertTail(int v) {
+        Node* n = new Node(v);
+        if (!head) { head = tail = n; }
+        else { tail->R = n; n->L = tail; tail = n; }
+    }
+    void remove(Node* n) {
+        if (n->L) n->L->R = n->R;
+        else head = n->R;
+        if (n->R) n->R->L = n->L;
+        else tail = n->L;
+    }
+    void restore(Node* n) {
+        if (n->L) n->L->R = n;
+        else head = n;
+        if (n->R) n->R->L = n;
+        else tail = n;
+    }
+    void splice(LinkedList& other) {
+        if (!other.head) return;
+        if (!head) { head = other.head; tail = other.tail; }
+        else { tail->R = other.head; other.head->L = tail; tail = other.tail; }
+        other.head = other.tail = nullptr;
+    }
+};

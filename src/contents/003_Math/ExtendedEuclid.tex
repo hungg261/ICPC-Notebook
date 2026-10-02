@@ -2,10 +2,4 @@
 
 Computes $\gcd(a, b)$ and finds $x, y$ such that $ax + by = \gcd(a, b)$ in $O(\log(\min(a, b)))$. Modular inverse of $a \pmod m$ is \lstinline|(x % m + m) % m| if $\gcd == 1$.
 
-\begin{lstlisting}
-long long extgcd(long long a, long long b, long long &x, long long &y) {
-    if (!b) { x = 1; y = 0; return a; }
-    long long x1, y1, d = extgcd(b, a % b, x1, y1);
-    x = y1; y = x1 - y1 * (a / b); return d;
-}
-\end{lstlisting}
+\lstinputlisting{contents/003_Math/codes/ExtendedEuclid_1.h}

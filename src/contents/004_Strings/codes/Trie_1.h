@@ -1,0 +1,43 @@
+/* Hash: CF416890 */
+struct Trie {
+    static const int ALPHABET_SIZE = 26;
+    struct Node {
+        int next[ALPHABET_SIZE], cnt = 0, is_end = 0;
+        Node() { memset(next, -1, sizeof(next)); }
+    };
+
+    vector<Node> trie;
+    Trie() { trie.push_back(Node()); }
+
+    void insert(const string& s) {
+        int u = 0; trie[u].cnt++;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (trie[u].next[idx] == -1) {
+                trie[u].next[idx] = trie.size(); trie.push_back(Node());
+            }
+            u = trie[u].next[idx]; trie[u].cnt++;
+        }
+        trie[u].is_end++;
+    }
+
+    bool search(const string& s) {
+        int u = 0;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (trie[u].next[idx] == -1 || trie[trie[u].next[idx]].cnt == 0) return false;
+            u = trie[u].next[idx];
+        }
+        return trie[u].is_end > 0;
+    }
+
+    void remove(const string& s) {
+        if (!search(s)) return;
+        int u = 0; trie[u].cnt--;
+        for (char c : s) {
+            int idx = c - 'a', nxt = trie[u].next[idx];
+            trie[nxt].cnt--; u = nxt;
+        }
+        trie[u].is_end--;
+    }
+};

@@ -2,41 +2,4 @@
 
 Complexity: $O(\log N)$. Path compression disabled. Use \lstinline|get_time()| to save checkpoint and \lstinline|rollback(t)| to revert.
 
-\begin{lstlisting}
-struct DSU_Rollback {
-    vector<int> parent, sz;
-    vector<pair<int, int>> history;
-
-    DSU_Rollback(int n) {
-        parent.resize(n + 1); sz.assign(n + 1, 1);
-        iota(parent.begin(), parent.end(), 0);
-    }
-
-    int find_set(int v) {
-        while (v != parent[v]) v = parent[v];
-        return v;
-    }
-
-    int get_time() { return history.size(); }
-
-    bool union_sets(int a, int b) {
-        a = find_set(a); b = find_set(b);
-        if (a == b) return false;
-
-        if (sz[a] < sz[b]) swap(a, b);
-        history.push_back({b, parent[b]});
-        history.push_back({~a, sz[a]});
-
-        parent[b] = a; sz[a] += sz[b];
-        return true;
-    }
-
-    void rollback(int t) {
-        while (history.size() > t) {
-            auto [u, val] = history.back(); history.pop_back();
-            if (u < 0) sz[~u] = val;
-            else parent[u] = val;
-        }
-    }
-};
-\end{lstlisting}
+\lstinputlisting{contents/001_Data_Structures/codes/DisjointSetUnionRollback_1.h}
