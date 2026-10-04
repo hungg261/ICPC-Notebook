@@ -1,5 +1,20 @@
 % Essential Formulas
 
+\textbf{Binet's formula (Fibonacci):}
+$$F_n = \frac{1}{\sqrt{5}} \left( \left( \frac{1 + \sqrt{5}}{2} \right)^n - \left( \frac{1 - \sqrt{5}}{2} \right)^n \right)$$
+
+\textbf{Recurrence $\leftrightarrow$ Closed-form:}
+\begin{itemize}
+    \item \textbf{Recurrence $\rightarrow$ Closed-form:} For $a_n = c_1 a_{n-1} + \dots + c_k a_{n-k}$, solve the characteristic equation: $x^k - c_1 x^{k-1} - \dots - c_k = 0$.
+    \begin{itemize}
+        \item Distinct roots $r_i$: $a_n = \alpha_1 r_1^n + \alpha_2 r_2^n + \dots + \alpha_k r_k^n$
+        \item Repeated root $r$ (multiplicity $m$): $a_n = (\alpha_0 + \alpha_1 n + \dots + \alpha_{m-1} n^{m-1}) r^n$
+        \item[$\rightarrow$] Plug in base cases ($a_0, a_1, \dots$) to solve a system of linear equations for $\alpha_i$.
+    \end{itemize}
+    \item \textbf{Closed-form $\rightarrow$ Recurrence:} Reverse the process. If $a_n = \alpha_1 (r_1)^n + \alpha_2 (r_2)^n$, then $r_1, r_2$ are roots of $(x-r_1)(x-r_2) = x^2 - (r_1+r_2)x + r_1r_2 = 0 \rightarrow a_n = (r_1+r_2)a_{n-1} - (r_1r_2)a_{n-2}$.
+\end{itemize}
+
+
 \textbf{Combinatorics \& Modular Queries:}
 $C_n^k = \frac{n!}{k!(n-k)!} \pmod M$. Precompute factorials in $O(N)$. Linear inverse:
 \lstinline|inv[i] = -(M / i) * inv[M % i] % M + M;|
