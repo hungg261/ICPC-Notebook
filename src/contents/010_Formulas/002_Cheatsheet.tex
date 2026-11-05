@@ -29,14 +29,8 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         $10^7$ & 8\,648\,640 & 448 \\ \hline
         $10^8$ & 73\,513\,440 & 768 \\ \hline
         $10^9$ & 735\,134\,400 & 1\,344 \\ \hline
-        $10^{10}$ & 7\,351\,440\,000 & 2\,304 \\ \hline
-        $10^{11}$ & 69\,837\,768\,000 & 4\,032 \\ \hline
         $10^{12}$ & 963\,761\,198\,400 & 6\,720 \\ \hline
-        $10^{13}$ & 8\,673\,850\,785\,600 & 10\,752 \\ \hline
-        $10^{14}$ & 95\,412\,358\,641\,600 & 17\,280 \\ \hline
         $10^{15}$ & 858\,711\,227\,774\,400 & 26\,880 \\ \hline
-        $10^{16}$ & 9\,445\,823\,505\,518\,400 & 41\,472 \\ \hline
-        $10^{17}$ & 93\,512\,652\,704\,632\,000 & 64\,512 \\ \hline
         $10^{18}$ & 841\,613\,874\,341\,688\,000 & 103\,680 \\ \hline
     \end{tabular}
 
@@ -61,32 +55,6 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         47 & 614\,889\,782\,588\,491\,410 \\ \hline
     \end{tabular}
 
-    \item \textbf{Factorials ($n!$):}
-    \begin{tabular}{|r|r|}
-        \hline
-        $n$ & $n!$ \\ \hline
-        1 & 1 \\ \hline
-        2 & 2 \\ \hline
-        3 & 6 \\ \hline
-        4 & 24 \\ \hline
-        5 & 120 \\ \hline
-        6 & 720 \\ \hline
-        7 & 5\,040 \\ \hline
-        8 & 40\,320 \\ \hline
-        9 & 362\,880 \\ \hline
-        10 & 3\,628\,800 \\ \hline
-        11 & 39\,916\,800 \\ \hline
-        12 & 479\,001\,600 \\ \hline
-        13 & 6\,227\,020\,800 \\ \hline
-        14 & 87\,178\,291\,200 \\ \hline
-        15 & 1\,307\,674\,368\,000 \\ \hline
-        16 & 20\,922\,789\,888\,000 \\ \hline
-        17 & 355\,687\,428\,096\,000 \\ \hline
-        18 & 6\,402\,373\,705\,728\,000 \\ \hline
-        19 & 121\,645\,100\,408\,832\,000 \\ \hline
-        20 & 2\,432\,902\,008\,176\,640\,000 \\ \hline
-    \end{tabular}
-
     \item \textbf{Hashing Bases \& NTT Modulos:}
     \begin{tabular}{|p{1.2cm}|p{2.3cm}|c|c|}
         \hline
@@ -101,15 +69,6 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         NTT Mod & 469762049 & 3 & $2^{26}$ \\ \hline
     \end{tabular}
 
-    \item \textbf{Data Type Limits:}
-    \begin{tabular}{|p{1.1cm}|p{2.0cm}|p{2.1cm}|}
-        \hline
-        \textbf{Type} & \textbf{Max Value} & \textbf{Safe Geo} \\ \hline
-        32-bit \lstinline|int| & $2,147,483,647$ ($\approx 2 \times 10^9$) & $X, Y \le 30\,000$ \\ \hline
-        64-bit \lstinline|ll| & $9.22 \times 10^{18}$ & $X, Y \le 2 \times 10^9$ \\ \hline
-        \lstinline|__int128| & $\approx 1.7 \times 10^{38}$ & Max cross prod \\ \hline
-    \end{tabular}
-
     \item \textbf{Sequence Limits:}
     \begin{tabular}{|p{1.2cm}|p{2.0cm}|p{2.0cm}|}
         \hline
@@ -117,25 +76,61 @@ A comprehensive reference table for prime counts, highly composite numbers, prim
         Fibonacci & $F_{46} \approx 1.83 \times 10^9$ & $F_{92} \approx 7.54 \times 10^{18}$ \\ \hline
         Catalan & $C_{19} \approx 1.76 \times 10^9$ & $C_{33} \approx 3.32 \times 10^{18}$ \\ \hline
     \end{tabular}
-
-    \item \textbf{Powers Quick Reference:}
-    \begin{tabular}{|c|r||c|r|}
-        \hline
-        $2^n$ & \textbf{Exact Value} & $10^n$ & \textbf{Pref.} \\ \hline
-        $2^{10}$ & 1\,024 & $10^3$ & K \\ \hline
-        $2^{20}$ & 1\,048\,576 & $10^6$ & M \\ \hline
-        $2^{30}$ & 1\,073\,741\,824 & $10^9$ & G \\ \hline
-        $2^{40}$ & $1.09 \times 10^{12}$ & $10^{12}$ & T \\ \hline
-        $2^{50}$ & $1.12 \times 10^{15}$ & $10^{15}$ & P \\ \hline
-        $2^{60}$ & $1.15 \times 10^{18}$ & $10^{18}$ & E \\ \hline
-    \end{tabular}
-
-    \item \textbf{Terminal Shortcuts}
-    \begin{description}[leftmargin=0.4cm, noitemsep, topsep=0pt]
-        \item[Maximize stack size] \texttt{ulimit -s unlimited}
-        \item[Perm. stack size (Bash)] \texttt{echo "ulimit -s unlimited" >> \textasciitilde/.bashrc}
-        \item[Kill hanging program] \texttt{Ctrl+C}
-        \item[Redirect I/O for testing] \texttt{./a.out < in > out}
-        \item[Compare outputs (ignore space)] \texttt{diff -w out sol}
-    \end{description}
 \end{enumerate}
+
+\vspace{4.55cm}
+\hrule
+\vspace{0.25cm}
+
+\begin{center}
+\textbf{\LARGE TRÌNH - HIEUTHUHAI}
+\end{center}
+
+\begin{multicols*}{2}
+\raggedright
+\small
+
+\textbf{Tiếng Việt} \\
+\vspace{0.3em}
+Ey ey yeah yeah \\
+Ối zồi ôi ối zồi ôi \\
+Trình là gì mà là trình ai chấm \\
+Anh chỉ biết làm ba mẹ tự hào \\
+Xây căn nhà thật to ở một mình hai tấm \\
+Ối zồi ôi ối zồi ôi \\
+Cứ lên mạng phán xét tưởng là mình oai lắm \\
+Nhìn vào sự nghiệp anh thèm chảy nước miếng \\
+Giống mấy thằng biến thái nó đang rình ai tắm \\
+Mua bao nhiêu căn nhà (đếm được đếm được) \\
+Năm bao nhiêu show (đếm được đếm được) \\
+Bao nhiêu bài hit (đếm được đếm được) \\
+Bao nhiêu trong bank (đếm được đếm được) \\
+Mua bao nhiêu căn nhà (đếm được đếm được) \\
+Năm bao nhiêu show (đếm được đếm được) \\
+Bao nhiêu là cúp (đếm được đếm được) \\
+Có bao nhiêu fan (không đếm được không đếm được)
+
+\columnbreak
+
+\textbf{English} \\
+\vspace{0.3em}
+Ey ey yeah yeah \\
+Oh my god oh my god \\
+What is skill, and who has the right to judge? \\
+I only know how to make my parents proud \\
+Building a huge 2-story house to live by myself \\
+Oh my god oh my god \\
+Keep judging online, thinking you're so cool \\
+Staring at my career, drooling with envy \\
+Just like perverts peeping at someone taking a bath \\
+How many houses bought? (countable, countable) \\
+How many shows a year? (countable, countable) \\
+How many hit songs? (countable, countable) \\
+How much in the bank? (countable, countable) \\
+How many houses bought? (countable, countable) \\
+How many shows a year? (countable, countable) \\
+How many trophies? (countable, countable) \\
+How many fans do I have? (uncountable, uncountable!)
+
+\end{multicols*}
+\newpage

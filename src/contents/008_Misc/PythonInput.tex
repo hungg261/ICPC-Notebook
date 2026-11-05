@@ -1,0 +1,34 @@
+% Python Fast I/O
+
+\begin{lstlisting}[language=Python]
+import sys
+
+# --- Fast stdin (bulk read, fastest for large input) ---
+data = sys.stdin.buffer.read().split()
+it = iter(data)
+n = int(next(it))
+a = [int(next(it)) for _ in range(n)]
+
+# --- Fast line-based input ---
+input = sys.stdin.readline          # faster than built-in input()
+n = int(input())
+a = list(map(int, input().split()))
+
+# --- File I/O: rebind at top, rest of code unchanged ---
+sys.stdin  = open('input.txt',  'r')
+sys.stdout = open('output.txt', 'w')
+# ... solve ...
+sys.stdout.close()                  # flush + close before exit
+
+# --- Or use context managers (safer, auto-close) ---
+with open('input.txt') as f, open('output.txt', 'w') as g:
+    n = int(f.readline())
+    g.write(f"{n}\n")
+
+# --- Output tips ---
+# Collect results and write once: faster than many print() calls
+out = []
+for x in a:
+    out.append(str(x))
+sys.stdout.write('\n'.join(out) + '\n')
+\end{lstlisting}

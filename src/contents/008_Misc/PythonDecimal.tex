@@ -1,0 +1,42 @@
+% Python Decimal (library)
+
+Use when float's ~15-17 significant digits is not enough (e.g. compare sqrt sums, output 20+ decimals). Slower than float, so only use when needed. \texttt{prec} = total significant digits, NOT decimals; for coords up to $10^9$ (squared $10^{18}$) plus decimals, \texttt{prec = 50}--\texttt{100} is safe.
+
+\begin{lstlisting}[language=Python]
+from decimal import Decimal, getcontext, localcontext
+
+getcontext().prec = 50        # significant digits (default 28); set once at top
+
+# --- Construct: ALWAYS str or int, never float ---
+a = Decimal('3.14')           # ok
+b = Decimal(10)               # ok
+c = Decimal(0.1)              # WRONG: stores binary float approximation
+
+# --- Methods (use current context precision) ---
+x.sqrt()                      # sqrt(x), x >= 0
+x.exp()                       # e^x
+x.ln()                        # natural log
+x.log10()                     # log base 10
+x ** Decimal(y)               # power
+x.quantize(Decimal('0.01'))   # round to 2 decimals (context rounding mode)
+
+# --- Example 1: compare sqrt(a)+sqrt(b) vs sqrt(c) ---
+from decimal import Decimal, getcontext
+getcontext().prec = 100
+a, b, c = map(Decimal, input().split())
+print("Yes" if a.sqrt() + b.sqrt() < c.sqrt() else "No")
+
+# --- Example 2: local precision scope ---
+with localcontext() as ctx:
+    ctx.prec = 200
+    ans = Decimal(2).sqrt()
+
+# --- Example 3: fixed-decimal output ---
+print(f"{ans:.20f}")          # 20 digits after point
+
+# --- Tips ---
+# - Exact string judge: read input as Decimal from start, print exact decimals.
+# - float already enough if tolerance is 1e-6; don't use Decimal there.
+# - round(Decimal(...)) uses ties-to-even (Python); use x.quantize(...) to
+#   apply the context rounding mode.
+\end{lstlisting}
